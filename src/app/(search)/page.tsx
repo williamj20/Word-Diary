@@ -1,5 +1,5 @@
-import AddWord from '../ui/add-word';
-import WordList from '../ui/word-list';
+import AddWord from '@/app/ui/add-word';
+import WordList from '@/app/ui/word-list';
 
 const initialWords = [
   {
@@ -20,9 +20,9 @@ const initialWords = [
 
 export default function Page() {
   return (
-    <div>
+    <main>
       <AddWord />
       <WordList initialWords={initialWords} />
-    </div>
+    </main>
   );
 }

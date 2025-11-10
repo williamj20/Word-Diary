@@ -1,7 +1,7 @@
 'use client';
+import { Word } from '@/app/lib/definitions';
+import WordItem from '@/app/ui/word-item';
 import { useState } from 'react';
-import { Word } from '../lib/definitions';
-import WordItem from './word-item';
 
 export default function WordList({ initialWords }: { initialWords: Word[] }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

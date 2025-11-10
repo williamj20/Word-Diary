@@ -1,4 +1,4 @@
-import { Word } from '../lib/definitions';
+import { Word } from '@/app/lib/definitions';
 
 export default function WordItem({ word }: { word: Word }) {
   return (

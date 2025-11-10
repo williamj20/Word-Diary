@@ -1,7 +1,7 @@
+import { quicksand } from '@/app/ui/fonts';
 import { BookOpenText } from 'lucide-react';
 import type { Metadata } from 'next';
 import './globals.css';
-import { quicksand } from './ui/fonts';
 
 export const metadata: Metadata = {
   title: 'Word Diary',
