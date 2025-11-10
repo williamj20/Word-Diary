@@ -1,6 +1,6 @@
 'use client';
+import WordItem from '@/app/(search)/components/word-item';
 import { Word } from '@/app/lib/definitions';
-import WordItem from '@/app/ui/word-item';
 import { useState } from 'react';
 
 export default function WordList({ initialWords }: { initialWords: Word[] }) {

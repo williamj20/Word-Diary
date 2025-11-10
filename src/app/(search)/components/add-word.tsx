@@ -1,20 +1,26 @@
 'use client';
 
-import { Plus } from 'lucide-react';
+import AddWordDefinition from '@/app/(search)/components/add-word-definition';
+import { WordToSearch } from '@/app/lib/definitions';
+import { mockDefinition2 } from '@/app/lib/mock-data';
 import { useEffect, useState } from 'react';
+
+const EMPTY_WORD_ERROR_MESSAGE = 'Please enter a word before searching.';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const DEFINITION_NOT_FOUND_ERROR_MESSAGE =
+  'Definition not found. Please try another word.';
+const SOMETHING_WENT_WRONG = 'Something went wrong. Please try again.';
 
 export default function AddWord() {
   const [word, setWord] = useState('');
   const [error, setError] = useState('');
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [definition, setDefinition] = useState('Test');
+  const [definition, setDefinition] = useState<WordToSearch | null>(null);
 
   useEffect(() => {
     setError('');
   }, [word]);
-
-  const EMPTY_WORD_ERROR_MESSAGE = 'Please enter a word before searching.';
 
   function handleInputKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter' && event.shiftKey) {
@@ -36,13 +42,36 @@ export default function AddWord() {
     window.open(searchUrl, '_blank');
   }
 
-  function searchDefinition() {
+  async function searchDefinition() {
     const trimmedWord = word.trim();
     if (!trimmedWord) {
       setError(EMPTY_WORD_ERROR_MESSAGE);
       return;
     }
-    console.log(trimmedWord);
+    try {
+      // const response = await fetch(
+      //   `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(trimmedWord)}?key=${process.env.NEXT_PUBLIC_DICTIONARY_KEY}`
+      // );
+      // if (!response.ok) {
+      //   console.log('Error fetching definition:', error);
+      //   setError(SOMETHING_WENT_WRONG);
+      //   return;
+      // }
+      // const data = await response.json();
+      // if (data.length === 0 || !data[0].shortdef) {
+      //   setError(DEFINITION_NOT_FOUND_ERROR_MESSAGE);
+      //   return;
+      // }
+      // const wordToSearch = {
+      //   dictionaryEntries: data,
+      //   word: trimmedWord,
+      // };
+      // setDefinition(wordToSearch);
+      setDefinition(mockDefinition2);
+    } catch (error) {
+      console.log('Error fetching definition:', error);
+      setError(SOMETHING_WENT_WRONG);
+    }
   }
 
   return (
@@ -75,14 +104,7 @@ export default function AddWord() {
           <div className="text-sm font-medium text-red-600 mt-1">{error}</div>
         )}
       </div>
-      {definition.trim() && (
-        <div className="w-full max-w-3xl px-4 py-3 mt-6 flex items-center justify-between rounded-lg border border-gray-200 text-lg font-medium">
-          {definition}
-          <button className="p-2 rounded-lg text-green-800 bg-green-200 hover:bg-green-300 active:bg-green-400 transition-all shadow-md enabled:hover:shadow-lg">
-            <Plus className="w-5 h-5" />
-          </button>
-        </div>
-      )}
+      <AddWordDefinition wordsResponse={definition} />
     </div>
   );
 }

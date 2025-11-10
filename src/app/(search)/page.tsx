@@ -1,5 +1,5 @@
-import AddWord from '@/app/ui/add-word';
-import WordList from '@/app/ui/word-list';
+import AddWord from '@/app/(search)/components/add-word';
+import WordList from '@/app/(search)/components/word-list';
 
 const initialWords = [
   {
