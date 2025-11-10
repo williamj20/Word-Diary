@@ -10,12 +10,12 @@ export default function AddWordDefinition({
 }) {
   if (wordsResponse) {
     console.log('wordsResponse:', wordsResponse);
-    const slicedResponses = wordsResponse?.dictionaryEntries.slice(0, 3);
+    const slicedResponses = wordsResponse.dictionaryEntries.slice(0, 3);
     return (
       <div className="w-full max-w-6xl px-4 py-3 mt-6 rounded-lg border border-gray-200 text-lg font-medium">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-2xl font-bold">{wordsResponse?.word}</div>
+            <div className="text-2xl font-bold">{wordsResponse.word}</div>
             <div className="flex">
               {slicedResponses.map((entry, index) => (
                 <div key={index} className="w-full max-w-2xl p-2">
