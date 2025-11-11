@@ -18,7 +18,7 @@ export default function AddWordDefinition({
             <div className="text-2xl font-bold">{wordsResponse.word}</div>
             <div className="flex">
               {slicedResponses.map((entry, index) => (
-                <div key={index} className="w-full max-w-2xl p-2">
+                <div key={index} className="w-full max-w-2xl p-4">
                   <h3 className="text-xl font-semibold">{entry.fl}</h3>
                   <ul className="list-disc list-inside">
                     {entry.shortdef.map((definition, defIndex) => (
