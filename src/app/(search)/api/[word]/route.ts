@@ -10,7 +10,12 @@ export async function GET(
   const { word } = await params;
   try {
     const response = await fetch(
-      `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(word)}?key=${API_KEY}`
+      `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(word)}?key=${API_KEY}`,
+      {
+        next: {
+          revalidate: 86400,
+        },
+      }
     );
     if (!response.ok) {
       return NextResponse.json(
@@ -32,7 +37,11 @@ export async function GET(
       return NextResponse.json({ error: 'Word not found' }, { status: 404 });
     }
     data = data.slice(0, 6);
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        'Cache-Control': 'public, max-age=86400',
+      },
+    });
   } catch (error) {
     console.error('Error fetching definition:', error);
     return NextResponse.json(
