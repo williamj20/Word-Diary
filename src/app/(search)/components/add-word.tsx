@@ -5,7 +5,6 @@ import { DictionaryServiceObject } from '@/app/lib/definitions';
 import { useEffect, useState } from 'react';
 
 const EMPTY_WORD_ERROR_MESSAGE = 'Please enter a word before searching.';
-
 const DEFINITION_NOT_FOUND_ERROR_MESSAGE =
   'Definition not found. Please try another word.';
 const SOMETHING_WENT_WRONG = 'Something went wrong. Please try again.';
@@ -49,34 +48,19 @@ export default function AddWord() {
       return;
     }
     try {
-      const response = await fetch(
-        `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(trimmedWord)}?key=${process.env.NEXT_PUBLIC_DICTIONARY_KEY}`
-      );
+      const response = await fetch(`/api/${encodeURIComponent(trimmedWord)}`);
+      const data = await response.json();
       if (!response.ok) {
-        console.log('Error fetching definition:', error);
-        setError(SOMETHING_WENT_WRONG);
-        return;
-      }
-      let data: DictionaryServiceObject[] = await response.json();
-      data.map(entry => {
-        if (entry.hwi && entry.hwi.hw) {
-          entry.hwi.hw = entry.hwi.hw.replaceAll('*', '');
+        if (response.status === 404) {
+          setError(DEFINITION_NOT_FOUND_ERROR_MESSAGE);
+        } else {
+          setError(SOMETHING_WENT_WRONG);
         }
-        return entry;
-      });
-      data = data.filter(
-        (entry: DictionaryServiceObject) =>
-          entry.hwi && entry.hwi.hw === trimmedWord
-      );
-      if (data.length === 0) {
-        setError(DEFINITION_NOT_FOUND_ERROR_MESSAGE);
         return;
       }
-      data = data.slice(0, 6);
       setDefinition(data);
-      // setDefinition(mockDefinition2);
     } catch (error) {
-      console.log('Error fetching definition:', error);
+      console.error('Error fetching definition:', error);
       setError(SOMETHING_WENT_WRONG);
     }
   }
