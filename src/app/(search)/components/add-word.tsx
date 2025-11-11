@@ -60,12 +60,17 @@ export default function AddWord() {
       let data: DictionaryServiceObject[] = await response.json();
       data = data.filter(
         (entry: DictionaryServiceObject) =>
-          entry.hwi && entry.hwi.hw === trimmedWord
+          entry.hwi && entry.hwi.hw.replaceAll('*', '') === trimmedWord
       );
       if (data.length === 0) {
         setError(DEFINITION_NOT_FOUND_ERROR_MESSAGE);
         return;
       }
+      data.map(entry => {
+        entry.hwi.hw = entry.hwi.hw.replaceAll('*', '');
+        return entry;
+      });
+      data = data.slice(0, 6);
       setDefinition(data);
       // setDefinition(mockDefinition2);
     } catch (error) {
