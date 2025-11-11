@@ -58,18 +58,20 @@ export default function AddWord() {
         return;
       }
       let data: DictionaryServiceObject[] = await response.json();
+      data.map(entry => {
+        if (entry.hwi && entry.hwi.hw) {
+          entry.hwi.hw = entry.hwi.hw.replaceAll('*', '');
+        }
+        return entry;
+      });
       data = data.filter(
         (entry: DictionaryServiceObject) =>
-          entry.hwi && entry.hwi.hw.replaceAll('*', '') === trimmedWord
+          entry.hwi && entry.hwi.hw === trimmedWord
       );
       if (data.length === 0) {
         setError(DEFINITION_NOT_FOUND_ERROR_MESSAGE);
         return;
       }
-      data.map(entry => {
-        entry.hwi.hw = entry.hwi.hw.replaceAll('*', '');
-        return entry;
-      });
       data = data.slice(0, 6);
       setDefinition(data);
       // setDefinition(mockDefinition2);
