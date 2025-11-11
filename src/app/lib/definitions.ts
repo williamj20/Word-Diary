@@ -8,9 +8,7 @@ export interface Word {
 export interface DictionaryServiceObject {
   fl: string; // functional label
   shortdef: string[]; // short definitions
-}
-
-export interface WordToSearch {
-  dictionaryEntries: DictionaryServiceObject[];
-  word: string;
+  hwi: {
+    hw: string; // headword
+  };
 }

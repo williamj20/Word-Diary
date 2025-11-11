@@ -1,13 +1,11 @@
 'use client';
 
 import AddWordDefinition from '@/app/(search)/components/add-word-definition';
-import { WordToSearch } from '@/app/lib/definitions';
-import { mockDefinition2 } from '@/app/lib/mock-data';
+import { DictionaryServiceObject } from '@/app/lib/definitions';
 import { useEffect, useState } from 'react';
 
 const EMPTY_WORD_ERROR_MESSAGE = 'Please enter a word before searching.';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DEFINITION_NOT_FOUND_ERROR_MESSAGE =
   'Definition not found. Please try another word.';
 const SOMETHING_WENT_WRONG = 'Something went wrong. Please try again.';
@@ -16,7 +14,9 @@ export default function AddWord() {
   const [word, setWord] = useState('');
   const [error, setError] = useState('');
 
-  const [definition, setDefinition] = useState<WordToSearch | null>(null);
+  const [definition, setDefinition] = useState<
+    DictionaryServiceObject[] | null
+  >(null);
 
   useEffect(() => {
     setError('');
@@ -49,25 +49,25 @@ export default function AddWord() {
       return;
     }
     try {
-      // const response = await fetch(
-      //   `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(trimmedWord)}?key=${process.env.NEXT_PUBLIC_DICTIONARY_KEY}`
-      // );
-      // if (!response.ok) {
-      //   console.log('Error fetching definition:', error);
-      //   setError(SOMETHING_WENT_WRONG);
-      //   return;
-      // }
-      // const data = await response.json();
-      // if (data.length === 0 || !data[0].shortdef) {
-      //   setError(DEFINITION_NOT_FOUND_ERROR_MESSAGE);
-      //   return;
-      // }
-      // const wordToSearch = {
-      //   dictionaryEntries: data,
-      //   word: trimmedWord,
-      // };
-      // setDefinition(wordToSearch);
-      setDefinition(mockDefinition2);
+      const response = await fetch(
+        `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(trimmedWord)}?key=${process.env.NEXT_PUBLIC_DICTIONARY_KEY}`
+      );
+      if (!response.ok) {
+        console.log('Error fetching definition:', error);
+        setError(SOMETHING_WENT_WRONG);
+        return;
+      }
+      let data: DictionaryServiceObject[] = await response.json();
+      data = data.filter(
+        (entry: DictionaryServiceObject) =>
+          entry.hwi && entry.hwi.hw === trimmedWord
+      );
+      if (data.length === 0) {
+        setError(DEFINITION_NOT_FOUND_ERROR_MESSAGE);
+        return;
+      }
+      setDefinition(data);
+      // setDefinition(mockDefinition2);
     } catch (error) {
       console.log('Error fetching definition:', error);
       setError(SOMETHING_WENT_WRONG);

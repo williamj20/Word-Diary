@@ -1,21 +1,21 @@
 'use client';
 
-import { WordToSearch } from '@/app/lib/definitions';
+import { DictionaryServiceObject } from '@/app/lib/definitions';
 import { Plus } from 'lucide-react';
 
 export default function AddWordDefinition({
   wordsResponse,
 }: {
-  wordsResponse: WordToSearch | null;
+  wordsResponse: DictionaryServiceObject[] | null;
 }) {
   if (wordsResponse) {
     console.log('wordsResponse:', wordsResponse);
-    const slicedResponses = wordsResponse.dictionaryEntries.slice(0, 3);
+    const slicedResponses = wordsResponse.slice(0, 6);
     return (
       <div className="w-full max-w-6xl px-4 py-3 mt-6 rounded-lg border border-gray-200 text-lg font-medium">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-2xl font-bold">{wordsResponse.word}</div>
+            <div className="text-xl font-bold">{slicedResponses[0].hwi.hw}</div>
             <div className="flex">
               {slicedResponses.map((entry, index) => (
                 <div key={index} className="w-full max-w-2xl p-4">
