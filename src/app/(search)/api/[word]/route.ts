@@ -13,7 +13,7 @@ export async function GET(
       `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(word)}?key=${API_KEY}`,
       {
         next: {
-          revalidate: 86400,
+          revalidate: 604800,
         },
       }
     );
@@ -39,7 +39,7 @@ export async function GET(
     data = data.slice(0, 6);
     return NextResponse.json(data, {
       headers: {
-        'Cache-Control': 'public, max-age=86400',
+        'Cache-Control': 'public, max-age=604800',
       },
     });
   } catch (error) {
