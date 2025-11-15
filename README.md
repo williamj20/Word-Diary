@@ -22,7 +22,7 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Running PostgreSQL Locally
 
-Run the following command:
+Run the following command to initialize a PostgreSQL docker container:
 
 ```
 docker compose up -d
