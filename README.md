@@ -22,9 +22,17 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Running PostgreSQL Locally
 
-Run the following command: `docker compose up -d`
+Run the following command:
 
-Then to open an interactive PostgreSQL session in your terminal, run: `docker-compose exec db psql -U postgres word_diary`
+```
+docker compose up -d
+```
+
+Then to open an interactive PostgreSQL session in your terminal, run:
+
+```
+docker-compose exec db psql -U postgres word_diary
+```
 
 ## Learn More
 
