@@ -1,8 +1,13 @@
+interface Meaning {
+  partOfSpeech: string;
+  definitions: string[];
+}
+
 export interface Word {
   id: string;
   word: string;
-  definition: string;
-  dateAdded: Date;
+  meanings: Meaning[];
+  added_at: Date;
 }
 
 export interface DictionaryServiceObject {

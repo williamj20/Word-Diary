@@ -1,6 +1,6 @@
 'use client';
 
-import AddWordDefinition from '@/app/(search)/components/add-word-definition';
+import AddWordDefinition from '@/app/(diary)/components/add-word-definition';
 import { DictionaryServiceObject } from '@/app/lib/definitions';
 import { useEffect, useState } from 'react';
 
