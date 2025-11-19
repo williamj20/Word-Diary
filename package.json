@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:start": "docker-compose up -d",
+    "db:reset": "docker-compose down -v && docker-compose up -d"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

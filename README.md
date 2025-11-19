@@ -25,13 +25,19 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 Run the following command to initialize a PostgreSQL docker container:
 
 ```
-docker compose up -d
+npm run db:start
 ```
 
 Then to open an interactive PostgreSQL session in your terminal, run:
 
 ```
 docker-compose exec db psql -U postgres word_diary
+```
+
+To reset your local database, run:
+
+```
+npm run db:reset
 ```
 
 ## Learn More
