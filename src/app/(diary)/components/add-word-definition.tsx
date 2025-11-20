@@ -18,9 +18,9 @@ export default function AddWordDefinition({
             <Plus className="w-5 h-5" />
           </button>
         </div>
-        <div className="flex">
+        <div className="flex flex-start gap-4">
           {wordsResponse.map((entry, index) => (
-            <div key={index} className="w-full max-w-2xl p-2">
+            <div key={index} className="flex-1 max-w-fit p-2">
               <h3 className="text-xl font-semibold">{entry.fl}</h3>
               <ul className="list-disc list-inside">
                 {entry.shortdef.map((definition, defIndex) => (

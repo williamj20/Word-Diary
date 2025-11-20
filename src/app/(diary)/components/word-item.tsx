@@ -19,9 +19,9 @@ export default async function WordItem({ word }: { word: Word }) {
           <Trash2 className="w-5 h-5" />
         </button>
       </div>
-      <div className="flex">
+      <div className="flex flex-start gap-4">
         {word.meanings.map((meaning, index) => (
-          <div key={index} className="w-full max-w-2xl p-2">
+          <div key={index} className="flex-1 max-w-fit p-2">
             <h3 className="text-xl font-semibold">{meaning.part_of_speech}</h3>
             <ul className="list-disc list-inside">
               {meaning.definitions.map((definition, defIndex) => (
