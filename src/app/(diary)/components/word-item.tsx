@@ -8,7 +8,7 @@ export default async function WordItem({ word }: { word: Word }) {
         <div className="flex items-center gap-3">
           <h3 className="text-xl font-bold">{word.word}</h3>
           <span className="text-xs bg-gray-200 px-2 py-1 rounded-full">
-            {word.added_at.toLocaleDateString('en-US', {
+            {new Date(word.added_at).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
               year: 'numeric',
@@ -22,7 +22,7 @@ export default async function WordItem({ word }: { word: Word }) {
       <div className="flex">
         {word.meanings.map((meaning, index) => (
           <div key={index} className="w-full max-w-2xl p-2">
-            <h3 className="text-xl font-semibold">{meaning.partOfSpeech}</h3>
+            <h3 className="text-xl font-semibold">{meaning.part_of_speech}</h3>
             <ul className="list-disc list-inside">
               {meaning.definitions.map((definition, defIndex) => (
                 <li key={defIndex}>{definition}</li>

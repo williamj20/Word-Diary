@@ -1,16 +1,39 @@
 import sql from '@/app/lib/db';
-import { Word } from '@/app/lib/definitions';
+import { WordDAO } from '@/app/lib/definitions';
 
 export async function getUserWords(userId: number) {
   try {
-    const wordList = await sql<Word[]>`
-      SELECT w.word, w.meanings, uw.added_at, uw.id
+    const wordList = await sql<WordDAO[]>`
+      SELECT jsonb_build_object(
+          'id', uw.id,
+          'word', w.word,
+          'added_at', uw.added_at,
+          'meanings', meanings.meanings_json
+      ) AS word
       FROM user_words_list uw
-      INNER JOIN words w ON uw.word_id = w.id
+      JOIN words w ON w.id = uw.word_id
+      LEFT JOIN LATERAL (
+          SELECT jsonb_agg(
+              jsonb_build_object(
+                  'part_of_speech', wm.part_of_speech,
+                  'definitions', defs.definitions_json
+              )
+          ) AS meanings_json
+          FROM word_meanings wm
+          LEFT JOIN LATERAL (
+              SELECT jsonb_agg(md.definition ORDER BY md.definition_order) AS definitions_json
+              FROM word_meaning_definitions md
+              WHERE md.meaning_id = wm.id
+          ) defs ON true
+          WHERE wm.word_id = w.id
+      ) meanings ON true
       WHERE uw.user_id = ${userId}
       ORDER BY uw.added_at DESC`;
-    console.log('Word List:', wordList);
-    return wordList;
+    console.log(
+      'Word List:',
+      wordList.map(row => row.word)
+    );
+    return wordList.map(row => row.word);
   } catch (error) {
     console.error('Error fetching user words:', error);
     return [];

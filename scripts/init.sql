@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS word_meaning_definitions CASCADE;
+DROP TABLE IF EXISTS word_meanings;
 DROP TABLE IF EXISTS user_words_list CASCADE;
 DROP TABLE IF EXISTS words CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
@@ -11,7 +13,6 @@ CREATE TABLE users (
 CREATE TABLE words (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   word VARCHAR(50) UNIQUE NOT NULL,
-  meanings JSONB NOT NULL,
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -23,20 +24,58 @@ CREATE TABLE user_words_list (
   CONSTRAINT unique_user_word UNIQUE (user_id, word_id)
 );
 
+CREATE TABLE word_meanings (
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  word_id INTEGER NOT NULL REFERENCES words(id) ON DELETE CASCADE,
+  part_of_speech VARCHAR(50)
+);
+
+CREATE TABLE word_meaning_definitions (
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  meaning_id INTEGER NOT NULL REFERENCES word_meanings(id) ON DELETE CASCADE,
+  definition TEXT NOT NULL,
+  definition_order INTEGER NOT NULL
+);
+
 INSERT INTO users (username) VALUES ('test_user');
 
+INSERT INTO words (word) VALUES
+('run'),
+('bright'),
+('cast');
 
-INSERT INTO words (word, meanings) VALUES
-('emaciate',
-'[{"partOfSpeech": "verb", "definitions": ["to cause to lose flesh so as to become very thin", "to make feeble", "to waste away physically"]}]'),
-('test',
-'[{"partOfSpeech": "noun", "definitions": ["a means of testing: such as", "something (such as a series of questions or exercises) for measuring the skill, knowledge, intelligence, capacities, or aptitudes of an individual or group", "a procedure, reaction, or reagent used to identify or characterize a substance or constituent"]},
-{"partOfSpeech": "verb", "definitions": ["to put to test or proof : try —often used with out", "to require a doctrinal oath of", "to undergo a test"]},
-{"partOfSpeech": "adjective", "definitions": ["of, relating to, or constituting a test", "subjected to, used for, or revealed by testing"]},
-{"partOfSpeech": "noun", "definitions": ["an external hard or firm covering (such as a shell) of many invertebrates (such as a foraminifer or a mollusk"]},
-{"partOfSpeech": "abbreviation", "definitions": ["Testament"]},
-{"partOfSpeech": "noun", "definitions": ["a self-imposed partial or complete ban on the testing of nuclear weapons that is mutually agreed to by countries possessing such weapons"]}]');
+INSERT INTO word_meanings (word_id, part_of_speech) VALUES
+(1, 'verb'),
+(1, 'noun');
+
+INSERT INTO word_meanings (word_id, part_of_speech) VALUES
+(2, 'adjective');
+
+INSERT INTO word_meanings (word_id, part_of_speech) VALUES
+(3, 'verb'),
+(3, 'noun');
+
+INSERT INTO word_meaning_definitions (meaning_id, definition, definition_order) VALUES
+(1, 'move swiftly on foot', 1),
+(1, 'operate or manage', 2),
+(1, 'flow or cause to flow', 3);
+
+INSERT INTO word_meaning_definitions (meaning_id, definition, definition_order) VALUES
+(2, 'an act or spell of running', 1),
+(2, 'a continuous stretch or period of time', 2);
+
+INSERT INTO word_meaning_definitions (meaning_id, definition, definition_order) VALUES
+(3, 'giving out or reflecting a lot of light', 1),
+(3, 'intelligent and quick-witted', 2);
+
+INSERT INTO word_meaning_definitions (meaning_id, definition, definition_order) VALUES
+(4, 'throw something forcefully', 1),
+(4, 'assign a role to an actor', 2);
+
+INSERT INTO word_meaning_definitions (meaning_id, definition, definition_order) VALUES
+(5, 'the actors in a play or movie', 1);
 
 INSERT INTO user_words_list (user_id, word_id) VALUES
   ('1', '1'),
-  ('1', '2');
+  ('1', '2'),
+  ('1', '3');

@@ -1,5 +1,5 @@
 interface Meaning {
-  partOfSpeech: string;
+  part_of_speech: string;
   definitions: string[];
 }
 
@@ -8,6 +8,10 @@ export interface Word {
   word: string;
   meanings: Meaning[];
   added_at: Date;
+}
+
+export interface WordDAO {
+  word: Word;
 }
 
 export interface DictionaryServiceObject {
