@@ -1,9 +1,9 @@
 import { DictionaryServiceObject, Meaning } from '@/app/lib/definitions';
 
-export function convertDictionaryServiceResponse(
+export const convertDictionaryServiceResponse = (
   dictionaryServiceResponse: DictionaryServiceObject[],
   word: string
-) {
+) => {
   dictionaryServiceResponse = dictionaryServiceResponse.map(entry => {
     if (entry.hwi && entry.hwi.hw) {
       entry.hwi.hw = entry.hwi.hw.replaceAll('*', '');
@@ -33,4 +33,4 @@ export function convertDictionaryServiceResponse(
     meanings,
   };
   return formattedWord;
-}
+};

@@ -3,7 +3,7 @@
 import { Word } from '@/app/lib/definitions';
 import { Plus } from 'lucide-react';
 
-export default function AddWordDefinition({ word }: { word: Word | null }) {
+const AddWordDefinition = ({ word }: { word: Word | null }) => {
   if (word) {
     return (
       <div className="w-full max-w-7xl px-4 py-3 mt-6 rounded-lg border border-gray-200 text-lg font-medium">
@@ -31,4 +31,6 @@ export default function AddWordDefinition({ word }: { word: Word | null }) {
     );
   }
   return null;
-}
+};
+
+export default AddWordDefinition;

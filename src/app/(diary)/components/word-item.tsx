@@ -1,7 +1,7 @@
 import { Word } from '@/app/lib/definitions';
 import { Trash2 } from 'lucide-react';
 
-export default async function WordItem({ word }: { word: Word }) {
+const WordItem = async ({ word }: { word: Word }) => {
   return (
     <div className="w-full max-w-7xl px-4 py-3 mt-6 rounded-lg border border-gray-200 text-lg font-medium">
       <div className="flex items-center justify-between">
@@ -33,4 +33,6 @@ export default async function WordItem({ word }: { word: Word }) {
       </div>
     </div>
   );
-}
+};
+
+export default WordItem;

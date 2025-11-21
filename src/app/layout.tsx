@@ -13,11 +13,11 @@ const quicksand = Quicksand({
   subsets: ['latin'],
 });
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="en">
       <body className={`${quicksand.variable} antialiased`}>
@@ -29,4 +29,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

@@ -9,7 +9,7 @@ const DEFINITION_NOT_FOUND_ERROR_MESSAGE =
   'Definition not found. Please try another word.';
 const SOMETHING_WENT_WRONG = 'Something went wrong. Please try again.';
 
-export default function AddWord() {
+const AddWord = () => {
   const [word, setWord] = useState('');
   const [error, setError] = useState('');
 
@@ -19,7 +19,7 @@ export default function AddWord() {
     setError('');
   }, [word]);
 
-  function handleInputKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && event.shiftKey) {
       searchDefinitionWithGoogle();
     } else if (event.key === 'Enter') {
@@ -27,9 +27,9 @@ export default function AddWord() {
     } else if (event.key === 'Escape') {
       setWord('');
     }
-  }
+  };
 
-  function searchDefinitionWithGoogle() {
+  const searchDefinitionWithGoogle = () => {
     const trimmedWord = word.trim();
     if (!trimmedWord) {
       setError(EMPTY_WORD_ERROR_MESSAGE);
@@ -37,9 +37,9 @@ export default function AddWord() {
     }
     const searchUrl = `https://www.google.com/search?q=define+${encodeURIComponent(trimmedWord)}`;
     window.open(searchUrl, '_blank');
-  }
+  };
 
-  async function searchDefinition() {
+  const searchDefinition = async () => {
     const trimmedWord = word.trim();
     if (!trimmedWord) {
       setError(EMPTY_WORD_ERROR_MESSAGE);
@@ -61,7 +61,7 @@ export default function AddWord() {
       console.error('Error fetching definition:', error);
       setError(SOMETHING_WENT_WRONG);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -96,4 +96,6 @@ export default function AddWord() {
       <AddWordDefinition word={definition} />
     </div>
   );
-}
+};
+
+export default AddWord;

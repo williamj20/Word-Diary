@@ -5,10 +5,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const API_KEY = process.env.DICTIONARY_API_KEY;
 
-export async function GET(
+export const GET = async (
   _request: NextRequest,
   { params }: { params: { word: string } }
-) {
+) => {
   const { word } = await params;
   try {
     const wordFromDB = await getWordFromUserList(1, word);
@@ -53,4 +53,4 @@ export async function GET(
       { status: 500 }
     );
   }
-}
+};
