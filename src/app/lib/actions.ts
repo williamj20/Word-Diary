@@ -1,6 +1,17 @@
 import sql from '@/app/lib/db';
 import { WordDAO } from '@/app/lib/definitions';
 
+export async function getWordFromUserList(userId: number, word: string) {
+  try {
+    const userWords = await getUserWords(userId);
+    const isWordInList = userWords.find(w => w.word === word);
+    return isWordInList ? isWordInList : null;
+  } catch (error) {
+    console.error('Error fetching word from user list:', error);
+    return null;
+  }
+}
+
 export async function getUserWords(userId: number) {
   try {
     const wordList = await sql<WordDAO[]>`
@@ -29,10 +40,6 @@ export async function getUserWords(userId: number) {
       ) meanings ON true
       WHERE uw.user_id = ${userId}
       ORDER BY uw.added_at DESC`;
-    console.log(
-      'Word List:',
-      wordList.map(row => row.word)
-    );
     return wordList.map(row => row.word);
   } catch (error) {
     console.error('Error fetching user words:', error);

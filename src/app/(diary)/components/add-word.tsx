@@ -1,7 +1,7 @@
 'use client';
 
 import AddWordDefinition from '@/app/(diary)/components/add-word-definition';
-import { DictionaryServiceObject } from '@/app/lib/definitions';
+import { Word } from '@/app/lib/definitions';
 import { useEffect, useState } from 'react';
 
 const EMPTY_WORD_ERROR_MESSAGE = 'Please enter a word before searching.';
@@ -13,9 +13,7 @@ export default function AddWord() {
   const [word, setWord] = useState('');
   const [error, setError] = useState('');
 
-  const [definition, setDefinition] = useState<
-    DictionaryServiceObject[] | null
-  >(null);
+  const [definition, setDefinition] = useState<Word | null>(null);
 
   useEffect(() => {
     setError('');
@@ -95,7 +93,7 @@ export default function AddWord() {
           <div className="text-sm font-medium text-red-600 mt-1">{error}</div>
         )}
       </div>
-      <AddWordDefinition wordsResponse={definition} />
+      <AddWordDefinition word={definition} />
     </div>
   );
 }

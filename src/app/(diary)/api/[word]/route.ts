@@ -1,4 +1,6 @@
+import { getWordFromUserList } from '@/app/lib/actions';
 import { DictionaryServiceObject } from '@/app/lib/definitions';
+import { convertDictionaryServiceResponse } from '@/app/lib/utils';
 import { NextRequest, NextResponse } from 'next/server';
 
 const API_KEY = process.env.DICTIONARY_API_KEY;
@@ -9,6 +11,14 @@ export async function GET(
 ) {
   const { word } = await params;
   try {
+    const wordFromDB = await getWordFromUserList(1, word);
+    if (wordFromDB) {
+      return NextResponse.json(wordFromDB, {
+        headers: {
+          'Cache-Control': 'public, max-age=604800',
+        },
+      });
+    }
     const response = await fetch(
       `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(word)}?key=${API_KEY}`,
       {
@@ -23,21 +33,15 @@ export async function GET(
         { status: 500 }
       );
     }
-    let data: DictionaryServiceObject[] = await response.json();
-    data.map(entry => {
-      if (entry.hwi && entry.hwi.hw) {
-        entry.hwi.hw = entry.hwi.hw.replaceAll('*', '');
-      }
-      return entry;
-    });
-    data = data.filter(
-      (entry: DictionaryServiceObject) => entry.hwi && entry.hwi.hw === word
-    );
-    if (data.length === 0) {
+    const res: DictionaryServiceObject[] = await response.json();
+    if (res.length === 0) {
       return NextResponse.json({ error: 'Word not found' }, { status: 404 });
     }
-    data = data.slice(0, 6);
-    return NextResponse.json(data, {
+    const formattedWord = convertDictionaryServiceResponse(res, word);
+    if (!formattedWord) {
+      return NextResponse.json({ error: 'Word not found' }, { status: 404 });
+    }
+    return NextResponse.json(formattedWord, {
       headers: {
         'Cache-Control': 'public, max-age=604800',
       },

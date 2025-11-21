@@ -1,4 +1,4 @@
-interface Meaning {
+export interface Meaning {
   part_of_speech: string;
   definitions: string[];
 }
