@@ -1,7 +1,8 @@
 import sql from '@/app/lib/db';
 import { WordDAO } from '@/app/lib/definitions';
+import { unstable_cache } from 'next/cache';
 
-export async function getWordFromUserList(userId: number, word: string) {
+export const getWordFromUserList = async (userId: number, word: string) => {
   try {
     const userWords = await getUserWords(userId);
     const isWordInList = userWords.find(w => w.word === word);
@@ -10,9 +11,9 @@ export async function getWordFromUserList(userId: number, word: string) {
     console.error('Error fetching word from user list:', error);
     return null;
   }
-}
+};
 
-export async function getUserWords(userId: number) {
+export const getUserWords = unstable_cache(async (userId: number) => {
   try {
     const wordList = await sql<WordDAO[]>`
       SELECT jsonb_build_object(
@@ -45,4 +46,4 @@ export async function getUserWords(userId: number) {
     console.error('Error fetching user words:', error);
     return [];
   }
-}
+});

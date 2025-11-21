@@ -3,6 +3,7 @@ version: '3.8'
 services:
   db:
     image: postgres:16-alpine
+    command: ['postgres', '-c', 'log_statement=all']
     container_name: word_diary_db
     environment:
       POSTGRES_DB: word_diary

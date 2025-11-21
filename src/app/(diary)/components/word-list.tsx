@@ -1,5 +1,5 @@
 import WordItem from '@/app/(diary)/components/word-item';
-import { getUserWords } from '@/app/lib/actions';
+import { getUserWords } from '@/app/lib/data';
 
 export default async function WordList() {
   const words = await getUserWords(1);

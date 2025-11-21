@@ -1,4 +1,4 @@
-import { getWordFromUserList } from '@/app/lib/actions';
+import { getWordFromUserList } from '@/app/lib/data';
 import { DictionaryServiceObject } from '@/app/lib/definitions';
 import { convertDictionaryServiceResponse } from '@/app/lib/utils';
 import { NextRequest, NextResponse } from 'next/server';
