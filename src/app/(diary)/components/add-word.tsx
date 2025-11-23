@@ -41,7 +41,7 @@ const AddWord = () => {
   };
 
   const searchDefinition = async () => {
-    const trimmedWord = word.trim();
+    const trimmedWord = word.trim().toLowerCase();
     if (!trimmedWord) {
       setError(EMPTY_WORD_ERROR_MESSAGE);
       return;

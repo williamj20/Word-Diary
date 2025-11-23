@@ -1,4 +1,4 @@
-import { getWordFromUserList } from '@/app/lib/data';
+import { getWordFromUserList, getWordFromWordsTable } from '@/app/lib/data';
 import { DictionaryServiceObject } from '@/app/lib/definitions';
 import { convertDictionaryServiceResponse } from '@/app/lib/utils';
 import { NextRequest, NextResponse } from 'next/server';
@@ -11,10 +11,21 @@ export const GET = async (
 ) => {
   const { word } = await params;
   try {
-    const wordFromDB = await getWordFromUserList(1, word);
-    if (wordFromDB) {
+    const wordFromUserList = await getWordFromUserList(1, word);
+    if (wordFromUserList) {
       return NextResponse.json(
-        { ...wordFromDB, isInUserList: true },
+        { word: wordFromUserList, isInUserList: true },
+        {
+          headers: {
+            'Cache-Control': 'public, max-age=604800',
+          },
+        }
+      );
+    }
+    const wordFromWordsTable = await getWordFromWordsTable(word);
+    if (wordFromWordsTable) {
+      return NextResponse.json(
+        { word: wordFromWordsTable, isInUserList: false },
         {
           headers: {
             'Cache-Control': 'public, max-age=604800',
@@ -26,7 +37,7 @@ export const GET = async (
       `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(word)}?key=${API_KEY}`,
       {
         next: {
-          revalidate: 604800,
+          revalidate: false,
         },
       }
     );
@@ -45,7 +56,7 @@ export const GET = async (
       return NextResponse.json({ error: 'Word not found' }, { status: 404 });
     }
     return NextResponse.json(
-      { ...formattedWord, isInUserList: false },
+      { word: formattedWord, isInUserList: false },
       {
         headers: {
           'Cache-Control': 'public, max-age=604800',

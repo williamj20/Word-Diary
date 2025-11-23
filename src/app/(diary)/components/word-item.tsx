@@ -1,7 +1,7 @@
-import { Word } from '@/app/lib/definitions';
+import { WordFromUserList } from '@/app/lib/definitions';
 import { Trash2 } from 'lucide-react';
 
-const WordItem = async ({ word }: { word: Word }) => {
+const WordItem = async ({ word }: { word: WordFromUserList }) => {
   return (
     <div className="w-full max-w-7xl px-4 py-3 mt-6 rounded-lg border border-gray-200 text-lg font-medium">
       <div className="flex items-center justify-between">

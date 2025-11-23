@@ -4,19 +4,23 @@ export interface Meaning {
 }
 
 export interface Word {
-  id: string;
   word: string;
   meanings: Meaning[];
+}
+
+export interface WordFromUserList extends Word {
+  id: string;
   added_at: Date;
 }
 
-// Response from DB lookup
+// Response from DB lookup from user list
 export interface WordDAO {
-  word: Word;
+  word: WordFromUserList;
 }
 
 // route handler GET response
-export interface WordLookupResponse extends Word {
+export interface WordLookupResponse {
+  word: Word;
   isInUserList: boolean;
 }
 
