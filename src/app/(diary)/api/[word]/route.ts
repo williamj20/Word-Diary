@@ -13,11 +13,14 @@ export const GET = async (
   try {
     const wordFromDB = await getWordFromUserList(1, word);
     if (wordFromDB) {
-      return NextResponse.json(wordFromDB, {
-        headers: {
-          'Cache-Control': 'public, max-age=604800',
-        },
-      });
+      return NextResponse.json(
+        { ...wordFromDB, isInUserList: true },
+        {
+          headers: {
+            'Cache-Control': 'public, max-age=604800',
+          },
+        }
+      );
     }
     const response = await fetch(
       `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(word)}?key=${API_KEY}`,
@@ -41,11 +44,14 @@ export const GET = async (
     if (!formattedWord) {
       return NextResponse.json({ error: 'Word not found' }, { status: 404 });
     }
-    return NextResponse.json(formattedWord, {
-      headers: {
-        'Cache-Control': 'public, max-age=604800',
-      },
-    });
+    return NextResponse.json(
+      { ...formattedWord, isInUserList: false },
+      {
+        headers: {
+          'Cache-Control': 'public, max-age=604800',
+        },
+      }
+    );
   } catch (error) {
     console.error('Error fetching definition:', error);
     return NextResponse.json(

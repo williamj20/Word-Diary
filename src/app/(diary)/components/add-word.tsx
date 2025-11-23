@@ -1,7 +1,7 @@
 'use client';
 
 import AddWordDefinition from '@/app/(diary)/components/add-word-definition';
-import { Word } from '@/app/lib/definitions';
+import { WordLookupResponse } from '@/app/lib/definitions';
 import { useEffect, useState } from 'react';
 
 const EMPTY_WORD_ERROR_MESSAGE = 'Please enter a word before searching.';
@@ -13,7 +13,8 @@ const AddWord = () => {
   const [word, setWord] = useState('');
   const [error, setError] = useState('');
 
-  const [definition, setDefinition] = useState<Word | null>(null);
+  const [wordDefinition, setWordDefinition] =
+    useState<WordLookupResponse | null>(null);
 
   useEffect(() => {
     setError('');
@@ -56,7 +57,7 @@ const AddWord = () => {
         }
         return;
       }
-      setDefinition(data);
+      setWordDefinition(data);
     } catch (error) {
       console.error('Error fetching definition:', error);
       setError(SOMETHING_WENT_WRONG);
@@ -93,7 +94,7 @@ const AddWord = () => {
           <div className="text-sm font-medium text-red-600 mt-1">{error}</div>
         )}
       </div>
-      <AddWordDefinition word={definition} />
+      <AddWordDefinition wordDefinition={wordDefinition} />
     </div>
   );
 };

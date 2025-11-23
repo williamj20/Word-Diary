@@ -10,8 +10,14 @@ export interface Word {
   added_at: Date;
 }
 
+// Response from DB lookup
 export interface WordDAO {
   word: Word;
+}
+
+// route handler GET response
+export interface WordLookupResponse extends Word {
+  isInUserList: boolean;
 }
 
 export interface DictionaryServiceObject {
