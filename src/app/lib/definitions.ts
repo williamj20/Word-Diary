@@ -5,17 +5,14 @@ export interface Meaning {
 
 export interface Word {
   word: string;
+  id: number;
   meanings: Meaning[];
 }
 
-export interface WordFromUserList extends Word {
-  id: string;
+export interface WordFromUserList {
+  id: number;
+  word: Word;
   added_at: Date;
-}
-
-// Response from DB lookup from user list
-export interface WordDAO {
-  word: WordFromUserList;
 }
 
 // route handler GET response

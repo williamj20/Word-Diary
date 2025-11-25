@@ -94,7 +94,10 @@ const AddWord = () => {
           <div className="text-sm font-medium text-red-600 mt-1">{error}</div>
         )}
       </div>
-      <AddWordDefinition wordDefinition={wordDefinition} />
+      <AddWordDefinition
+        wordDefinition={wordDefinition}
+        onSave={() => setWordDefinition(null)}
+      />
     </div>
   );
 };

@@ -1,28 +1,25 @@
 'use client';
 
+import SaveButton from '@/app/(diary)/components/create-button';
 import { addWordToUserList } from '@/app/lib/actions';
 import { WordLookupResponse } from '@/app/lib/definitions';
-import clsx from 'clsx';
-import { Plus } from 'lucide-react';
 
 const AddWordDefinition = ({
   wordDefinition,
+  onSave,
 }: {
   wordDefinition: WordLookupResponse | null;
+  onSave: () => void;
 }) => {
-  const saveWord = async () => {
-    if (!wordDefinition) {
-      return;
-    }
-    try {
-      await addWordToUserList(1, wordDefinition.word);
-    } catch (error) {
-      console.error('Error saving word:', error);
-    }
-  };
-
   if (wordDefinition) {
+    const saveWordAction = addWordToUserList.bind(null, 1, wordDefinition.word);
     const isAbleToSave = !wordDefinition.isInUserList;
+
+    const saveWord = async () => {
+      await saveWordAction();
+      onSave();
+    };
+
     return (
       <div className="w-full max-w-7xl px-4 py-3 mt-6 rounded-lg border border-gray-200 text-lg font-medium">
         <div className="flex items-center justify-between">
@@ -33,17 +30,7 @@ const AddWordDefinition = ({
                 Already in your list
               </span>
             )}
-            <button
-              disabled={!isAbleToSave}
-              onClick={saveWord}
-              className={clsx('p-2 rounded-lg transition-all shadow-md', {
-                'text-gray-800 bg-gray-200 cursor-not-allowed': !isAbleToSave,
-                'text-green-800 bg-green-200 hover:bg-green-300 active:bg-green-400 enabled:hover:shadow-lg':
-                  isAbleToSave,
-              })}
-            >
-              <Plus className="w-5 h-5" />
-            </button>
+            <SaveButton isAbleToSave={isAbleToSave} saveAction={saveWord} />
           </div>
         </div>
         <div className="flex flex-start gap-4">
