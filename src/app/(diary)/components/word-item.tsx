@@ -18,7 +18,7 @@ const WordItem = async ({ word }: { word: WordFromUserList }) => {
             })}
           </span>
         </div>
-        <DeleteButton deleteAction={deleteWord} />
+        <DeleteButton word={wordDefinition.word} deleteAction={deleteWord} />
       </div>
       <div className="flex flex-start gap-4">
         {wordDefinition.meanings.map((meaning, index) => (

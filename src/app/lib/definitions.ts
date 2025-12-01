@@ -1,3 +1,7 @@
+export enum ModalVariant {
+  Danger = 'DANGER',
+}
+
 export interface Meaning {
   part_of_speech: string;
   definitions: string[];

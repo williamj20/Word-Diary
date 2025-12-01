@@ -27,6 +27,8 @@ export const GET = async (
         isInUserList: false,
       });
     }
+
+    console.log('Fetching definition from external API: ', word);
     const response = await fetch(
       `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(word)}?key=${API_KEY}`,
       {

@@ -17,7 +17,7 @@ const SaveButton = ({
         type="submit"
         className={clsx('p-2 rounded-lg transition-all shadow-md', {
           'text-gray-800 bg-gray-200 cursor-not-allowed': !isAbleToSave,
-          'text-green-800 bg-green-200 hover:bg-green-300 active:bg-green-400 enabled:hover:shadow-lg':
+          'text-green-800 bg-green-200 hover:bg-green-300 enabled:hover:shadow-lg':
             isAbleToSave,
         })}
       >

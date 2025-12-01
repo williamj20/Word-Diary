@@ -79,13 +79,13 @@ const AddWord = () => {
           />
           <button
             onClick={searchDefinition}
-            className="px-4 py-5 h-4 flex items-center text-sm rounded-lg border font-medium shadow-md enabled:hover:shadow-lg hover:bg-gray-200 active:bg-gray-300 transition-all disabled:opacity-50"
+            className="px-4 py-5 h-4 flex items-center text-sm rounded-lg border font-medium shadow-md enabled:hover:shadow-lg hover:bg-gray-100 transition-all disabled:opacity-50"
           >
             Search
           </button>
           <button
             onClick={searchDefinitionWithGoogle}
-            className="px-4 py-5 h-4 rounded-lg flex items-center text-sm border border-blue-500 font-medium shadow-md hover:shadow-lg text-blue-500 hover:bg-blue-200 active:bg-blue-300 transition-all"
+            className="px-4 py-5 h-4 rounded-lg flex items-center text-sm border border-blue-500 font-medium shadow-md hover:shadow-lg text-blue-500 hover:bg-blue-100 transition-all"
           >
             Google It
           </button>
