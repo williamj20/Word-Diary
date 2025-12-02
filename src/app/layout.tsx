@@ -1,6 +1,7 @@
 import { BookOpenText } from 'lucide-react';
 import type { Metadata } from 'next';
 import { Quicksand } from 'next/font/google';
+import Link from 'next/link';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -21,10 +22,13 @@ const RootLayout = ({
   return (
     <html lang="en">
       <body className={`${quicksand.variable} antialiased`}>
-        <div className="flex gap-3 items-center mt-3 justify-center mb-12">
-          <BookOpenText className="w-10 h-10" />
-          <h1 className="font-semibold text-5xl">Word Diary</h1>
-        </div>
+        <header className="flex gap-3 items-center mt-3 justify-center mb-12">
+          <Link href="/" className="flex gap-3 items-center">
+            <BookOpenText className="w-10 h-10" />
+            <h1 className="font-semibold text-5xl">Word Diary</h1>
+          </Link>
+        </header>
+
         {children}
       </body>
     </html>
