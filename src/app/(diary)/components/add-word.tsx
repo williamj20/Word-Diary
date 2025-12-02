@@ -68,7 +68,7 @@ const AddWord = () => {
   return (
     <div className="flex flex-col items-center">
       <div className="mb-6 max-w-lg w-full">
-        <div className="flex items-center rounded-full p-2 shadow-sm transition-shadow focus-within:shadow-md focus-within:ring-1">
+        <div className="flex items-center rounded-full p-2 shadow-md border border-stone-300 transition-shadow focus-within:shadow-lg">
           <input
             type="text"
             id="searchWord"
@@ -81,14 +81,14 @@ const AddWord = () => {
           <div className="flex gap-2 pr-1">
             <button
               onClick={searchDefinition}
-              className="px-4 py-2 flex items-center text-sm rounded-full border font-medium shadow-md enabled:hover:shadow-lg hover:bg-gray-100 transition-all disabled:opacity-50"
+              className="px-4 py-2 flex items-center text-sm rounded-full border font-medium shadow-sm hover:shadow-md hover:bg-stone-200 transition-all"
             >
               <Search className="mr-2 h-3.5 w-3.5" />
               Search
             </button>
             <button
               onClick={searchDefinitionWithGoogle}
-              className="px-4 py-2 rounded-full flex items-center text-sm border border-blue-500 font-medium shadow-md hover:shadow-lg text-blue-500 hover:bg-blue-100 transition-all"
+              className="px-4 py-2 rounded-full flex items-center text-sm border border-blue-500 font-medium shadow-sm hover:shadow-md text-blue-500 hover:bg-blue-100 transition-all"
             >
               Google It
             </button>

@@ -6,19 +6,19 @@ const WordItem = async ({ word }: { word: WordFromUserList }) => {
   const deleteWord = deleteWordFromUserList.bind(null, 1, word.id);
   const wordDefinition = word.word;
   return (
-    <div className="w-full max-w-7xl px-4 py-3 mt-6 rounded-lg border border-gray-200 text-lg font-medium">
+    <div className="w-full max-w-7xl px-4 py-3 mt-6 rounded-2xl bg-gradient-to-br from-green-50 to-emerald-100 border-l-green-400 shadow-green-200/50 border-l-8 text-lg font-medium">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h3 className="text-xl font-bold">{wordDefinition.word}</h3>
-          <span className="text-xs bg-gray-200 px-2 py-1 rounded-full">
+        <h3 className="text-xl font-bold">{wordDefinition.word}</h3>
+        <div className="flex items-center gap-4">
+          <span className="text-xs bg-green-300 px-2 py-1 rounded-full">
             {new Date(word.added_at).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
               year: 'numeric',
             })}
           </span>
+          <DeleteButton word={wordDefinition.word} deleteAction={deleteWord} />
         </div>
-        <DeleteButton word={wordDefinition.word} deleteAction={deleteWord} />
       </div>
       <div className="flex flex-start gap-4">
         {wordDefinition.meanings.map((meaning, index) => (

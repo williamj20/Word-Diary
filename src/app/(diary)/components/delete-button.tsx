@@ -32,7 +32,7 @@ const DeleteButton = ({
     <>
       <button
         onClick={() => setShowModal(true)}
-        className="p-2 rounded-lg text-red-800 bg-red-200 hover:bg-red-300 transition-all shadow-md enabled:hover:shadow-lg"
+        className="p-2 rounded-lg text-red-400 bg-red-100 hover:bg-red-200 transition-all shadow-md enabled:hover:shadow-lg"
       >
         <Trash2 className="w-5 h-5" />
       </button>

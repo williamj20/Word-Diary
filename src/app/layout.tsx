@@ -21,8 +21,10 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="en">
-      <body className={`${quicksand.variable} antialiased`}>
-        <header className="flex gap-3 items-center mt-3 justify-center mb-12">
+      <body
+        className={`${quicksand.variable} antialiased bg-gradient-to-br from-stone-100 to-stone-200`}
+      >
+        <header className="flex gap-3 items-center mt-5 justify-center mb-12">
           <Link href="/" className="flex gap-3 items-center">
             <BookOpenText className="w-10 h-10" />
             <h1 className="font-semibold text-5xl">Word Diary</h1>

@@ -3,6 +3,7 @@
 import SaveButton from '@/app/(diary)/components/create-button';
 import { addWordToUserList } from '@/app/lib/actions';
 import { WordLookupResponse } from '@/app/lib/definitions';
+import clsx from 'clsx';
 
 const AddWordDefinition = ({
   wordDefinition,
@@ -21,7 +22,17 @@ const AddWordDefinition = ({
     };
 
     return (
-      <div className="w-full max-w-7xl px-4 py-3 rounded-lg border border-gray-200 text-lg font-medium">
+      <div
+        className={clsx(
+          'w-full max-w-7xl px-4 py-3 rounded-2xl text-lg font-medium bg-gradient-to-br border-l-8',
+          {
+            'from-stone-50 to-stone-100 border-l-stone-400 shadow-stone-200/50':
+              !isAbleToSave,
+            'from-green-50 to-emerald-100 border-l-green-400 shadow-green-200/50':
+              isAbleToSave,
+          }
+        )}
+      >
         <div className="flex items-center justify-between">
           <div className="text-xl font-bold">{wordDefinition.word.word}</div>
           <div className="flex items-center gap-4">
