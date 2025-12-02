@@ -2,6 +2,7 @@
 
 import AddWordDefinition from '@/app/(diary)/components/add-word-definition';
 import { WordLookupResponse } from '@/app/lib/definitions';
+import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const EMPTY_WORD_ERROR_MESSAGE = 'Please enter a word before searching.';
@@ -66,8 +67,8 @@ const AddWord = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div>
-        <div className="flex gap-3 items-center">
+      <div className="mb-6 max-w-lg w-full">
+        <div className="flex items-center rounded-full p-2 shadow-sm transition-shadow focus-within:shadow-md focus-within:ring-1">
           <input
             type="text"
             id="searchWord"
@@ -75,20 +76,23 @@ const AddWord = () => {
             onChange={e => setWord(e.target.value)}
             onKeyDown={handleInputKeyDown}
             placeholder="Enter a word"
-            className="px-4 py-3 border text-lg font-medium"
+            className="flex-grow px-6 py-2 outline-none text-lg font-medium"
           />
-          <button
-            onClick={searchDefinition}
-            className="px-4 py-5 h-4 flex items-center text-sm rounded-lg border font-medium shadow-md enabled:hover:shadow-lg hover:bg-gray-100 transition-all disabled:opacity-50"
-          >
-            Search
-          </button>
-          <button
-            onClick={searchDefinitionWithGoogle}
-            className="px-4 py-5 h-4 rounded-lg flex items-center text-sm border border-blue-500 font-medium shadow-md hover:shadow-lg text-blue-500 hover:bg-blue-100 transition-all"
-          >
-            Google It
-          </button>
+          <div className="flex gap-2 pr-1">
+            <button
+              onClick={searchDefinition}
+              className="px-4 py-2 flex items-center text-sm rounded-full border font-medium shadow-md enabled:hover:shadow-lg hover:bg-gray-100 transition-all disabled:opacity-50"
+            >
+              <Search className="mr-2 h-3.5 w-3.5" />
+              Search
+            </button>
+            <button
+              onClick={searchDefinitionWithGoogle}
+              className="px-4 py-2 rounded-full flex items-center text-sm border border-blue-500 font-medium shadow-md hover:shadow-lg text-blue-500 hover:bg-blue-100 transition-all"
+            >
+              Google It
+            </button>
+          </div>
         </div>
         {error && (
           <div className="text-sm font-medium text-red-600 mt-1">{error}</div>

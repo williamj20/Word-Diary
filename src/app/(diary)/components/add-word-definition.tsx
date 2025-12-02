@@ -21,7 +21,7 @@ const AddWordDefinition = ({
     };
 
     return (
-      <div className="w-full max-w-7xl px-4 py-3 mt-6 rounded-lg border border-gray-200 text-lg font-medium">
+      <div className="w-full max-w-7xl px-4 py-3 rounded-lg border border-gray-200 text-lg font-medium">
         <div className="flex items-center justify-between">
           <div className="text-xl font-bold">{wordDefinition.word.word}</div>
           <div className="flex items-center gap-4">
