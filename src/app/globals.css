@@ -4,6 +4,10 @@
   --foreground: #000000;
 }
 
+html {
+  overscroll-behavior: none;
+}
+
 body {
   color: var(--foreground);
   font-family: var(--font-quicksand);

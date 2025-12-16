@@ -1,7 +1,7 @@
 import AddWord from '@/app/(diary)/components/add-word';
 import WordList from '@/app/(diary)/components/word-list';
 
-const Page = async () => {
+const DiaryPage = async () => {
   return (
     <main>
       <AddWord />
@@ -10,4 +10,4 @@ const Page = async () => {
   );
 };
 
-export default Page;
+export default DiaryPage;
