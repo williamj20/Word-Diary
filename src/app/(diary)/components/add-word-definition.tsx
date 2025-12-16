@@ -1,7 +1,7 @@
 'use client';
 
 import SaveButton from '@/app/(diary)/components/create-button';
-import { addWordToUserList } from '@/app/lib/actions';
+import { addWordToUserList } from '@/app/lib/actions/db';
 import { WordLookupResponse } from '@/app/lib/definitions';
 import clsx from 'clsx';
 

@@ -1,6 +1,6 @@
 'use server';
 
-import sql from '@/app/lib/db';
+import sql from '@/app/lib/dbClient';
 import { Word } from '@/app/lib/definitions';
 import { revalidateTag } from 'next/cache';
 

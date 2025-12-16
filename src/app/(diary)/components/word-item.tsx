@@ -1,5 +1,5 @@
 import DeleteButton from '@/app/(diary)/components/delete-button';
-import { deleteWordFromUserList } from '@/app/lib/actions';
+import { deleteWordFromUserList } from '@/app/lib/actions/db';
 import { WordFromUserList } from '@/app/lib/definitions';
 
 const WordItem = async ({ word }: { word: WordFromUserList }) => {

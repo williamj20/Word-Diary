@@ -1,4 +1,4 @@
-import sql from '@/app/lib/db';
+import sql from '@/app/lib/dbClient';
 import { Word, WordFromUserList } from '@/app/lib/definitions';
 import { unstable_cache } from 'next/cache';
 
