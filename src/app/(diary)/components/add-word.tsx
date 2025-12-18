@@ -94,9 +94,7 @@ const AddWord = () => {
             </button>
           </div>
         </div>
-        {error && (
-          <div className="text-sm font-medium text-red-600 mt-1">{error}</div>
-        )}
+        {error && <div className="error-message font-medium mt-1">{error}</div>}
       </div>
       <AddWordDefinition
         wordDefinition={wordDefinition}

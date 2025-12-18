@@ -22,7 +22,7 @@ const SignupForm = () => {
             placeholder="Name"
           />
           {state?.errors?.name && (
-            <p className="text-red-600">{state.errors.name}</p>
+            <p className="error-message">{state.errors.name}</p>
           )}
         </div>
         <div>
@@ -33,11 +33,10 @@ const SignupForm = () => {
             className="w-full px-4 py-2 border border-stone-300 rounded-lg"
             id="email"
             name="email"
-            type="email"
             placeholder="Email"
           />
           {state?.errors?.email && (
-            <p className="text-red-600">{state.errors.email}</p>
+            <p className="error-message">{state.errors.email}</p>
           )}
         </div>
 
@@ -52,11 +51,11 @@ const SignupForm = () => {
             type="password"
           />
           {state?.errors?.password && (
-            <div className="text-red-600">
+            <div className="error-message">
               <p>Password must:</p>
-              <ul>
+              <ul className="list-disc list-inside ml-3">
                 {state.errors.password.map(error => (
-                  <li key={error}>- {error}</li>
+                  <li key={error}>{error}</li>
                 ))}
               </ul>
             </div>

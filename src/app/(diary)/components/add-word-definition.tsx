@@ -23,15 +23,12 @@ const AddWordDefinition = ({
 
     return (
       <div
-        className={clsx(
-          'w-full max-w-7xl px-4 py-3 rounded-2xl text-lg font-medium bg-gradient-to-br border-l-8',
-          {
-            'from-stone-50 to-stone-100 border-l-stone-400 shadow-stone-200/50':
-              !isAbleToSave,
-            'from-green-50 to-emerald-100 border-l-green-400 shadow-green-200/50':
-              isAbleToSave,
-          }
-        )}
+        className={clsx('word-card', {
+          'from-stone-50 to-stone-100 border-l-stone-400 shadow-stone-200/50':
+            !isAbleToSave,
+          'from-green-50 to-emerald-100 border-l-green-400 shadow-green-200/50':
+            isAbleToSave,
+        })}
       >
         <div className="flex items-center justify-between">
           <div className="text-xl font-bold">{wordDefinition.word.word}</div>
@@ -44,7 +41,7 @@ const AddWordDefinition = ({
             <SaveButton isAbleToSave={isAbleToSave} saveAction={saveWord} />
           </div>
         </div>
-        <div className="flex flex-start gap-4">
+        <div className="flex gap-4">
           {wordDefinition.word.meanings.map((meaning, index) => (
             <div key={index} className="flex-1 max-w-fit p-2">
               <h3 className="text-xl font-semibold">
