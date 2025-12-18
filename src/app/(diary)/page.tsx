@@ -5,7 +5,9 @@ const DiaryPage = async () => {
   return (
     <main>
       <AddWord />
-      <WordList />
+      <div className="mt-12">
+        <WordList />
+      </div>
     </main>
   );
 };

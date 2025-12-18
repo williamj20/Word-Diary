@@ -4,7 +4,7 @@ import sql from '@/app/lib/dbClient';
 import { Word } from '@/app/lib/definitions';
 import { revalidateTag } from 'next/cache';
 
-export async function addWordToUserList(userId: number, word: Word) {
+export const addWordToUserList = async (userId: number, word: Word) => {
   try {
     await sql.begin(async sql => {
       const [wordEntry] = await sql`
@@ -46,12 +46,12 @@ export async function addWordToUserList(userId: number, word: Word) {
   } catch (error) {
     console.error('Error adding word to user list', error);
   }
-}
+};
 
-export async function deleteWordFromUserList(
+export const deleteWordFromUserList = async (
   userId: number,
   wordListId: number
-) {
+) => {
   try {
     await sql`
       DELETE FROM user_words_list
@@ -61,4 +61,4 @@ export async function deleteWordFromUserList(
   } catch (error) {
     console.error('Error deleting word from user list', error);
   }
-}
+};

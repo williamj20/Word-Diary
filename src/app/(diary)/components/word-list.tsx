@@ -4,7 +4,7 @@ import { getUserWords } from '@/app/lib/data';
 const WordList = async () => {
   const words = await getUserWords(1);
   return (
-    <div className="mt-12 flex flex-col items-center">
+    <div className="flex flex-col items-center">
       {words.map(word => (
         <WordItem key={word.id} word={word} />
       ))}
