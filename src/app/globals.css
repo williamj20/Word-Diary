@@ -20,4 +20,28 @@ body {
   .word-card {
     @apply w-full max-w-7xl px-4 py-3 rounded-2xl text-lg font-medium bg-gradient-to-br border-l-8;
   }
+  .word-card-span {
+    @apply rounded-full px-2 py-1 text-xs;
+  }
+  .word-card-button-container {
+    @apply flex items-center gap-4;
+  }
+  .word-card-content-container {
+    @apply flex items-center justify-between;
+  }
+  .word-card-title {
+    @apply text-xl font-bold;
+  }
+  .word-card-meanings-container {
+    @apply flex gap-4;
+  }
+  .word-card-meanings {
+    @apply flex-1 max-w-fit p-2;
+  }
+  .word-card-meanings-part-of-speech {
+    @apply text-xl font-semibold;
+  }
+  .word-card-meanings-definitions {
+    @apply list-disc list-inside;
+  }
 }

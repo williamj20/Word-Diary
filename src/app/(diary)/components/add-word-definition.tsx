@@ -30,24 +30,24 @@ const AddWordDefinition = ({
             isAbleToSave,
         })}
       >
-        <div className="flex items-center justify-between">
-          <div className="text-xl font-bold">{wordDefinition.word.word}</div>
-          <div className="flex items-center gap-4">
+        <div className="word-card-content-container">
+          <div className="word-card-title">{wordDefinition.word.word}</div>
+          <div className="word-card-button-container">
             {!isAbleToSave && (
-              <span className="text-sm text-gray-800">
+              <span className="word-card-span bg-stone-200">
                 Already in your list
               </span>
             )}
             <SaveButton isAbleToSave={isAbleToSave} saveAction={saveWord} />
           </div>
         </div>
-        <div className="flex gap-4">
+        <div className="word-card-meanings-container">
           {wordDefinition.word.meanings.map((meaning, index) => (
-            <div key={index} className="flex-1 max-w-fit p-2">
-              <h3 className="text-xl font-semibold">
+            <div key={index} className="word-card-meanings">
+              <h3 className="word-card-meanings-part-of-speech">
                 {meaning.part_of_speech}
               </h3>
-              <ul className="list-disc list-inside">
+              <ul className="word-card-meanings-definitions">
                 {meaning.definitions.map((definition, defIndex) => (
                   <li key={defIndex}>{definition}</li>
                 ))}
