@@ -3,12 +3,19 @@ import WordList from '@/app/(diary)/components/word-list';
 
 const DiaryPage = async () => {
   return (
-    <main>
+    <div className="space-y-10">
       <AddWord />
-      <div className="mt-12">
+
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-stone-600">
+            Your saved words
+          </h2>
+        </div>
+
         <WordList />
-      </div>
-    </main>
+      </section>
+    </div>
   );
 };
 

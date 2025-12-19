@@ -32,9 +32,7 @@ const Modal = ({
 }: ModalProps) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && !isLoading) {
-        onClose();
-      }
+      if (e.key === 'Escape' && !isLoading) onClose();
     };
 
     if (isOpen) {
@@ -43,49 +41,48 @@ const Modal = ({
     }
   }, [isOpen, isLoading, onClose]);
 
-  if (!isOpen) {
-    return null;
-  }
+  if (!isOpen) return null;
+
   return (
     <div
-      className="fixed inset-0 bg-black/50 animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={onClose}
     >
-      <div className="fixed inset-0 z-50 flex items-center justify-center animate-in fade-in duration-200">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
-          className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative"
+          role="dialog"
+          aria-modal="true"
+          className="surface w-full max-w-md bg-white p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
           onClick={e => e.stopPropagation()}
         >
           <button
             onClick={onClose}
             disabled={isLoading}
-            className="absolute top-2 right-2 p-1 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50"
+            className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-2xl hover:bg-stone-100 transition-colors disabled:opacity-50"
+            aria-label="Close"
+            title="Close"
           >
-            <X className="w-5 h-5 text-gray-500" />
+            <X className="h-5 w-5 text-stone-500" />
           </button>
 
-          <h3 className="text-xl font-bold mb-2">{title}</h3>
+          <h3 className="text-xl font-bold tracking-tight">{title}</h3>
+          <p className="mt-2 text-stone-600">{description}</p>
 
-          <p className="mb-6">{description}</p>
-
-          <div className="flex gap-3">
+          <div className="mt-6 flex gap-3">
             <button
               onClick={onClose}
               disabled={isLoading}
-              className="flex-1 px-4 py-2 rounded-xl border-2 border-gray-300 text-gray-500 font-medium hover:bg-gray-100 transition-colors disabled:opacity-50"
+              className="btn btn-secondary flex-1 disabled:opacity-50"
             >
               {cancelText}
             </button>
+
             <button
               onClick={onConfirm}
               disabled={isLoading}
-              className={clsx(
-                'flex-1 px-4 py-2 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
-                {
-                  'text-white bg-red-600 hover:bg-red-700':
-                    variant === ModalVariant.Danger,
-                }
-              )}
+              className={clsx('btn flex-1 disabled:opacity-50', {
+                'btn-danger': variant === ModalVariant.Danger,
+              })}
             >
               {isLoading ? confirmLoadingText : confirmText}
             </button>

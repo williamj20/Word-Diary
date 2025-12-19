@@ -13,7 +13,6 @@ const SOMETHING_WENT_WRONG = 'Something went wrong. Please try again.';
 const AddWord = () => {
   const [word, setWord] = useState('');
   const [error, setError] = useState('');
-
   const [wordDefinition, setWordDefinition] =
     useState<WordLookupResponse | null>(null);
 
@@ -50,14 +49,14 @@ const AddWord = () => {
     try {
       const response = await fetch(`/api/${encodeURIComponent(trimmedWord)}`);
       const data = await response.json();
+
       if (!response.ok) {
-        if (response.status === 404) {
+        if (response.status === 404)
           setError(DEFINITION_NOT_FOUND_ERROR_MESSAGE);
-        } else {
-          setError(SOMETHING_WENT_WRONG);
-        }
+        else setError(SOMETHING_WENT_WRONG);
         return;
       }
+
       setWordDefinition(data);
     } catch (error) {
       console.error('Error fetching definition:', error);
@@ -66,40 +65,48 @@ const AddWord = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="mb-6 max-w-lg w-full">
-        <div className="flex items-center rounded-full p-2 shadow-md border border-stone-300 transition-shadow focus-within:shadow-lg">
+    <div className="w-full">
+      <div className="surface p-4 ring-1 ring-stone-200/70 focus-within:ring-2 focus-within:ring-emerald-400/60">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <input
             type="text"
             id="searchWord"
             value={word}
             onChange={e => setWord(e.target.value)}
             onKeyDown={handleInputKeyDown}
-            placeholder="Enter a word"
-            className="flex-grow px-6 py-2 outline-none text-lg font-medium"
+            placeholder="Type a word…"
+            className="input"
           />
-          <div className="flex gap-2 pr-1">
-            <button
-              onClick={searchDefinition}
-              className="px-4 py-2 flex items-center text-sm rounded-full border font-medium shadow-sm hover:shadow-md hover:bg-stone-200 transition-all"
-            >
-              <Search className="mr-2 h-3.5 w-3.5" />
+
+          <div className="flex gap-2 sm:flex-none">
+            <button onClick={searchDefinition} className="btn btn-secondary">
+              <Search className="h-4 w-4" />
               Search
             </button>
             <button
               onClick={searchDefinitionWithGoogle}
-              className="px-4 py-2 rounded-full flex items-center text-sm border border-blue-500 font-medium shadow-sm hover:shadow-md text-blue-500 hover:bg-blue-100 transition-all"
+              className="btn btn-outline"
             >
-              Google It
+              Google it
             </button>
           </div>
         </div>
-        {error && <div className="error-message font-medium mt-1">{error}</div>}
+
+        <p className="helper-text mt-3">
+          Tip: <span className="kbd">Enter</span> search ·{' '}
+          <span className="kbd">Shift</span>+<span className="kbd">Enter</span>{' '}
+          Google · <span className="kbd">Esc</span> clear
+        </p>
+
+        {error && <div className="error-message mt-2 font-medium">{error}</div>}
       </div>
-      <AddWordDefinition
-        wordDefinition={wordDefinition}
-        onSave={() => setWordDefinition(null)}
-      />
+
+      <div className="mt-6">
+        <AddWordDefinition
+          wordDefinition={wordDefinition}
+          onSave={() => setWordDefinition(null)}
+        />
+      </div>
     </div>
   );
 };

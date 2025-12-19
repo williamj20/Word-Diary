@@ -15,13 +15,15 @@ const SaveButton = ({
       <button
         disabled={!isAbleToSave}
         type="submit"
-        className={clsx('p-2 rounded-lg transition-all shadow-md', {
-          'text-gray-800 bg-gray-200 cursor-not-allowed': !isAbleToSave,
-          'text-green-800 bg-green-200 hover:bg-green-300 enabled:hover:shadow-lg':
+        aria-label="Save word"
+        title={isAbleToSave ? 'Save word' : 'Already saved'}
+        className={clsx('icon-btn', {
+          'bg-stone-100 text-stone-400 cursor-not-allowed': !isAbleToSave,
+          'bg-emerald-100 text-emerald-800 hover:bg-emerald-200 hover:shadow-md':
             isAbleToSave,
         })}
       >
-        <Plus className="w-5 h-5" />
+        <Plus className="h-5 w-5" />
       </button>
     </form>
   );

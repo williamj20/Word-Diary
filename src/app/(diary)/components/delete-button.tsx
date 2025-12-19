@@ -16,10 +16,8 @@ const DeleteButton = ({
   const [isPending, startTransition] = useTransition();
 
   const modalTitle = `Delete "${word}"?`;
-  const modalDescription = `This will permanently remove this word from your list. This action cannot be undone.`;
-  const modalConfirmText = 'Delete';
-  const modalConfirmLoadingText = 'Deleting..';
-  const modalCancelText = 'Cancel';
+  const modalDescription =
+    'This will permanently remove this word from your list. This action cannot be undone.';
 
   const handleDelete = () => {
     startTransition(async () => {
@@ -32,9 +30,11 @@ const DeleteButton = ({
     <>
       <button
         onClick={() => setShowModal(true)}
-        className="p-2 rounded-lg text-red-400 bg-red-100 hover:bg-red-200 transition-all shadow-md enabled:hover:shadow-lg"
+        className="icon-btn bg-red-100 text-red-700 hover:bg-red-200 hover:shadow-md"
+        aria-label={`Delete ${word}`}
+        title="Delete"
       >
-        <Trash2 className="w-5 h-5" />
+        <Trash2 className="h-5 w-5" />
       </button>
 
       <Modal
@@ -43,9 +43,9 @@ const DeleteButton = ({
         onConfirm={handleDelete}
         title={modalTitle}
         description={modalDescription}
-        confirmText={modalConfirmText}
-        confirmLoadingText={modalConfirmLoadingText}
-        cancelText={modalCancelText}
+        confirmText="Delete"
+        confirmLoadingText="Deleting…"
+        cancelText="Cancel"
         variant={ModalVariant.Danger}
         isLoading={isPending}
       />
