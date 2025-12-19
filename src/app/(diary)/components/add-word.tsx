@@ -67,7 +67,7 @@ const AddWord = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="mb-6 max-w-lg w-full">
+      <div className="max-w-2xl w-full p-4 border border-stone-200 rounded-2xl">
         <div className="flex items-center rounded-full p-2 shadow-md border border-stone-300 transition-shadow focus-within:shadow-lg">
           <input
             type="text"
@@ -94,12 +94,20 @@ const AddWord = () => {
             </button>
           </div>
         </div>
-        {error && <div className="error-message font-medium mt-1">{error}</div>}
+        <p className="text-sm mt-3">
+          <span className="keycap-style">Enter</span> search ·{' '}
+          <span className="keycap-style">Shift</span> +{' '}
+          <span className="keycap-style">Enter</span> Google ·{' '}
+          <span className="keycap-style">Esc</span> clear
+        </p>
+        {error && <div className="error-message mt-2 font-medium">{error}</div>}
       </div>
-      <AddWordDefinition
-        wordDefinition={wordDefinition}
-        onSave={() => setWordDefinition(null)}
-      />
+      <div className="mt-10">
+        <AddWordDefinition
+          wordDefinition={wordDefinition}
+          onSave={() => setWordDefinition(null)}
+        />
+      </div>
     </div>
   );
 };

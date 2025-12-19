@@ -18,7 +18,7 @@ body {
     @apply text-red-600 text-sm;
   }
   .word-card {
-    @apply w-full max-w-7xl px-4 py-3 rounded-2xl text-lg font-medium bg-gradient-to-br border-l-8;
+    @apply w-full max-w-7xl px-4 py-3 rounded-2xl text-lg font-medium bg-gradient-to-br border-l-8 shadow-sm;
   }
   .word-card-span {
     @apply rounded-full px-2 py-1 text-xs;
@@ -43,5 +43,8 @@ body {
   }
   .word-card-meanings-definitions {
     @apply list-disc list-inside;
+  }
+  .keycap-style {
+    @apply rounded-md bg-stone-100 px-2 py-0.5 text-xs font-semibold ring-1 ring-stone-200;
   }
 }
