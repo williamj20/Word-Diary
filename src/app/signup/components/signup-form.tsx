@@ -19,7 +19,7 @@ const SignupForm = () => {
       action={action}
       className="rounded-2xl shadow-md p-8 w-full max-w-md border border-stone-300"
     >
-      <div className="space-y-4">
+      <div className="flex flex-col gap-4">
         <div>
           <label className="form-input-label" htmlFor="name">
             Name
