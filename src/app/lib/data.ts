@@ -31,7 +31,7 @@ export const getWordFromWordsTable = unstable_cache(async (word: string) => {
   }
 });
 
-export const getWordFromUserList = async (userId: number, word: string) => {
+export const getWordFromUserList = async (userId: string, word: string) => {
   try {
     const userWords = await getUserWords(userId);
     const wordFromUserList = userWords.find(uw => uw.word.word === word);
@@ -42,9 +42,9 @@ export const getWordFromUserList = async (userId: number, word: string) => {
   }
 };
 
-export const getUserWords = (userId: number) =>
+export const getUserWords = (userId: string) =>
   unstable_cache(
-    async (userId: number) => {
+    async (userId: string) => {
       try {
         const wordList = await sql<WordFromUserList[]>`
           SELECT

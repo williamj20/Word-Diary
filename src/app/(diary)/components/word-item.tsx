@@ -3,7 +3,7 @@ import { deleteWordFromUserList } from '@/app/lib/actions/db';
 import { WordFromUserList } from '@/app/lib/definitions';
 
 const WordItem = async ({ word }: { word: WordFromUserList }) => {
-  const deleteWord = deleteWordFromUserList.bind(null, 1, word.id);
+  const deleteWord = deleteWordFromUserList.bind(null, '1', word.id);
   const wordDefinition = word.word;
   return (
     <div className="word-card mt-6 from-green-50 to-emerald-100 border-l-green-400 shadow-green-200/50">

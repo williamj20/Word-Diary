@@ -4,7 +4,7 @@ import sql from '@/app/lib/dbClient';
 import { Word } from '@/app/lib/definitions';
 import { revalidateTag } from 'next/cache';
 
-export const addWordToUserList = async (userId: number, word: Word) => {
+export const addWordToUserList = async (userId: string, word: Word) => {
   try {
     await sql.begin(async sql => {
       const [wordEntry] = await sql`
@@ -49,7 +49,7 @@ export const addWordToUserList = async (userId: number, word: Word) => {
 };
 
 export const deleteWordFromUserList = async (
-  userId: number,
+  userId: string,
   wordListId: number
 ) => {
   try {

@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS words CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 
 CREATE TABLE users (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  id TEXT PRIMARY KEY,
   username VARCHAR(50) UNIQUE NOT NULL,
   created_at TIMESTAMP DEFAULT NOW()
 );
@@ -18,7 +18,7 @@ CREATE TABLE words (
 
 CREATE TABLE user_words_list (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   word_id INTEGER NOT NULL REFERENCES words(id) ON DELETE CASCADE,
   added_at TIMESTAMP DEFAULT NOW(),
   CONSTRAINT unique_user_word UNIQUE (user_id, word_id)
@@ -37,7 +37,7 @@ CREATE TABLE word_meaning_definitions (
   definition_order INTEGER NOT NULL
 );
 
-INSERT INTO users (username) VALUES ('test_user');
+INSERT INTO users (username, id) VALUES ('test_user', '1');
 
 INSERT INTO words (word) VALUES
 ('run'),
