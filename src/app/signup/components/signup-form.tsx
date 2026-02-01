@@ -28,7 +28,6 @@ const SignupForm = () => {
             className="form-input"
             id="name"
             name="name"
-            placeholder="Name"
             defaultValue={state?.fields?.name ?? ''}
           />
           {state?.errors?.name && (
@@ -43,7 +42,6 @@ const SignupForm = () => {
             className="form-input"
             id="email"
             name="email"
-            placeholder="Email"
             defaultValue={state?.fields?.email ?? ''}
           />
           {state?.errors?.email && (
