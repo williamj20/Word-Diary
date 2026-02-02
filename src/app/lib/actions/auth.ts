@@ -1,7 +1,15 @@
-import { FormState, SignupFormSchema } from '@/app/lib/definitions';
+'use server';
+
+import {
+  LoginFormState,
+  SignupFormSchema,
+  SignupFormState,
+} from '@/app/lib/definitions';
+import createSupabaseServerClient from '@/app/lib/supabase/server';
+import { redirect } from 'next/navigation';
 import z from 'zod';
 
-export const signup = async (_state: FormState, formData: FormData) => {
+export const signup = async (_state: SignupFormState, formData: FormData) => {
   const name = String(formData.get('name'));
   const email = String(formData.get('email'));
   const password = String(formData.get('password'));
@@ -28,4 +36,41 @@ export const signup = async (_state: FormState, formData: FormData) => {
       },
     };
   }
+  const supabase = await createSupabaseServerClient();
+  const { error } = await (
+    await supabase
+  ).auth.signUp({ email, password, options: { data: { name } } });
+
+  if (error) {
+    return {
+      fields: {
+        name,
+        email,
+      },
+      errors: {
+        email: [error.message],
+      },
+    };
+  }
+  redirect('/');
+};
+
+export const login = async (_state: LoginFormState, formData: FormData) => {
+  const supabase = await createSupabaseServerClient();
+  const email = String(formData.get('email'));
+  const password = String(formData.get('password'));
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  if (error) {
+    console.log('Error logging in: ', error);
+    return {
+      fields: {
+        email,
+      },
+      errors: [error.message],
+    };
+  }
+  redirect('/');
 };

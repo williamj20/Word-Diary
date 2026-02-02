@@ -11,7 +11,7 @@ export const GET = async (
 ) => {
   const { word } = await params;
   try {
-    const wordFromUserList = await getWordFromUserList(1, word);
+    const wordFromUserList = await getWordFromUserList('1', word);
     if (wordFromUserList) {
       console.log('Retrieving word from user list', wordFromUserList);
       return NextResponse.json({

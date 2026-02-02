@@ -1,8 +1,8 @@
 import createSupabaseServerClient from '@/app/lib/supabase/server';
-import SignupForm from '@/app/signup/components/signup-form';
+import LoginForm from '@/app/login/components/login-form';
 import { redirect } from 'next/navigation';
 
-const SignupPage = async () => {
+const LoginPage = async () => {
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -12,9 +12,9 @@ const SignupPage = async () => {
   }
   return (
     <main className="flex items-center justify-center">
-      <SignupForm />
+      <LoginForm />
     </main>
   );
 };
 
-export default SignupPage;
+export default LoginPage;

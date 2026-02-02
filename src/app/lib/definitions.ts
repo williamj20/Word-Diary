@@ -51,17 +51,14 @@ export const SignupFormSchema = z
         error: 'Contain at least one special character.',
       })
       .trim(),
-    confirmPassword: z
-      .string()
-      .min(1, { error: 'Please confirm your password.' })
-      .trim(),
+    confirmPassword: z.string().trim(),
   })
   .refine(data => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
     error: 'Passwords do not match.',
   });
 
-export type FormState =
+export type SignupFormState =
   | {
       fields?: {
         name?: string;
@@ -74,5 +71,14 @@ export type FormState =
         confirmPassword?: string[];
       };
       message?: string;
+    }
+  | undefined;
+
+export type LoginFormState =
+  | {
+      fields?: {
+        email?: string;
+      };
+      errors?: string[];
     }
   | undefined;
