@@ -50,7 +50,7 @@ const LoginForm = () => {
           </div>
         </div>
         {state?.errors && (
-          <p className="error-message">Invalid login credentials</p>
+          <p className="error-message">Invalid login credentials.</p>
         )}
         <button className="w-full bg-black text-white py-2 px-4 rounded-lg font-medium hover:bg-stone-700">
           Login

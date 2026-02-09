@@ -1,15 +1,8 @@
-import createSupabaseServerClient from '@/app/lib/supabase/server';
+import { redirectToHomeIfLoggedIn } from '@/app/lib/utils';
 import LoginForm from '@/app/login/components/login-form';
-import { redirect } from 'next/navigation';
 
 const LoginPage = async () => {
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (user) {
-    redirect('/');
-  }
+  await redirectToHomeIfLoggedIn();
   return (
     <main className="flex items-center justify-center">
       <LoginForm />

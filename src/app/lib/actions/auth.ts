@@ -74,3 +74,9 @@ export const login = async (_state: LoginFormState, formData: FormData) => {
   }
   redirect('/');
 };
+
+export const logout = async () => {
+  const supabase = await createSupabaseServerClient();
+  await supabase.auth.signOut();
+  redirect('/');
+};

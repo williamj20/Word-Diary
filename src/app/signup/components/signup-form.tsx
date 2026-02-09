@@ -2,6 +2,7 @@
 
 import { signup } from '@/app/lib/actions/auth';
 import { Eye, EyeOff } from 'lucide-react';
+import Link from 'next/link';
 import { useActionState, useState } from 'react';
 
 const SignupForm = () => {
@@ -110,6 +111,15 @@ const SignupForm = () => {
         <button className="w-full bg-black text-white py-2 px-4 rounded-lg font-medium hover:bg-stone-700">
           Sign Up
         </button>
+        <p className="text-center">
+          Already have an account?{' '}
+          <Link href="/login" className=" font-medium hover:underline">
+            Log in
+          </Link>
+        </p>
+        {/* <button className="w-full py-2 px-4 font-medium rounded-lg border border-stone-300 hover:bg-stone-100 transition">
+          Login
+        </button> */}
       </div>
     </form>
   );

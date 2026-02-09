@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Quicksand } from 'next/font/google';
 import Link from 'next/link';
 import './globals.css';
+import AuthButtons from '@/app/components/auth-buttons';
 
 export const metadata: Metadata = {
   title: 'Word Diary',
@@ -22,11 +23,15 @@ const RootLayout = ({
   return (
     <html lang="en">
       <body className={`${quicksand.variable} antialiased`}>
-        <header className="flex gap-3 items-center mt-5 justify-center mb-12">
-          <Link href="/" className="flex gap-3 items-center">
+        <header className="relative mt-5 mb-12">
+          <Link href="/" className="flex gap-3 items-center justify-center">
             <BookOpenText className="w-10 h-10" />
             <h1 className="font-semibold text-5xl">Word Diary</h1>
           </Link>
+
+          <div className="absolute right-6 top-1/2 -translate-y-1/2">
+            <AuthButtons />
+          </div>
         </header>
 
         {children}
