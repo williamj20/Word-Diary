@@ -24,17 +24,22 @@ CREATE TABLE user_words_list (
   CONSTRAINT unique_user_word UNIQUE (user_id, word_id)
 );
 
+CREATE INDEX idx_user_words_list_user_added_at ON user_words_list(user_id, added_at DESC);
+
 CREATE TABLE word_meanings (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   word_id INTEGER NOT NULL REFERENCES words(id) ON DELETE CASCADE,
-  part_of_speech VARCHAR(50)
+  part_of_speech VARCHAR(50) NOT NULL,
+  CONSTRAINT unique_word_part_of_speech UNIQUE (word_id, part_of_speech)
 );
 
 CREATE TABLE word_meaning_definitions (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   meaning_id INTEGER NOT NULL REFERENCES word_meanings(id) ON DELETE CASCADE,
   definition TEXT NOT NULL,
-  definition_order INTEGER NOT NULL
+  definition_order INTEGER NOT NULL CHECK (definition_order > 0),
+  CONSTRAINT unique_meaning_definition_order UNIQUE (meaning_id, definition_order),
+  CONSTRAINT unique_meaning_definition_text UNIQUE (meaning_id, definition)
 );
 
 INSERT INTO users (username, id) VALUES ('test_user', '1');

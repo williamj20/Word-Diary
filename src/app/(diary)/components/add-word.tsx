@@ -102,7 +102,7 @@ const AddWord = () => {
         </p>
         {error && <div className="error-message mt-2 font-medium">{error}</div>}
       </div>
-      <div className="mt-10">
+      <div className="mt-10 w-full max-w-7xl">
         <AddWordDefinition
           wordDefinition={wordDefinition}
           onSave={() => setWordDefinition(null)}

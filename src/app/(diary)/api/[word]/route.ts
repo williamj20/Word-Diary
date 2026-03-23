@@ -10,8 +10,10 @@ export const GET = async (
   { params }: { params: { word: string } }
 ) => {
   const { word } = await params;
+  const normalizedWord = word.trim().toLowerCase();
+
   try {
-    const wordFromUserList = await getWordFromUserList('1', word);
+    const wordFromUserList = await getWordFromUserList('1', normalizedWord);
     if (wordFromUserList) {
       console.log('Retrieving word from user list', wordFromUserList);
       return NextResponse.json({
@@ -19,7 +21,7 @@ export const GET = async (
         isInUserList: true,
       });
     }
-    const wordFromWordsTable = await getWordFromWordsTable(word);
+    const wordFromWordsTable = await getWordFromWordsTable(normalizedWord);
     if (wordFromWordsTable) {
       console.log('Retrieving word from words table', wordFromWordsTable);
       return NextResponse.json({
@@ -28,9 +30,9 @@ export const GET = async (
       });
     }
 
-    console.log('Fetching definition from external API: ', word);
+    console.log('Fetching definition from external API: ', normalizedWord);
     const response = await fetch(
-      `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(word)}?key=${API_KEY}`,
+      `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(normalizedWord)}?key=${API_KEY}`,
       {
         next: {
           revalidate: false,
@@ -47,7 +49,7 @@ export const GET = async (
     if (res.length === 0) {
       return NextResponse.json({ error: 'Word not found' }, { status: 404 });
     }
-    const formattedWord = convertDictionaryServiceResponse(res, word);
+    const formattedWord = convertDictionaryServiceResponse(res, normalizedWord);
     if (!formattedWord) {
       return NextResponse.json({ error: 'Word not found' }, { status: 404 });
     }

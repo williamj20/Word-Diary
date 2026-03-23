@@ -13,7 +13,11 @@ const AddWordDefinition = ({
   onSave: () => void;
 }) => {
   if (wordDefinition) {
-    const saveWordAction = addWordToUserList.bind(null, 1, wordDefinition.word);
+    const saveWordAction = addWordToUserList.bind(
+      null,
+      '1',
+      wordDefinition.word
+    );
     const isAbleToSave = !wordDefinition.isInUserList;
 
     const saveWord = async () => {
