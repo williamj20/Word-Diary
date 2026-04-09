@@ -14,8 +14,7 @@ export const getWordFromWordsTable = unstable_cache(async (word: string) => {
               'part_of_speech', wm.part_of_speech,
               'definitions', defs.definitions_json
             )
-            ORDER BY wm.id
-          ) FILTER (WHERE wm.id IS NOT NULL),
+          ),
           '[]'::jsonb
         ) AS meanings
       FROM words w
@@ -58,8 +57,7 @@ export const getWordFromUserList = async (userId: string, word: string) => {
               'part_of_speech', wm.part_of_speech,
               'definitions', defs.definitions_json
             )
-            ORDER BY wm.id
-          ) FILTER (WHERE wm.id IS NOT NULL),
+          ),
           '[]'::jsonb
         ) AS meanings_json
         FROM word_meanings wm
@@ -106,8 +104,7 @@ export const getUserWords = (userId: string) =>
                   'part_of_speech', wm.part_of_speech,
                   'definitions', defs.definitions_json
                 )
-                ORDER BY wm.id
-              ) FILTER (WHERE wm.id IS NOT NULL),
+              ),
               '[]'::jsonb
             ) AS meanings_json
             FROM word_meanings wm

@@ -1,10 +1,10 @@
 import WordItem from '@/app/(diary)/components/word-item';
 import { getUserWords } from '@/app/lib/data';
-import { redirectToSignupIfNotLoggedIn } from '@/app/lib/utils';
+import { getCurrentUser } from '@/app/lib/utils';
 
 const WordList = async () => {
-  await redirectToSignupIfNotLoggedIn();
-  const words = await getUserWords('1');
+  const user = await getCurrentUser();
+  const words = await getUserWords(user!.id);
   return (
     <div className="flex flex-col items-center">
       <h2 className="font-bold">YOUR SAVED WORDS</h2>

@@ -37,11 +37,16 @@ export const convertDictionaryServiceResponse = (
   return formattedWord;
 };
 
-export const redirectToSignupIfNotLoggedIn = async () => {
+export const getCurrentUser = async () => {
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  return user ?? null;
+};
+
+export const redirectToSignupIfNotLoggedIn = async () => {
+  const user = await getCurrentUser();
   if (!user) {
     console.log('User is not logged in, redirecting to signup page');
     redirect('/signup');
@@ -49,10 +54,7 @@ export const redirectToSignupIfNotLoggedIn = async () => {
 };
 
 export const redirectToHomeIfLoggedIn = async () => {
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
   if (user) {
     console.log('User is logged in, redirecting to home page');
     redirect('/');

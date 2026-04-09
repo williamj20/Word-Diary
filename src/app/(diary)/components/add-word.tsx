@@ -3,7 +3,7 @@
 import AddWordDefinition from '@/app/(diary)/components/add-word-definition';
 import { WordLookupResponse } from '@/app/lib/definitions';
 import { Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const EMPTY_WORD_ERROR_MESSAGE = 'Please enter a word before searching.';
 const DEFINITION_NOT_FOUND_ERROR_MESSAGE =
@@ -16,10 +16,6 @@ const AddWord = () => {
 
   const [wordDefinition, setWordDefinition] =
     useState<WordLookupResponse | null>(null);
-
-  useEffect(() => {
-    setError('');
-  }, [word]);
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && event.shiftKey) {
@@ -73,7 +69,10 @@ const AddWord = () => {
             type="text"
             id="searchWord"
             value={word}
-            onChange={e => setWord(e.target.value)}
+            onChange={e => {
+              setWord(e.target.value);
+              setError('');
+            }}
             onKeyDown={handleInputKeyDown}
             placeholder="Enter a word"
             className="flex-grow px-6 py-2 outline-none text-lg font-medium"

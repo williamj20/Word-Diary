@@ -40,6 +40,20 @@ To reset your local database, run:
 npm run db:reset
 ```
 
+## Supabase CLI
+
+Connect to remote db:
+
+```
+npx supabase link
+```
+
+Clean wipe db and push all migrations:
+
+```
+npx supabase db reset
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

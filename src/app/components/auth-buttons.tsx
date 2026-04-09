@@ -1,14 +1,10 @@
 import { logout } from '@/app/lib/actions/auth';
-import createSupabaseServerClient from '@/app/lib/supabase/server';
+import { getCurrentUser } from '@/app/lib/utils';
 import Link from 'next/link';
 
 const AuthButtons = async () => {
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
-  // Logged OUT
   if (!user) {
     return (
       <div className="flex gap-3">
@@ -28,7 +24,6 @@ const AuthButtons = async () => {
     );
   }
 
-  // Logged IN
   return (
     <form action={logout}>
       <button

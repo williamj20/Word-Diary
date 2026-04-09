@@ -2,62 +2,75 @@
 
 import sql from '@/app/lib/dbClient';
 import { Word } from '@/app/lib/definitions';
+import { getCurrentUser } from '@/app/lib/utils';
 import { revalidateTag } from 'next/cache';
 
-export const addWordToUserList = async (userId: string, word: Word) => {
+export const addWordToUserList = async (word: Word) => {
   try {
     const normalizedWord = word.word.trim().toLowerCase();
-
+    const user = await getCurrentUser();
+    if (!user) {
+      console.log('User is not logged in, cannot add word to user list');
+      // TODO: Consider handling errors here in the UI better
+      return { success: false, error: 'Not authenticated' };
+    }
     await sql.begin(async sql => {
-      const [wordEntry] = await sql`
-        INSERT INTO words (word)
-        VALUES (${normalizedWord})
-        ON CONFLICT (word) DO UPDATE SET word = EXCLUDED.word
-        RETURNING id
+      const [existingWord] = await sql`
+        SELECT id FROM words
+        WHERE word = ${normalizedWord}
       `;
-
-      await sql`
-        INSERT INTO user_words_list (user_id, word_id)
-        VALUES (${userId}, ${wordEntry.id})
-        ON CONFLICT (user_id, word_id) DO NOTHING
-      `;
-
-      for (const meaning of word.meanings) {
-        const [meaningEntry] = await sql`
-          INSERT INTO word_meanings (word_id, part_of_speech)
-          VALUES (${wordEntry.id}, ${meaning.part_of_speech})
-          ON CONFLICT (word_id, part_of_speech)
-          DO UPDATE SET part_of_speech = EXCLUDED.part_of_speech
+      let wordId = existingWord?.id;
+      if (!wordId) {
+        const [wordEntry] = await sql`
+          INSERT INTO words (word)
+          VALUES (${normalizedWord})
+          ON CONFLICT (word) DO UPDATE SET word = EXCLUDED.word
           RETURNING id
+      `;
+        wordId = wordEntry.id;
+
+        for (const meaning of word.meanings) {
+          const [meaningEntry] = await sql`
+            INSERT INTO word_meanings (word_id, part_of_speech)
+            VALUES (${wordId}, ${meaning.part_of_speech})
+            RETURNING id
         `;
 
-        for (let i = 0; i < meaning.definitions.length; i++) {
-          await sql`
-            INSERT INTO word_meaning_definitions (meaning_id, definition, definition_order)
-            VALUES (${meaningEntry.id}, ${meaning.definitions[i].trim()}, ${i + 1})
-            ON CONFLICT (meaning_id, definition_order)
-            DO UPDATE SET definition = EXCLUDED.definition
-          `;
+          for (let i = 0; i < meaning.definitions.length; i++) {
+            await sql`
+              INSERT INTO word_meaning_definitions (meaning_id, definition, definition_order)
+              VALUES (${meaningEntry.id}, ${meaning.definitions[i]}, ${i + 1})
+            `;
+          }
         }
       }
+      await sql`
+          INSERT INTO user_words_list (user_id, word_id)
+          VALUES (${user.id}, ${wordId})
+          ON CONFLICT (user_id, word_id) DO NOTHING
+      `;
     });
-    revalidateTag(`user-words-${userId}`);
+    revalidateTag(`user-words-${user.id}`, 'max');
+    return { success: true };
   } catch (error) {
     console.error('Error adding word to user list', error);
+    return { success: false, error: 'Failed to add word to user list' };
   }
 };
 
-export const deleteWordFromUserList = async (
-  userId: string,
-  wordListId: number
-) => {
+export const deleteWordFromUserList = async (wordListId: number) => {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      console.log('User is not logged in, cannot delete word from user list');
+      return;
+    }
     await sql`
       DELETE FROM user_words_list
       WHERE id = ${wordListId}
-        AND user_id = ${userId}
+        AND user_id = ${user.id}
     `;
-    revalidateTag(`user-words-${userId}`);
+    revalidateTag(`user-words-${user.id}`, 'max');
   } catch (error) {
     console.error('Error deleting word from user list', error);
   }

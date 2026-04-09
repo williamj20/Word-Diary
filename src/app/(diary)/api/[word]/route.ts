@@ -1,6 +1,9 @@
 import { getWordFromUserList, getWordFromWordsTable } from '@/app/lib/data';
 import { DictionaryServiceObject } from '@/app/lib/definitions';
-import { convertDictionaryServiceResponse } from '@/app/lib/utils';
+import {
+  convertDictionaryServiceResponse,
+  getCurrentUser,
+} from '@/app/lib/utils';
 import { NextRequest, NextResponse } from 'next/server';
 
 const API_KEY = process.env.DICTIONARY_API_KEY;
@@ -13,7 +16,11 @@ export const GET = async (
   const normalizedWord = word.trim().toLowerCase();
 
   try {
-    const wordFromUserList = await getWordFromUserList('1', normalizedWord);
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const wordFromUserList = await getWordFromUserList(user.id, normalizedWord);
     if (wordFromUserList) {
       console.log('Retrieving word from user list', wordFromUserList);
       return NextResponse.json({
