@@ -3,7 +3,7 @@
 import sql from '@/app/lib/dbClient';
 import { Word } from '@/app/lib/definitions';
 import { getCurrentUser } from '@/app/lib/utils';
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 
 export const addWordToUserList = async (word: Word) => {
   try {
@@ -50,7 +50,7 @@ export const addWordToUserList = async (word: Word) => {
           ON CONFLICT (user_id, word_id) DO NOTHING
       `;
     });
-    revalidateTag(`user-words-${user.id}`, 'max');
+    updateTag(`user-words-${user.id}`);
     return { success: true };
   } catch (error) {
     console.error('Error adding word to user list', error);
@@ -70,7 +70,7 @@ export const deleteWordFromUserList = async (wordListId: number) => {
       WHERE id = ${wordListId}
         AND user_id = ${user.id}
     `;
-    revalidateTag(`user-words-${user.id}`, 'max');
+    updateTag(`user-words-${user.id}`);
   } catch (error) {
     console.error('Error deleting word from user list', error);
   }
