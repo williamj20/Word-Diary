@@ -22,20 +22,6 @@ const SignupForm = () => {
     >
       <div className="flex flex-col gap-4">
         <div>
-          <label className="form-input-label" htmlFor="name">
-            Name
-          </label>
-          <input
-            className="form-input"
-            id="name"
-            name="name"
-            defaultValue={state?.fields?.name ?? ''}
-          />
-          {state?.errors?.name && (
-            <p className="error-message">{state.errors.name}</p>
-          )}
-        </div>
-        <div>
           <label className="form-input-label" htmlFor="email">
             Email
           </label>

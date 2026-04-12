@@ -51,7 +51,7 @@ npx supabase link
 Clean wipe db and push all migrations:
 
 ```
-npx supabase db reset
+npx supabase db reset --linked
 ```
 
 ## Learn More

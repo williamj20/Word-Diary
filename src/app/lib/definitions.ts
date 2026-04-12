@@ -37,10 +37,6 @@ export interface DictionaryServiceObject {
 
 export const SignupFormSchema = z
   .object({
-    name: z
-      .string()
-      .min(2, { error: 'Name must be at least 2 characters long.' })
-      .trim(),
     email: z.email({ error: 'Please enter a valid email.' }).trim(),
     password: z
       .string()
@@ -61,11 +57,9 @@ export const SignupFormSchema = z
 export type SignupFormState =
   | {
       fields?: {
-        name?: string;
         email?: string;
       };
       errors?: {
-        name?: string[];
         email?: string[];
         password?: string[];
         confirmPassword?: string[];
