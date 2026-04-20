@@ -7,7 +7,10 @@ const WordList = async () => {
   const words = await getUserWords(user!.id);
   return (
     <div className="flex flex-col items-center">
-      <h2 className="font-bold">YOUR SAVED WORDS</h2>
+      <h2 className="display-font text-sm font-bold uppercase tracking-[0.14em] text-[var(--ink-muted)]">
+        YOUR SAVED WORDS
+      </h2>
+      <div className="mt-3 h-px w-36 bg-gradient-to-r from-transparent via-[var(--brass)] to-transparent" />
       {words.map(word => (
         <WordItem key={word.id} word={word} />
       ))}

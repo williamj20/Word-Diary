@@ -12,6 +12,9 @@ yarn dev
 pnpm dev
 # or
 bun dev
+
+# this command will resolve hot reload issues with global css file
+npx next dev --webpack
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

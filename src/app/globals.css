@@ -1,59 +1,184 @@
 @import 'tailwindcss';
 
 :root {
-  --foreground: #000000;
+  --paper: #f2dfb8;
+  --paper-soft: #fff4dc;
+  --paper-card: #fff8e8;
+  --paper-muted: #d8c3a3;
+  --ink: #2b2118;
+  --ink-muted: #67523b;
+  --sage: #65785d;
+  --sage-dark: #3c5035;
+  --sage-soft: #dbe7cf;
+  --brass: #b37524;
+  --brass-dark: #75440f;
+  --danger: #a13b2c;
+  --danger-soft: #f3d2c5;
+  --danger-dark: #843326;
 }
 
-html {
+html,
+body {
   overscroll-behavior: none;
+  background: linear-gradient(135deg, var(--paper-soft), var(--paper));
 }
 
 body {
-  color: var(--foreground);
-  font-family: var(--font-quicksand);
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+::selection {
+  color: var(--paper-card);
+  background: var(--sage-dark);
 }
 
 @layer components {
+  .display-font {
+    font-family: var(--font-display);
+  }
+
+  .auth-button {
+    @apply rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition-all duration-200;
+    color: var(--ink-muted);
+    background: var(--paper-card);
+    border-color: var(--brass);
+  }
+
+  .auth-button:hover {
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  .auth-form {
+    @apply w-full max-w-md rounded-[2rem] border p-8 shadow-xl;
+    background: var(--paper-card);
+    border-color: var(--brass);
+  }
+
+  .auth-form-fields {
+    @apply flex flex-col gap-4;
+  }
+
+  .auth-submit-button {
+    @apply w-full rounded-full border px-4 py-3 font-bold tracking-wide shadow-sm transition-all duration-200;
+    color: var(--paper-card);
+    background: var(--sage-dark);
+    border-color: var(--sage);
+  }
+
+  .auth-submit-button:hover {
+    background: var(--sage);
+  }
+
+  .auth-switch-text {
+    @apply text-center;
+    color: var(--ink-muted);
+  }
+
+  .auth-switch-link {
+    @apply font-bold underline decoration-2 underline-offset-4 transition-colors;
+    color: var(--sage-dark);
+    text-decoration-color: var(--brass);
+  }
+
+  .auth-switch-link:hover {
+    color: var(--brass-dark);
+  }
+
   .error-message {
-    @apply text-red-600 text-sm;
+    @apply mt-2 text-sm font-semibold;
+    color: var(--danger);
+  }
+  .icon-button {
+    @apply rounded-xl border p-2 shadow-sm transition-all duration-200;
   }
   .word-card {
-    @apply w-full max-w-7xl px-4 py-3 rounded-2xl text-lg font-medium bg-gradient-to-br border-l-8 shadow-sm;
+    @apply relative w-full max-w-6xl border px-8 py-6 text-base font-medium shadow-xl;
+    color: var(--ink);
+    border-color: var(--brass);
+    border-radius: 1.75rem;
+    background:
+      linear-gradient(135deg, var(--paper-card), var(--paper)),
+      var(--paper-card);
+  }
+  .word-card::before {
+    content: '';
+    position: absolute;
+    top: 1.25rem;
+    bottom: 1.25rem;
+    left: 1rem;
+    width: 3px;
+    border-radius: 999px;
+    background: linear-gradient(var(--brass), var(--sage));
+    opacity: 0.9;
   }
   .word-card-span {
-    @apply rounded-full px-2 py-1 text-xs;
+    @apply rounded-full border px-3 py-1 text-xs font-bold uppercase;
+    color: var(--ink-muted);
+    letter-spacing: 0.16em;
+    background: var(--paper);
+    border-color: var(--brass);
   }
   .word-card-button-container {
-    @apply flex items-center gap-4;
+    @apply flex items-center gap-3;
   }
   .word-card-content-container {
-    @apply flex items-center justify-between;
+    @apply flex gap-4 flex-row items-start justify-between;
   }
   .word-card-title {
-    @apply text-xl font-bold;
+    @apply text-4xl font-semibold;
+    color: var(--ink);
+    font-family: var(--font-display);
+    letter-spacing: -0.04em;
   }
   .word-card-meanings-container {
-    @apply flex gap-4;
+    @apply mt-5 grid gap-4 grid-cols-3;
   }
   .word-card-meanings {
-    @apply flex-1 max-w-fit p-2;
+    @apply rounded-2xl border p-4;
+    background: var(--paper-card);
+    border-color: var(--brass);
   }
   .word-card-meanings-part-of-speech {
-    @apply text-xl font-semibold;
+    @apply mb-1 inline-flex rounded-full border px-3 py-1 text-xs font-bold uppercase;
+    color: var(--sage-dark);
+    letter-spacing: 0.04em;
+    background: var(--sage-soft);
+    border-color: var(--sage);
   }
   .word-card-meanings-definitions {
-    @apply list-disc list-inside;
+    @apply space-y-1 list-disc list-inside leading-7;
+    color: var(--ink-muted);
+    font-size: 0.98rem;
   }
   .keycap-style {
-    @apply rounded-md bg-stone-100 px-2 py-0.5 text-xs font-semibold ring-1 ring-stone-200;
+    @apply rounded-md border px-2 py-0.5 text-xs font-bold shadow-sm;
+    color: var(--ink);
+    background: linear-gradient(180deg, var(--paper-card), var(--paper-muted));
+    border-color: var(--brass);
   }
   .form-input-label {
-    @apply block text-sm font-medium mb-1;
+    @apply mb-2 block text-xs font-bold uppercase;
+    color: var(--ink-muted);
+    letter-spacing: 0.16em;
   }
   .form-input {
-    @apply w-full px-4 py-2 border border-stone-300 rounded-lg;
+    @apply w-full rounded-2xl border px-4 py-3 outline-none;
+    color: var(--ink);
+    background: var(--paper-card);
+    border-color: var(--brass);
+  }
+  .form-input:focus {
+    border-color: var(--sage);
+    box-shadow: 0 0 0 2px var(--sage-soft);
   }
   .show-password-button {
-    @apply absolute inset-y-0 right-3;
+    @apply absolute inset-y-0 right-3 transition-colors focus:outline-none focus-visible:outline-none;
+    color: var(--ink-muted);
+  }
+  .show-password-button:hover {
+    color: var(--ink);
   }
 }

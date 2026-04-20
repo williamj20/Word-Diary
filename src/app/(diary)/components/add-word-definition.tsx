@@ -25,18 +25,18 @@ const AddWordDefinition = ({
 
     return (
       <div
-        className={clsx('word-card', {
-          'from-stone-50 to-stone-100 border-l-stone-400 shadow-stone-200/50':
-            !isAbleToSave,
-          'from-green-50 to-emerald-100 border-l-green-400 shadow-green-200/50':
-            isAbleToSave,
-        })}
+        className={clsx(
+          'word-card',
+          isAbleToSave
+            ? 'border-2 border-[var(--sage-dark)] bg-[var(--sage-soft)] shadow-2xl'
+            : 'border border-[var(--brass)] bg-[var(--paper-muted)] saturate-50 shadow-md'
+        )}
       >
         <div className="word-card-content-container">
           <div className="word-card-title">{wordDefinition.word.word}</div>
           <div className="word-card-button-container">
             {!isAbleToSave && (
-              <span className="word-card-span bg-stone-200">
+              <span className="word-card-span bg-[var(--paper)] text-[var(--brass-dark)]">
                 Already in your list
               </span>
             )}

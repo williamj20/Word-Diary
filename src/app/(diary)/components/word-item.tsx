@@ -6,11 +6,11 @@ const WordItem = async ({ word }: { word: WordFromUserList }) => {
   const deleteWord = deleteWordFromUserList.bind(null, word.id);
   const wordDefinition = word.word;
   return (
-    <div className="word-card mt-6 from-green-50 to-emerald-100 border-l-green-400 shadow-green-200/50">
+    <div className="word-card mt-6">
       <div className="word-card-content-container">
         <h3 className="word-card-title">{wordDefinition.word}</h3>
         <div className="word-card-button-container">
-          <span className="bg-green-300 word-card-span">
+          <span className="word-card-span">
             {new Date(word.added_at).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',

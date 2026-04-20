@@ -16,11 +16,8 @@ const SignupForm = () => {
     setShowConfirmPassword(prev => !prev);
 
   return (
-    <form
-      action={action}
-      className="rounded-2xl shadow-md p-8 w-full max-w-md border border-stone-300"
-    >
-      <div className="flex flex-col gap-4">
+    <form action={action} className="auth-form">
+      <div className="auth-form-fields">
         <div>
           <label className="form-input-label" htmlFor="email">
             Email
@@ -29,6 +26,7 @@ const SignupForm = () => {
             className="form-input"
             id="email"
             name="email"
+            type="email"
             defaultValue={state?.fields?.email ?? ''}
           />
           {state?.errors?.email && (
@@ -94,18 +92,13 @@ const SignupForm = () => {
             <p className="error-message">{state.errors.confirmPassword}</p>
           )}
         </div>
-        <button className="w-full bg-black text-white py-2 px-4 rounded-lg font-medium hover:bg-stone-700">
-          Sign Up
-        </button>
-        <p className="text-center">
+        <button className="auth-submit-button">Sign Up</button>
+        <p className="auth-switch-text">
           Already have an account?{' '}
-          <Link href="/login" className=" font-medium hover:underline">
+          <Link href="/login" className="auth-switch-link">
             Log in
           </Link>
         </p>
-        {/* <button className="w-full py-2 px-4 font-medium rounded-lg border border-stone-300 hover:bg-stone-100 transition">
-          Login
-        </button> */}
       </div>
     </form>
   );

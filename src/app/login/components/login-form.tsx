@@ -11,11 +11,8 @@ const LoginForm = () => {
   const togglePasswordVisibility = () => setShowPassword(prev => !prev);
 
   return (
-    <form
-      action={action}
-      className="rounded-2xl shadow-md p-8 w-full max-w-md border border-stone-300"
-    >
-      <div className="flex flex-col gap-4">
+    <form action={action} className="auth-form">
+      <div className="auth-form-fields">
         <div>
           <label className="form-input-label" htmlFor="email">
             Email
@@ -24,6 +21,7 @@ const LoginForm = () => {
             className="form-input"
             id="email"
             name="email"
+            type="email"
             defaultValue={state?.fields?.email ?? ''}
           />
         </div>
@@ -52,9 +50,7 @@ const LoginForm = () => {
         {state?.errors && (
           <p className="error-message">Invalid login credentials.</p>
         )}
-        <button className="w-full bg-black text-white py-2 px-4 rounded-lg font-medium hover:bg-stone-700">
-          Login
-        </button>
+        <button className="auth-submit-button">Login</button>
       </div>
     </form>
   );

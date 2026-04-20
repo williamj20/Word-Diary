@@ -63,8 +63,8 @@ const AddWord = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="max-w-2xl w-full p-4 border border-stone-200 rounded-2xl">
-        <div className="flex items-center rounded-full p-2 shadow-md border border-stone-300 transition-shadow focus-within:shadow-lg">
+      <div className="w-full max-w-3xl rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] p-5 shadow-xl">
+        <div className="flex items-center rounded-[1.5rem] border border-[var(--sage)] bg-[var(--paper-soft)] p-2 shadow-inner focus-within:border-[var(--sage-dark)] focus-within:shadow-lg">
           <input
             type="text"
             id="searchWord"
@@ -75,33 +75,35 @@ const AddWord = () => {
             }}
             onKeyDown={handleInputKeyDown}
             placeholder="Enter a word"
-            className="flex-grow px-6 py-2 outline-none text-lg font-medium"
+            className="flex-1 px-6 py-3 text-lg font-semibold text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)]"
           />
           <div className="flex gap-2 pr-1">
             <button
+              type="button"
               onClick={searchDefinition}
-              className="px-4 py-2 flex items-center text-sm rounded-full border font-medium shadow-sm hover:shadow-md hover:bg-stone-200 transition-all"
+              className="flex items-center justify-center rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-4 py-2 text-sm font-bold tracking-wide text-[var(--paper-card)] shadow-sm transition-all duration-200 hover:bg-[var(--sage)]"
             >
               <Search className="mr-2 h-3.5 w-3.5" />
               Search
             </button>
             <button
+              type="button"
               onClick={searchDefinitionWithGoogle}
-              className="px-4 py-2 rounded-full flex items-center text-sm border border-blue-500 font-medium shadow-sm hover:shadow-md text-blue-500 hover:bg-blue-100 transition-all"
+              className="flex items-center justify-center rounded-full border border-[var(--brass-dark)] bg-[var(--paper-card)] px-4 py-2 text-sm font-bold tracking-wide text-[var(--brass-dark)] shadow-sm transition-all duration-200 hover:bg-[var(--paper)]"
             >
               Google It
             </button>
           </div>
         </div>
-        <p className="text-sm mt-3">
+        {error && <div className="error-message">{error}</div>}
+        <p className="mt-4 text-sm text-[var(--ink-muted)]">
           <span className="keycap-style">Enter</span> search ·{' '}
           <span className="keycap-style">Shift</span> +{' '}
           <span className="keycap-style">Enter</span> Google ·{' '}
           <span className="keycap-style">Esc</span> clear
         </p>
-        {error && <div className="error-message mt-2 font-medium">{error}</div>}
       </div>
-      <div className="mt-10 w-full max-w-7xl">
+      <div className="mt-10 w-full max-w-6xl">
         <AddWordDefinition
           wordDefinition={wordDefinition}
           onSave={() => setWordDefinition(null)}

@@ -1,7 +1,9 @@
 const NotFound = () => {
   return (
-    <div className="flex justify-center items-center">
-      <h2 className="font-medium text-xl">Page Not Found</h2>
+    <div className="flex items-center justify-center">
+      <h2 className="display-font text-md font-bold uppercase tracking-[0.14em] text-[var(--ink)]">
+        Page Not Found
+      </h2>
     </div>
   );
 };

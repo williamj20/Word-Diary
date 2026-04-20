@@ -46,50 +46,51 @@ const Modal = ({
   if (!isOpen) {
     return null;
   }
+
   return (
     <div
-      className="fixed inset-0 bg-black/50 animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--ink)]/60"
       onClick={onClose}
     >
-      <div className="fixed inset-0 z-50 flex items-center justify-center animate-in fade-in duration-200">
-        <div
-          className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative"
-          onClick={e => e.stopPropagation()}
+      <div
+        className="relative w-full max-w-md rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] p-6 shadow-2xl"
+        onClick={e => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          disabled={isLoading}
+          className="absolute right-3 top-3 rounded-full p-2 text-[var(--ink-muted)] transition-colors hover:bg-[var(--paper)] hover:text-[var(--ink)] disabled:opacity-50"
         >
+          <X className="h-5 w-5" />
+        </button>
+
+        <h3 className="display-font mb-2 text-2xl font-semibold text-[var(--ink)]">
+          {title}
+        </h3>
+
+        <p className="mb-6 leading-7 text-[var(--ink-muted)]">{description}</p>
+
+        <div className="flex gap-3">
           <button
             onClick={onClose}
             disabled={isLoading}
-            className="absolute top-2 right-2 p-1 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50"
+            className="flex-1 rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-4 py-2 font-semibold text-[var(--ink-muted)] transition-all hover:bg-[var(--paper)] disabled:opacity-50"
           >
-            <X className="w-5 h-5 text-gray-500" />
+            {cancelText}
           </button>
-
-          <h3 className="text-xl font-bold mb-2">{title}</h3>
-
-          <p className="mb-6">{description}</p>
-
-          <div className="flex gap-3">
-            <button
-              onClick={onClose}
-              disabled={isLoading}
-              className="flex-1 px-4 py-2 rounded-xl border-2 border-gray-300 text-gray-500 font-medium hover:bg-gray-100 transition-colors disabled:opacity-50"
-            >
-              {cancelText}
-            </button>
-            <button
-              onClick={onConfirm}
-              disabled={isLoading}
-              className={clsx(
-                'flex-1 px-4 py-2 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
-                {
-                  'text-white bg-red-600 hover:bg-red-700':
-                    variant === ModalVariant.Danger,
-                }
-              )}
-            >
-              {isLoading ? confirmLoadingText : confirmText}
-            </button>
-          </div>
+          <button
+            onClick={onConfirm}
+            disabled={isLoading}
+            className={clsx(
+              'flex-1 rounded-full border px-4 py-2 font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-50',
+              {
+                'border-[var(--danger)] bg-[var(--danger)] text-[var(--paper-card)] hover:bg-[var(--danger-dark)]':
+                  variant === ModalVariant.Danger,
+              }
+            )}
+          >
+            {isLoading ? confirmLoadingText : confirmText}
+          </button>
         </div>
       </div>
     </div>

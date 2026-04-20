@@ -10,7 +10,7 @@ const API_KEY = process.env.DICTIONARY_API_KEY;
 
 export const GET = async (
   _request: NextRequest,
-  { params }: { params: { word: string } }
+  { params }: { params: Promise<{ word: string }> }
 ) => {
   const { word } = await params;
   const normalizedWord = word.trim().toLowerCase();

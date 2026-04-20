@@ -8,16 +8,10 @@ const AuthButtons = async () => {
   if (!user) {
     return (
       <div className="flex gap-3">
-        <Link
-          href="/login"
-          className="text-sm px-4 py-2 rounded-lg border border-stone-300 hover:bg-stone-100 transition"
-        >
+        <Link href="/login" className="auth-button">
           Login
         </Link>
-        <Link
-          href="/signup"
-          className="text-sm px-4 py-2 rounded-lg border border-stone-300 hover:bg-stone-100 transition"
-        >
+        <Link href="/signup" className="auth-button">
           Sign up
         </Link>
       </div>
@@ -26,10 +20,7 @@ const AuthButtons = async () => {
 
   return (
     <form action={logout}>
-      <button
-        type="submit"
-        className="text-sm px-4 py-2 rounded-lg border border-stone-300 hover:bg-stone-100 transition"
-      >
+      <button type="submit" className="auth-button">
         Sign out
       </button>
     </form>
