@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "prepare": "husky",
-    "db:start": "docker-compose up -d",
-    "db:reset": "docker-compose down -v && docker-compose up -d"
+    "db:start": "supabase start",
+    "db:reset": "supabase db reset"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -43,6 +43,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.6",
     "prettier": "^3.6.2",
+    "supabase": "^2.93.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   },

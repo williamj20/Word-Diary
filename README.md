@@ -1,34 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 ## Getting Started
 
-First, run the development server:
+To run the development server, use this command to resolve hot reload issues with the global CSS file:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-
-# this command will resolve hot reload issues with global css file
+```
 npx next dev --webpack
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+DICTIONARY_API_KEY
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+DATABASE_URL
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Supabase CLI
 
-## Running PostgreSQL Locally
+This project uses Supabase for authentication and for a PostgreSQL database.
+
+First, initialize the Supabase project:
+
+```
+supabase init
+```
+
+Then, connect to a local Docker Supabase project:
+
+```
+supabase start
+```
+
+Then, use `supabase status` to retrieve the env variables:
+
+```
+URL --> DATABASE_URL
+Project URL --> NEXT_PUBLIC_SUPABASE_URL
+Publishable --> NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+```
+
+To connect to the remote project, retrieve and use these variables from the actual Supabase project instead.
+
+## Running PostgreSQL Locally Using Docker (Outdated)
+
+The following instructions describe initializing a local Docker PostgreSQL DB, as it was used during initial development of the project. This is now **outdated**, but is kept as reference.
 
 Run the following command to initialize a PostgreSQL docker container:
 
 ```
-npm run db:start
+docker-compose up -d
 ```
 
 Then to open an interactive PostgreSQL session in your terminal, run:
@@ -40,34 +60,5 @@ docker-compose exec db psql -U postgres word_diary
 To reset your local database, run:
 
 ```
-npm run db:reset
+docker-compose down -v && docker-compose up -d
 ```
-
-## Supabase CLI
-
-Connect to remote db:
-
-```
-npx supabase link
-```
-
-Clean wipe db and push all migrations:
-
-```
-npx supabase db reset --linked
-```
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
