@@ -2,7 +2,6 @@ import { updateSession } from '@/app/lib/supabase/proxy';
 import { type NextRequest } from 'next/server';
 
 export const proxy = async (request: NextRequest) => {
-  // update user's auth session
   return await updateSession(request);
 };
 
