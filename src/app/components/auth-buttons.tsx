@@ -12,7 +12,7 @@ const AuthButtons = async () => {
           Login
         </Link>
         <Link href="/signup" className="auth-button">
-          Sign up
+          Sign Up
         </Link>
       </div>
     );
@@ -21,7 +21,7 @@ const AuthButtons = async () => {
   return (
     <form action={logout}>
       <button type="submit" className="auth-button">
-        Sign out
+        Sign Out
       </button>
     </form>
   );
