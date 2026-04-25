@@ -75,7 +75,7 @@ const AddWord = () => {
             }}
             onKeyDown={handleInputKeyDown}
             placeholder="Enter a word"
-            className="flex-1 px-6 py-3 text-lg font-semibold text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)]"
+            className="min-w-0 flex-1 px-6 py-3 text-lg font-semibold text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)]"
           />
           <div className="flex gap-2 pr-1">
             <button

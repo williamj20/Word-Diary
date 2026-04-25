@@ -34,13 +34,13 @@ const RootLayout = ({
             className="flex items-center justify-center gap-3"
             aria-label="Word Diary home"
           >
-            <BookOpenText className="h-10 w-10" />
-            <h1 className="display-font text-6xl font-semibold text-[var(--ink)]">
+            <BookOpenText className="h-6 w-6 sm:h-10 lg:w-10" />
+            <h1 className="display-font text-4xl font-semibold text-[var(--ink)] lg:text-6xl">
               Word Diary
             </h1>
           </Link>
 
-          <div className="absolute right-6 top-1/2 -translate-y-1/2">
+          <div className="mt-4 flex justify-center sm:absolute sm:right-6 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2">
             <AuthButtons />
           </div>
         </header>

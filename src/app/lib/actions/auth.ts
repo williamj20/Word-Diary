@@ -33,7 +33,7 @@ export const signup = async (_state: SignupFormState, formData: FormData) => {
     };
   }
   const supabase = await createSupabaseServerClient();
-  const { error } = await (await supabase).auth.signUp({ email, password });
+  const { error } = await supabase.auth.signUp({ email, password });
 
   if (error) {
     return {
