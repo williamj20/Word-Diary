@@ -1,6 +1,6 @@
 ## Getting Started
 
-To run the development server, use this command to resolve hot reload issues with the global CSS file:
+The development server runs with webpack to resolve hot reload issues with the global CSS file:
 
 ```
 npx next dev --webpack
