@@ -95,7 +95,7 @@ body {
     @apply rounded-xl border p-2 shadow-sm transition-all duration-200;
   }
   .word-card {
-    @apply relative w-full max-w-6xl border px-8 py-6 text-base font-medium shadow-xl;
+    @apply relative w-full max-w-6xl border px-8 py-4 text-base font-medium shadow-xl;
     color: var(--ink);
     border-color: var(--brass);
     border-radius: 1.75rem;
@@ -128,16 +128,16 @@ body {
     @apply flex gap-4 flex-row items-start justify-between;
   }
   .word-card-title {
-    @apply text-4xl font-semibold;
+    @apply text-3xl font-semibold;
     color: var(--ink);
     font-family: var(--font-display);
     letter-spacing: -0.04em;
   }
   .word-card-meanings-container {
-    @apply mt-5 grid gap-4 grid-cols-3;
+    @apply mt-3 grid gap-4 grid-cols-3;
   }
   .word-card-meanings {
-    @apply rounded-2xl border p-4;
+    @apply rounded-2xl border p-3;
     background: var(--paper-card);
     border-color: var(--brass);
   }
@@ -149,7 +149,7 @@ body {
     border-color: var(--sage);
   }
   .word-card-meanings-definitions {
-    @apply space-y-1 list-disc list-inside leading-7;
+    @apply space-y-1 list-disc list-inside;
     color: var(--ink-muted);
     font-size: 0.98rem;
   }
