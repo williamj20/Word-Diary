@@ -1,6 +1,6 @@
 'use client';
 
-import AddWordDefinition from '@/app/(diary)/components/add-word-definition';
+import AddWordDefinition from '@/app/diary/components/add-word-definition';
 import { WordLookupResponse } from '@/app/lib/definitions';
 import { Search } from 'lucide-react';
 import { useState } from 'react';

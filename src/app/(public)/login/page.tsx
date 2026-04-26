@@ -1,8 +1,9 @@
-import { redirectToHomeIfLoggedIn } from '@/app/lib/utils';
-import LoginForm from '@/app/login/components/login-form';
+import LoginForm from '@/app/(public)/login/components/login-form';
+import { redirectToDiaryIfLoggedIn } from '@/app/lib/utils';
 
 const LoginPage = async () => {
-  await redirectToHomeIfLoggedIn();
+  await redirectToDiaryIfLoggedIn();
+
   return (
     <main className="flex items-center justify-center">
       <LoginForm />

@@ -9,7 +9,7 @@ const AuthButtons = async () => {
     return (
       <div className="flex gap-3">
         <Link href="/login" className="auth-button">
-          Login
+          Log In
         </Link>
         <Link href="/signup" className="auth-button">
           Sign Up

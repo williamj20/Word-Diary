@@ -2,6 +2,7 @@
 
 import { login } from '@/app/lib/actions/auth';
 import { Eye, EyeOff } from 'lucide-react';
+import Link from 'next/link';
 import { useActionState, useState } from 'react';
 
 const LoginForm = () => {
@@ -50,7 +51,13 @@ const LoginForm = () => {
         {state?.errors && (
           <p className="error-message">Invalid login credentials.</p>
         )}
-        <button className="auth-submit-button">Login</button>
+        <button className="auth-submit-button">Log In</button>
+        <p className="auth-switch-text">
+          Need to create an account?{' '}
+          <Link href="/signup" className="auth-switch-link">
+            Sign up
+          </Link>
+        </p>
       </div>
     </form>
   );

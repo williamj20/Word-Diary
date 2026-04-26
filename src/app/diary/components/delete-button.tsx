@@ -1,6 +1,6 @@
 'use client';
 
-import Modal from '@/app/(diary)/components/modal';
+import Modal from '@/app/diary/components/modal';
 import { ModalVariant } from '@/app/lib/definitions';
 import { Trash2 } from 'lucide-react';
 import { useState, useTransition } from 'react';

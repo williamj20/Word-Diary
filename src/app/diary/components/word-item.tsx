@@ -1,4 +1,4 @@
-import DeleteButton from '@/app/(diary)/components/delete-button';
+import DeleteButton from '@/app/diary/components/delete-button';
 import { deleteWordFromUserList } from '@/app/lib/actions/db';
 import { WordFromUserList } from '@/app/lib/definitions';
 
@@ -6,7 +6,7 @@ const WordItem = async ({ word }: { word: WordFromUserList }) => {
   const deleteWord = deleteWordFromUserList.bind(null, word.id);
   const wordDefinition = word.word;
   return (
-    <div className="word-card mt-6">
+    <article className="word-card mt-6">
       <div className="word-card-content-container">
         <h3 className="word-card-title">{wordDefinition.word}</h3>
         <div className="word-card-button-container">
@@ -23,9 +23,9 @@ const WordItem = async ({ word }: { word: WordFromUserList }) => {
       <div className="word-card-meanings-container">
         {wordDefinition.meanings.map((meaning, index) => (
           <div key={index} className="word-card-meanings">
-            <h3 className="word-card-meanings-part-of-speech">
+            <div className="word-card-meanings-part-of-speech">
               {meaning.part_of_speech}
-            </h3>
+            </div>
             <ul className="word-card-meanings-definitions">
               {meaning.definitions.map((definition, defIndex) => (
                 <li key={defIndex}>{definition}</li>
@@ -34,7 +34,7 @@ const WordItem = async ({ word }: { word: WordFromUserList }) => {
           </div>
         ))}
       </div>
-    </div>
+    </article>
   );
 };
 

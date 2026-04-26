@@ -65,7 +65,7 @@ export const login = async (_state: LoginFormState, formData: FormData) => {
       errors: [error.message],
     };
   }
-  redirect('/');
+  redirect('/diary');
 };
 
 export const logout = async () => {
