@@ -2,7 +2,7 @@ import sql from '@/app/lib/dbClient';
 import { Word, WordFromUserList } from '@/app/lib/definitions';
 import { unstable_cache } from 'next/cache';
 
-export const getWordFromWordsTable = unstable_cache(async (word: string) => {
+export const getWordFromWordsTable = async (word: string) => {
   try {
     const wordFromWordsTable = await sql<Word[]>`
       SELECT
@@ -35,7 +35,7 @@ export const getWordFromWordsTable = unstable_cache(async (word: string) => {
     console.error('Error fetching word from words table', error);
     return null;
   }
-});
+};
 
 export const getWordFromUserList = async (userId: string, word: string) => {
   try {

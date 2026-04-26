@@ -121,17 +121,46 @@ body {
     background: var(--paper);
     border-color: var(--brass);
   }
-  .word-card-button-container {
-    @apply flex items-center gap-3;
-  }
   .word-card-content-container {
     @apply flex gap-4 flex-row items-start justify-between;
+  }
+  .word-card-button-container {
+    @apply flex flex-wrap items-center justify-end gap-3;
   }
   .word-card-title {
     @apply text-3xl font-semibold;
     color: var(--ink);
     font-family: var(--font-display);
     letter-spacing: -0.04em;
+  }
+  .word-card-toggle-button {
+    border-color: var(--sage);
+    background: var(--sage-soft);
+    color: var(--sage-dark);
+  }
+  .word-card-toggle-button:hover {
+    background: var(--sage);
+    color: var(--paper-card);
+  }
+  .word-card-toggle-button-expanded {
+    background: var(--sage);
+    color: var(--paper-card);
+  }
+  .word-card-details-shell {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition:
+      grid-template-rows 220ms ease,
+      opacity 220ms ease,
+      margin-top 220ms ease;
+  }
+  .word-card-details-shell[data-expanded='true'] {
+    grid-template-rows: 1fr;
+    margin-top: 0.2rem;
+  }
+  .word-card-details-inner {
+    min-height: 0;
+    overflow: hidden;
   }
   .word-card-meanings-container {
     @apply mt-3 grid gap-4 grid-cols-3;
