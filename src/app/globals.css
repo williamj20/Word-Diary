@@ -19,7 +19,6 @@
 
 html,
 body {
-  overscroll-behavior: none;
   background: linear-gradient(135deg, var(--paper-soft), var(--paper));
 }
 

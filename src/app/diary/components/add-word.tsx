@@ -78,7 +78,7 @@ const AddWord = () => {
             placeholder="Enter a word"
             className="min-w-0 flex-1 px-6 py-3 text-lg font-semibold text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)]"
           />
-          <div className="flex gap-2 pr-1">
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:pr-1">
             <button
               type="button"
               onClick={searchDefinition}
