@@ -163,7 +163,7 @@ body {
     overflow: hidden;
   }
   .word-card-meanings-container {
-    @apply mt-3 grid gap-4 grid-cols-3;
+    @apply mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3;
   }
   .word-card-meanings {
     @apply rounded-2xl border p-3;
@@ -178,7 +178,7 @@ body {
     border-color: var(--sage);
   }
   .word-card-meanings-definitions {
-    @apply space-y-1 list-disc list-inside;
+    @apply space-y-1 list-disc list-inside break-words;
     color: var(--ink-muted);
     font-size: 0.98rem;
   }

@@ -64,7 +64,7 @@ const AddWord = () => {
   return (
     <div className="flex flex-col items-center">
       <div className="w-full max-w-3xl rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] p-5 shadow-xl">
-        <div className="flex items-center rounded-[1.5rem] border border-[var(--sage)] bg-[var(--paper-soft)] p-2 shadow-inner focus-within:border-[var(--sage-dark)]">
+        <div className="flex flex-col rounded-[1.5rem] border border-[var(--sage)] bg-[var(--paper-soft)] p-2 shadow-inner focus-within:border-[var(--sage-dark)] sm:flex-row sm:items-center">
           <input
             type="text"
             id="searchWord"
@@ -97,12 +97,24 @@ const AddWord = () => {
           </div>
         </div>
         {error && <div className="error-message">{error}</div>}
-        <p className="mt-4 text-sm text-[var(--ink-muted)]">
-          <span className="keycap-style">Enter</span> search ·{' '}
-          <span className="keycap-style">Shift</span> +{' '}
-          <span className="keycap-style">Enter</span> Google ·{' '}
-          <span className="keycap-style">Esc</span> clear
-        </p>
+        <div className="mt-4 flex flex-wrap items-center gap-x-1 gap-y-1 text-sm text-[var(--ink-muted)]">
+          <span className="flex items-center gap-1">
+            <span className="keycap-style">Enter</span>
+            <span>search</span>
+          </span>
+          <span aria-hidden="true">·</span>
+          <span className="flex items-center gap-1">
+            <span className="keycap-style">Shift</span>
+            <span>+</span>
+            <span className="keycap-style">Enter</span>
+            <span>Google</span>
+          </span>
+          <span aria-hidden="true">·</span>
+          <span className="flex items-center gap-1">
+            <span className="keycap-style">Esc</span>
+            <span>clear</span>
+          </span>
+        </div>
       </div>
       <div className="mt-10 w-full max-w-6xl">
         <AddWordDefinition
