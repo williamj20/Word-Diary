@@ -1,6 +1,5 @@
 import sql from '@/app/lib/dbClient';
 import { Word, WordFromUserList } from '@/app/lib/definitions';
-import { unstable_cache } from 'next/cache';
 
 export const getWordFromWordsTable = async (word: string) => {
   try {
@@ -82,53 +81,46 @@ export const getWordFromUserList = async (userId: string, word: string) => {
   }
 };
 
-export const getUserWords = (userId: string) =>
-  unstable_cache(
-    async (userId: string) => {
-      try {
-        const wordList = await sql<WordFromUserList[]>`
-          SELECT
-            uw.id,
-            jsonb_build_object(
-              'id', w.id,
-              'word', w.word,
-              'meanings', meanings.meanings_json
-            ) AS word,
-            uw.added_at
-          FROM user_words_list uw
-          JOIN words w ON w.id = uw.word_id
+export const getUserWords = async (userId: string) => {
+  try {
+    const wordList = await sql<WordFromUserList[]>`
+        SELECT
+          uw.id,
+          jsonb_build_object(
+            'id', w.id,
+            'word', w.word,
+            'meanings', meanings.meanings_json
+          ) AS word,
+          uw.added_at
+        FROM user_words_list uw
+        JOIN words w ON w.id = uw.word_id
+        LEFT JOIN LATERAL (
+          SELECT COALESCE(
+            jsonb_agg(
+              jsonb_build_object(
+                'part_of_speech', wm.part_of_speech,
+                'definitions', defs.definitions_json
+              )
+            ),
+            '[]'::jsonb
+          ) AS meanings_json
+          FROM word_meanings wm
           LEFT JOIN LATERAL (
             SELECT COALESCE(
-              jsonb_agg(
-                jsonb_build_object(
-                  'part_of_speech', wm.part_of_speech,
-                  'definitions', defs.definitions_json
-                )
-              ),
+              jsonb_agg(md.definition ORDER BY md.definition_order),
               '[]'::jsonb
-            ) AS meanings_json
-            FROM word_meanings wm
-            LEFT JOIN LATERAL (
-              SELECT COALESCE(
-                jsonb_agg(md.definition ORDER BY md.definition_order),
-                '[]'::jsonb
-              ) AS definitions_json
-              FROM word_meaning_definitions md
-              WHERE md.meaning_id = wm.id
-            ) defs ON true
-            WHERE wm.word_id = w.id
-          ) meanings ON true
-          WHERE uw.user_id = ${userId}
-          ORDER BY uw.added_at DESC
-        `;
-        return wordList;
-      } catch (error) {
-        console.error('Error fetching user words:', error);
-        return [];
-      }
-    },
-    ['user-words'],
-    {
-      tags: [`user-words-${userId}`],
-    }
-  )(userId);
+            ) AS definitions_json
+            FROM word_meaning_definitions md
+            WHERE md.meaning_id = wm.id
+          ) defs ON true
+          WHERE wm.word_id = w.id
+        ) meanings ON true
+        WHERE uw.user_id = ${userId}
+        ORDER BY uw.added_at DESC
+      `;
+    return wordList;
+  } catch (error) {
+    console.error('Error fetching user words:', error);
+    return [];
+  }
+};
