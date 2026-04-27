@@ -17,13 +17,8 @@
   --danger-dark: #843326;
 }
 
-html,
 body {
-  background: linear-gradient(135deg, var(--paper-soft), var(--paper));
-}
-
-body {
-  min-height: 100vh;
+  background: var(--paper-soft);
   color: var(--ink);
   font-family: var(--font-body);
 }
