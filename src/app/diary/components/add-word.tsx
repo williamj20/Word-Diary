@@ -64,10 +64,11 @@ const AddWord = () => {
   return (
     <div className="flex flex-col items-center">
       <div className="w-full max-w-3xl rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] p-5 shadow-xl">
-        <div className="flex items-center rounded-[1.5rem] border border-[var(--sage)] bg-[var(--paper-soft)] p-2 shadow-inner focus-within:border-[var(--sage-dark)] focus-within:shadow-lg">
+        <div className="flex items-center rounded-[1.5rem] border border-[var(--sage)] bg-[var(--paper-soft)] p-2 shadow-inner focus-within:border-[var(--sage-dark)]">
           <input
             type="text"
             id="searchWord"
+            autoComplete="off"
             value={word}
             onChange={e => {
               setWord(e.target.value);
