@@ -23,8 +23,8 @@ const SavedWordsSearch = () => {
   }, 300);
 
   return (
-    <div className="mt-6 w-full max-w-lg rounded-[2rem] border p-4 shadow-lg bg-[var(--paper-card)] border-[var(--brass)]">
-      <div className="flex items-center rounded-[1.5rem] border border-[var(--brass)] bg-[var(--paper-soft)] px-5 py-3 transition-all duration-200 focus-within:border-[var(--brass-dark)]">
+    <div className="mt-6 w-full max-w-lg rounded-[1.5rem] border p-4 shadow-lg bg-[var(--paper-card)] border-[var(--brass)]">
+      <div className="flex items-center rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-soft)] px-5 py-2 transition-all duration-200 focus-within:border-[var(--brass-dark)]">
         <Search className="h-4 w-4 text-[var(--ink-muted)]" />
         <input
           type="search"
