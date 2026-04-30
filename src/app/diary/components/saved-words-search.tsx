@@ -12,7 +12,6 @@ const SavedWordsSearch = () => {
   const searchParams = useSearchParams();
 
   const handleSearch = useDebouncedCallback((value: string) => {
-    console.log('Search input changed:', value);
     const normalizedQuery = normalizeQuery(value);
     const params = new URLSearchParams();
     if (normalizedQuery) {
