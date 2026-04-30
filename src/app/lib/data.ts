@@ -81,7 +81,8 @@ export const getWordFromUserList = async (userId: string, word: string) => {
   }
 };
 
-export const getUserWords = async (userId: string) => {
+export const getUserWordsByQuery = async (userId: string, query: string) => {
+  const normalizedQuery = query;
   try {
     const wordList = await sql<WordFromUserList[]>`
         SELECT
@@ -116,6 +117,7 @@ export const getUserWords = async (userId: string) => {
           WHERE wm.word_id = w.id
         ) meanings ON true
         WHERE uw.user_id = ${userId}
+          AND w.word ILIKE ${`%${normalizedQuery}%`}
         ORDER BY uw.added_at DESC
       `;
     return wordList;
