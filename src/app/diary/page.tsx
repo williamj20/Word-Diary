@@ -29,9 +29,7 @@ const DiaryPage = async (props: {
           YOUR SAVED WORDS
         </h2>
         <div className="mt-3 h-px w-36 bg-gradient-to-r from-transparent via-[var(--brass)] to-transparent" />
-        <Suspense>
-          <SavedWordsSearch />
-        </Suspense>
+        <SavedWordsSearch />
         <Suspense key={q}>
           <WordList query={q} />
         </Suspense>
