@@ -148,6 +148,6 @@ export const getUserWordsPages = async (userId: string, query: string) => {
     return totalPages;
   } catch (error) {
     console.error('Error fetching user word pages:', error);
-    return 1;
+    return 0;
   }
 };

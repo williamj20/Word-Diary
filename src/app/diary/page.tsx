@@ -25,7 +25,7 @@ const DiaryPage = async (props: {
   const searchParams = await props.searchParams;
   const q = normalizeSearchParam(searchParams?.q);
   const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = await getUserWordsPages(user!.id, q);
+  const totalPages = Math.max(1, await getUserWordsPages(user!.id, q));
 
   return (
     <main>
