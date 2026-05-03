@@ -1,22 +1,35 @@
 import WordItem from '@/app/diary/components/word-item';
 import { getUserWordsByQuery } from '@/app/lib/data';
-import { getCurrentUser } from '@/app/lib/utils';
 
-const WordList = async ({ query }: { query: string }) => {
-  const user = await getCurrentUser();
-  const words = await getUserWordsByQuery(user!.id, query);
+const WordList = async ({
+  currentPage,
+  query,
+  userId,
+}: {
+  currentPage: number;
+  query: string;
+  userId: string;
+}) => {
+  const words = await getUserWordsByQuery(userId, query, currentPage);
+
+  const isEmpty = words.length === 0;
 
   return (
-    <>
-      {words.length === 0 && query ? (
-        <p className="mt-4 text-sm font-semibold text-[var(--ink-muted)]">
+    <div className="w-full max-w-6xl">
+      {isEmpty && query ? (
+        <p className="mt-4 text-center text-sm font-semibold text-[var(--ink-muted)]">
           No saved words match that search.
         </p>
       ) : null}
-      {words.map(word => (
-        <WordItem key={word.id} word={word} />
-      ))}
-    </>
+      {isEmpty && !query ? (
+        <p className="mt-4 text-center text-sm font-semibold text-[var(--ink-muted)]">
+          Your saved words will appear here.
+        </p>
+      ) : null}
+      {!isEmpty
+        ? words.map(word => <WordItem key={word.id} word={word} />)
+        : null}
+    </div>
   );
 };
 

@@ -81,8 +81,14 @@ export const getWordFromUserList = async (userId: string, word: string) => {
   }
 };
 
-export const getUserWordsByQuery = async (userId: string, query: string) => {
-  const normalizedQuery = query;
+export const ENTRIES_PER_PAGE = 6;
+
+export const getUserWordsByQuery = async (
+  userId: string,
+  query: string,
+  page: number
+) => {
+  const offset = (page - 1) * ENTRIES_PER_PAGE;
   try {
     const wordList = await sql<WordFromUserList[]>`
         SELECT
@@ -117,12 +123,31 @@ export const getUserWordsByQuery = async (userId: string, query: string) => {
           WHERE wm.word_id = w.id
         ) meanings ON true
         WHERE uw.user_id = ${userId}
-          AND w.word ILIKE ${`%${normalizedQuery}%`}
+          AND w.word ILIKE ${`%${query}%`}
         ORDER BY uw.added_at DESC
+        LIMIT ${ENTRIES_PER_PAGE}
+        OFFSET ${offset}
       `;
     return wordList;
   } catch (error) {
     console.error('Error fetching user words:', error);
     return [];
+  }
+};
+
+export const getUserWordsPages = async (userId: string, query: string) => {
+  try {
+    const [data] = await sql<{ count: number }[]>`
+      SELECT COUNT(*)
+      FROM user_words_list uw
+      JOIN words w ON w.id = uw.word_id
+      WHERE uw.user_id = ${userId}
+        AND w.word ILIKE ${`%${query}%`}
+    `;
+    const totalPages = Math.ceil(Number(data.count) / ENTRIES_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error('Error fetching user word pages:', error);
+    return 1;
   }
 };

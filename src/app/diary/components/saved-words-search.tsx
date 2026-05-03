@@ -11,15 +11,20 @@ const SavedWordsSearch = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const handleSearch = useDebouncedCallback((value: string) => {
+  const buildDiaryUrl = (value: string) => {
     const normalizedQuery = normalizeQuery(value);
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
     if (normalizedQuery) {
       params.set('q', normalizedQuery);
     } else {
       params.delete('q');
     }
+    params.delete('page');
     router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleSearch = useDebouncedCallback((value: string) => {
+    buildDiaryUrl(value);
   }, 300);
 
   return (

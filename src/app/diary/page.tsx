@@ -1,25 +1,31 @@
 import AddWord from '@/app/diary/components/add-word';
+import Pagination from '@/app/diary/components/pagination';
 import SavedWordsSearch from '@/app/diary/components/saved-words-search';
 import WordList from '@/app/diary/components/word-list';
-import { redirectToSignupIfNotLoggedIn } from '@/app/lib/utils';
+import { getUserWordsPages } from '@/app/lib/data';
+import { getCurrentUser, redirectToSignupIfNotLoggedIn } from '@/app/lib/utils';
 import { Suspense } from 'react';
 
 const normalizeSearchParam = (value?: string | string[]) => {
   if (Array.isArray(value)) {
     return value[0]?.trim() ?? '';
   }
-
   return value?.trim() ?? '';
 };
 
 const DiaryPage = async (props: {
   searchParams?: Promise<{
     q?: string | string[];
+    page?: string | string[];
   }>;
 }) => {
   await redirectToSignupIfNotLoggedIn();
+  const user = await getCurrentUser();
+
   const searchParams = await props.searchParams;
   const q = normalizeSearchParam(searchParams?.q);
+  const currentPage = Number(searchParams?.page) || 1;
+  const totalPages = await getUserWordsPages(user!.id, q);
 
   return (
     <main>
@@ -32,9 +38,12 @@ const DiaryPage = async (props: {
           <Suspense>
             <SavedWordsSearch />
           </Suspense>
-          <Suspense key={q}>
-            <WordList query={q} />
+          <Suspense>
+            <WordList currentPage={currentPage} query={q} userId={user!.id} />
           </Suspense>
+          <div>
+            <Pagination totalPages={totalPages} />
+          </div>
         </div>
       </div>
     </main>
