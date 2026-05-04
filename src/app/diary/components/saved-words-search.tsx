@@ -36,7 +36,7 @@ const SavedWordsSearch = () => {
           autoComplete="off"
           defaultValue={searchParams.get('q')?.toString()}
           onChange={event => handleSearch(event.target.value)}
-          placeholder="Search your saved words"
+          placeholder="Search"
           className="min-w-0 flex-1 pl-3 text-base font-semibold text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)]"
         />
       </div>
