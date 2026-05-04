@@ -29,12 +29,14 @@ const DiaryPage = async (props: {
 
   return (
     <main>
-      <AddWord />
-      <div className="mt-24 relative mx-auto w-full max-w-7xl rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] pb-6 pt-12">
+      <div className="mt-12 relative mx-auto w-full max-w-7xl rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] pb-6 pt-12">
         <h2 className="display-font absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-[1.5rem] border border-[var(--brass)] bg-[var(--paper-soft)] px-6 py-2 text-center text-xs font-bold uppercase tracking-[0.14em] text-[var(--ink-muted)] sm:text-sm">
           Your Saved Words
         </h2>
         <div className="flex flex-col items-center">
+          <div className="w-full max-w-6xl flex justify-end">
+            <AddWord />
+          </div>
           <Suspense>
             <SavedWordsSearch />
           </Suspense>

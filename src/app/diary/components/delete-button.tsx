@@ -32,7 +32,7 @@ const DeleteButton = ({
     <>
       <button
         onClick={() => setShowModal(true)}
-        className="icon-button border-[var(--danger)] bg-[var(--danger-soft)] text-[var(--danger)] hover:bg-[var(--danger)] hover:text-[var(--paper-card)] enabled:hover:shadow-lg"
+        className="icon-button border-[var(--danger)] bg-[var(--danger-soft)] text-[var(--danger)] hover:bg-[var(--danger)] hover:text-[var(--paper-card)]"
       >
         <Trash2 className="w-5 h-5" />
       </button>

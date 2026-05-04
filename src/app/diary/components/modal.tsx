@@ -63,7 +63,7 @@ const Modal = ({
         <button
           onClick={onClose}
           disabled={isLoading}
-          className="absolute right-3 top-3 rounded-full p-2 text-[var(--ink-muted)] transition-colors hover:bg-[var(--paper)] hover:text-[var(--ink)] disabled:opacity-50"
+          className="absolute right-3 top-3 rounded-full p-2 text-[var(--ink-muted)] transition-colors hover:bg-[var(--paper)] hover:text-[var(--ink)]"
         >
           <X className="h-5 w-5" />
         </button>
