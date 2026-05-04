@@ -30,7 +30,7 @@ const SignupForm = () => {
             defaultValue={state?.fields?.email ?? ''}
           />
           {state?.errors?.email && (
-            <p className="error-message">{state.errors.email}</p>
+            <p className="error-message mt-2">{state.errors.email}</p>
           )}
         </div>
         <div>
@@ -55,7 +55,7 @@ const SignupForm = () => {
             </button>
           </div>
           {state?.errors?.password && (
-            <div className="error-message">
+            <div className="error-message mt-2">
               <p>Password must:</p>
               <ul className="list-disc list-inside ml-3">
                 {state.errors.password.map(error => (
@@ -89,7 +89,7 @@ const SignupForm = () => {
             </button>
           </div>
           {state?.errors?.confirmPassword && (
-            <p className="error-message">{state.errors.confirmPassword}</p>
+            <p className="error-message mt-2">{state.errors.confirmPassword}</p>
           )}
         </div>
         <button className="auth-submit-button">Sign Up</button>

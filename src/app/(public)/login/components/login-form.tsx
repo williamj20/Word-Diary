@@ -49,7 +49,7 @@ const LoginForm = () => {
           </div>
         </div>
         {state?.errors && (
-          <p className="error-message">Invalid login credentials.</p>
+          <p className="error-message mt-2">Invalid login credentials.</p>
         )}
         <button className="auth-submit-button">Log In</button>
         <p className="auth-switch-text">
