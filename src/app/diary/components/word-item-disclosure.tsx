@@ -24,7 +24,7 @@ const WordItemDisclosure = ({
 
   return (
     <>
-      <div className="word-card-content-container">
+      <div className="word-card-preview-container">
         <h3 className="word-card-title">{title}</h3>
         <div className="word-card-button-container">
           <span className="word-card-span">{addedAtLabel}</span>
@@ -38,7 +38,7 @@ const WordItemDisclosure = ({
           >
             <ChevronDown
               className={clsx(
-                'h-5 w-5 transition-transform duration-200',
+                'h-4 w-4 transition-transform duration-200',
                 isExpanded && 'rotate-180'
               )}
             />

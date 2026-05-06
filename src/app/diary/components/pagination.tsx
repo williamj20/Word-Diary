@@ -56,7 +56,7 @@ const PaginationNumber = ({
       href={href}
       className={clsx(
         paginationBaseClassName,
-        'min-w-11 py-2',
+        'min-w-9 px-2.5 py-1.5 sm:min-w-10 sm:px-3 sm:py-2',
         isActive
           ? 'border-[var(--sage)] bg-[var(--sage-dark)] text-[var(--paper-card)] hover:bg-[var(--sage)] hover:text-[var(--paper-card)]'
           : ''
@@ -76,10 +76,14 @@ const PaginationArrow = ({
   direction: 'previous' | 'next';
   isDisabled?: boolean;
 }) => {
-  const className = clsx(paginationBaseClassName, 'px-4 py-2 gap-2', {
-    'cursor-not-allowed opacity-55 hover:bg-[var(--paper-card)] hover:text-[var(--ink-muted)]':
-      isDisabled,
-  });
+  const className = clsx(
+    paginationBaseClassName,
+    'gap-1.5 px-3 py-1.5 sm:gap-2 sm:px-4 sm:py-2',
+    {
+      'cursor-not-allowed opacity-55 hover:bg-[var(--paper-card)] hover:text-[var(--ink-muted)]':
+        isDisabled,
+    }
+  );
 
   const icon =
     direction === 'previous' ? (
@@ -117,7 +121,7 @@ const Pagination = ({ totalPages }: { totalPages: number }) => {
   };
 
   return (
-    <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+    <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
       <PaginationArrow
         direction="previous"
         isDisabled={currentPage <= 1}

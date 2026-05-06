@@ -12,7 +12,7 @@ const WordItem = async ({ word }: { word: WordFromUserList }) => {
   }).format(new Date(word.added_at));
 
   return (
-    <article className="word-card mt-4">
+    <article className="word-card mt-3">
       <WordItemDisclosure
         title={wordDefinition.word}
         wordListId={word.id}

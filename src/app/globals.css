@@ -86,27 +86,16 @@ body {
     color: var(--danger);
   }
   .icon-button {
-    @apply rounded-xl border p-2 shadow-sm transition-all duration-200;
+    @apply rounded-xl border p-1.5 shadow-sm transition-all duration-200;
   }
   .word-card {
-    @apply relative w-full max-w-6xl border px-8 py-4 text-base font-medium shadow-xl;
+    @apply relative w-full max-w-6xl border px-6 py-2 text-base font-medium shadow-xl;
     color: var(--ink);
     border-color: var(--brass);
     border-radius: 1.75rem;
     background:
       linear-gradient(135deg, var(--paper-card), var(--paper)),
       var(--paper-card);
-  }
-  .word-card::before {
-    content: '';
-    position: absolute;
-    top: 1.25rem;
-    bottom: 1.25rem;
-    left: 1rem;
-    width: 3px;
-    border-radius: 999px;
-    background: linear-gradient(var(--brass), var(--sage));
-    opacity: 0.9;
   }
   .word-card-span {
     @apply rounded-full border px-3 py-1 text-xs font-bold uppercase;
@@ -115,14 +104,14 @@ body {
     background: var(--paper);
     border-color: var(--brass);
   }
-  .word-card-content-container {
-    @apply flex gap-4 flex-row items-start justify-between;
+  .word-card-preview-container {
+    @apply flex items-center justify-between;
   }
   .word-card-button-container {
     @apply flex flex-wrap items-center justify-end gap-3;
   }
   .word-card-title {
-    @apply text-3xl font-semibold;
+    @apply text-2xl font-semibold;
     color: var(--ink);
     font-family: var(--font-display);
     letter-spacing: -0.04em;

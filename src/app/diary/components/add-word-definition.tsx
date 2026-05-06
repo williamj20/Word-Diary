@@ -34,7 +34,7 @@ const AddWordDefinition = ({
           : 'border border-[var(--brass)] bg-[var(--paper-muted)] saturate-50 shadow-md'
       )}
     >
-      <div className="word-card-content-container">
+      <div className="word-card-preview-container">
         <h3 className="word-card-title">{wordDefinition.word.word}</h3>
         <div>
           <SaveButton isAbleToSave={isAbleToSave} onSave={saveWord} />

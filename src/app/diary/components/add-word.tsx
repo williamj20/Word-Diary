@@ -5,6 +5,7 @@ import { WordLookupResponse } from '@/app/lib/definitions';
 import clsx from 'clsx';
 import { ExternalLink, Plus, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 const EMPTY_WORD_ERROR_MESSAGE = 'Please enter a word before searching.';
 const DEFINITION_NOT_FOUND_ERROR_MESSAGE =
@@ -105,98 +106,101 @@ const AddWord = () => {
         }}
         className="icon-button border-[var(--sage)] bg-[var(--sage-dark)] text-[var(--paper-card)] hover:bg-[var(--sage)]"
       >
-        <Plus className="h-5 w-5" />
+        <Plus className="h-4 w-4" />
       </button>
 
-      {isOpen ? (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--ink)]/60"
-          onClick={() => closeModal()}
-        >
-          <div
-            className="relative max-h-[calc(100dvh-3rem)] w-full max-w-4xl overflow-hidden rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] shadow-2xl p-6"
-            onClick={event => event.stopPropagation()}
-          >
-            <div className="flex max-h-[calc(100dvh-6rem)] flex-col">
-              <div>
-                <h3 className="display-font text-2xl font-semibold text-[var(--ink)]">
-                  Look up a word
-                </h3>
-                <button
-                  type="button"
-                  onClick={() => closeModal()}
-                  className="absolute right-3 top-3 rounded-full p-2 text-[var(--ink-muted)] transition-colors hover:bg-[var(--paper)] hover:text-[var(--ink)]"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
+      {isOpen
+        ? createPortal(
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--ink)]/60 p-4"
+              onClick={() => closeModal()}
+            >
+              <div
+                className="relative max-h-[calc(100dvh-3rem)] w-full max-w-4xl overflow-hidden rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] p-6 shadow-2xl"
+                onClick={event => event.stopPropagation()}
+              >
+                <div className="flex max-h-[calc(100dvh-6rem)] flex-col">
+                  <div>
+                    <h3 className="display-font mb-2 text-2xl font-semibold text-[var(--ink)]">
+                      Look up a word
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => closeModal()}
+                      className="absolute right-3 top-3 rounded-full p-2 text-[var(--ink-muted)] transition-colors hover:bg-[var(--paper)] hover:text-[var(--ink)]"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                  </div>
 
-              <div className="hide-scrollbar overflow-y-auto overscroll-contain mt-2">
-                <div className="rounded-[2rem] border border-[var(--sage)] bg-[var(--paper-soft)] p-3">
-                  <div className="flex items-center">
-                    <input
-                      type="text"
-                      id="searchWord"
-                      autoFocus
-                      autoComplete="off"
-                      value={word}
-                      onChange={e => {
-                        setWord(e.target.value);
-                        setError('');
-                      }}
-                      onKeyDown={handleInputKeyDown}
-                      className="min-w-0 flex-1 px-3 py-3 text-lg font-semibold text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)]"
-                    />
-                    <div className="flex gap-2 sm:pr-1">
-                      <button
-                        type="button"
-                        onClick={searchDefinition}
-                        className="inline-flex items-center justify-center rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-3 py-2 text-xs font-bold text-[var(--paper-card)] transition-all duration-200 hover:bg-[var(--sage)] sm:text-sm"
-                      >
-                        <Search className="mr-1.5 h-3 w-3 sm:mr-2 sm:h-3.5 sm:w-3.5" />
-                        Search
-                      </button>
-                      <button
-                        type="button"
-                        onClick={searchDefinitionWithGoogle}
-                        className="inline-flex items-center justify-center rounded-full border border-[var(--brass-dark)] bg-[var(--paper-card)] px-3 py-2 text-xs font-bold text-[var(--brass-dark)] transition-all duration-200 hover:bg-[var(--paper)] sm:text-sm"
-                      >
-                        <ExternalLink className="mr-1.5 h-3 w-3 sm:mr-2 sm:h-3.5 sm:w-3.5" />
-                        Google It
-                      </button>
+                  <div className="hide-scrollbar mt-2 overflow-y-auto overscroll-contain">
+                    <div className="rounded-[2rem] border border-[var(--sage)] bg-[var(--paper-soft)] p-3">
+                      <div className="flex items-center">
+                        <input
+                          type="text"
+                          id="searchWord"
+                          autoFocus
+                          autoComplete="off"
+                          value={word}
+                          onChange={e => {
+                            setWord(e.target.value);
+                            setError('');
+                          }}
+                          onKeyDown={handleInputKeyDown}
+                          className="min-w-0 flex-1 px-3 py-3 text-lg font-semibold text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)]"
+                        />
+                        <div className="flex gap-2 sm:pr-1">
+                          <button
+                            type="button"
+                            onClick={searchDefinition}
+                            className="inline-flex items-center justify-center rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-3 py-2 text-xs font-bold text-[var(--paper-card)] transition-all duration-200 hover:bg-[var(--sage)] sm:text-sm"
+                          >
+                            <Search className="mr-1.5 h-3 w-3 sm:mr-2 sm:h-3.5 sm:w-3.5" />
+                            Search
+                          </button>
+                          <button
+                            type="button"
+                            onClick={searchDefinitionWithGoogle}
+                            className="inline-flex items-center justify-center rounded-full border border-[var(--brass-dark)] bg-[var(--paper-card)] px-3 py-2 text-xs font-bold text-[var(--brass-dark)] transition-all duration-200 hover:bg-[var(--paper)] sm:text-sm"
+                          >
+                            <ExternalLink className="mr-1.5 h-3 w-3 sm:mr-2 sm:h-3.5 sm:w-3.5" />
+                            Google It
+                          </button>
+                        </div>
+                      </div>
+                      {error && (
+                        <div className="error-message px-3 pt-1.5">{error}</div>
+                      )}
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-3 pb-1 pt-1.5 text-sm text-[var(--ink-muted)]">
+                        <span className="flex items-center gap-1">
+                          <span className="keycap-style">Enter</span>
+                          <span>Search</span>
+                        </span>
+                        <span>·</span>
+                        <span className="flex items-center gap-1">
+                          <span className="keycap-style">Shift</span>
+                          <span>+</span>
+                          <span className="keycap-style">Enter</span>
+                          <span>Google</span>
+                        </span>
+                      </div>
+                      <div className={clsx(wordDefinition ? 'mt-4' : 'mt-0')}>
+                        <AddWordDefinition
+                          wordDefinition={wordDefinition}
+                          onSave={() => {
+                            setIsOpen(false);
+                            resetLookup();
+                          }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  {error && (
-                    <div className="error-message px-3 pt-1.5">{error}</div>
-                  )}
-                  <div className="pt-1.5 pb-1 flex flex-wrap items-center gap-x-2 gap-y-1 px-3 text-sm text-[var(--ink-muted)]">
-                    <span className="flex items-center gap-1">
-                      <span className="keycap-style">Enter</span>
-                      <span>Search</span>
-                    </span>
-                    <span>·</span>
-                    <span className="flex items-center gap-1">
-                      <span className="keycap-style">Shift</span>
-                      <span>+</span>
-                      <span className="keycap-style">Enter</span>
-                      <span>Google</span>
-                    </span>
-                  </div>
-                  <div className={clsx(wordDefinition ? 'mt-4' : 'mt-0')}>
-                    <AddWordDefinition
-                      wordDefinition={wordDefinition}
-                      onSave={() => {
-                        setIsOpen(false);
-                        resetLookup();
-                      }}
-                    />
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      ) : null}
+            </div>,
+            document.body
+          )
+        : null}
     </>
   );
 };
