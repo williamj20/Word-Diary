@@ -1,30 +1,17 @@
 import { logout } from '@/app/lib/actions/auth';
 import { getCurrentUser } from '@/app/lib/utils';
-import Link from 'next/link';
 
 const AuthButtons = async () => {
   const user = await getCurrentUser();
-
-  if (!user) {
+  if (user) {
     return (
-      <div className="flex gap-3">
-        <Link href="/login" className="auth-button">
-          Log In
-        </Link>
-        <Link href="/signup" className="auth-button">
-          Sign Up
-        </Link>
-      </div>
+      <form action={logout}>
+        <button type="submit" className="auth-button">
+          Sign Out
+        </button>
+      </form>
     );
   }
-
-  return (
-    <form action={logout}>
-      <button type="submit" className="auth-button">
-        Sign Out
-      </button>
-    </form>
-  );
 };
 
 export default AuthButtons;

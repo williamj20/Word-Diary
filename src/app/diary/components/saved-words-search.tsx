@@ -28,8 +28,8 @@ const SavedWordsSearch = () => {
   }, 300);
 
   return (
-    <div className="w-full max-w-lg rounded-[1.5rem] border border-[var(--brass)] bg-[var(--paper-card)] p-3">
-      <div className="flex items-center rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-soft)] px-4 py-2 transition-all duration-200 focus-within:border-[var(--brass-dark)]">
+    <div className="w-full max-w-lg rounded-[1.5rem] border border-[var(--brass)] bg-[var(--paper-card)] p-2 sm:p-3">
+      <div className="flex items-center rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-soft)] px-3 py-2 transition-all duration-200 focus-within:border-[var(--brass-dark)] sm:px-4">
         <Search className="h-4 w-4 text-[var(--ink-muted)]" />
         <input
           type="search"
@@ -37,7 +37,7 @@ const SavedWordsSearch = () => {
           defaultValue={searchParams.get('q')?.toString()}
           onChange={event => handleSearch(event.target.value)}
           placeholder="Search"
-          className="min-w-0 flex-1 pl-3 text-base font-semibold text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)]"
+          className="min-w-0 flex-1 pl-2 text-sm font-semibold text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)] sm:pl-3 sm:text-base"
         />
       </div>
     </div>

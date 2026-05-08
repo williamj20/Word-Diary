@@ -15,7 +15,7 @@ const WordList = async ({
   const isEmpty = words.length === 0;
 
   return (
-    <div className="w-full max-w-6xl">
+    <div className="mt-4 w-full max-w-6xl sm:mt-5">
       {isEmpty && query ? (
         <p className="mt-4 text-center text-sm font-semibold text-[var(--ink-muted)]">
           No saved words match that search.

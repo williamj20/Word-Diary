@@ -4,16 +4,19 @@ import Link from 'next/link';
 
 const AppHeader = ({ showAuthButtons }: { showAuthButtons: boolean }) => {
   return (
-    <header className="relative mx-auto mb-12 mt-3 max-w-7xl">
-      <Link href="/" className="flex items-center justify-center gap-3">
-        <BookOpenText className="h-6 w-6 sm:h-10 lg:w-10" />
-        <h1 className="display-font text-[2.2rem] font-semibold leading-none text-[var(--ink)] sm:text-[3.15rem] lg:text-[3.65rem]">
+    <header className="relative mx-auto mb-8 mt-2 max-w-7xl sm:mb-10 sm:mt-3">
+      <Link
+        href="/"
+        className="flex items-center justify-center gap-2.5 sm:gap-3.5"
+      >
+        <BookOpenText className="h-5 w-5 sm:h-8 sm:w-8 lg:h-10 lg:w-10" />
+        <h1 className="display-font text-[clamp(1.95rem,8vw,3.65rem)] font-semibold leading-none text-[var(--ink)]">
           Word Diary
         </h1>
       </Link>
 
       {showAuthButtons && (
-        <div className="mt-3 flex justify-center sm:absolute sm:right-0 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2">
+        <div className="mt-2.5 flex justify-center sm:absolute sm:right-0 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2">
           <AuthButtons />
         </div>
       )}

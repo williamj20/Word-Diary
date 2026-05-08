@@ -34,7 +34,7 @@ body {
   }
 
   .auth-button {
-    @apply rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition-all duration-200;
+    @apply rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm transition-all duration-200 sm:px-4 sm:py-2 sm:text-sm;
     color: var(--ink-muted);
     background: var(--paper-card);
     border-color: var(--brass);
@@ -56,7 +56,7 @@ body {
   }
 
   .auth-submit-button {
-    @apply w-full rounded-full border px-4 py-3 font-bold tracking-wide shadow-sm transition-all duration-200;
+    @apply w-full rounded-full border px-4 py-3 font-bold shadow-sm transition-all duration-200;
     color: var(--paper-card);
     background: var(--sage-dark);
     border-color: var(--sage);
@@ -86,10 +86,10 @@ body {
     color: var(--danger);
   }
   .icon-button {
-    @apply rounded-xl border p-1.5 shadow-sm transition-all duration-200;
+    @apply rounded-xl border p-1.5 shadow-sm transition-all duration-200 sm:p-2;
   }
   .word-card {
-    @apply relative w-full max-w-6xl border px-6 py-2 text-base font-medium shadow-xl;
+    @apply relative w-full max-w-6xl border px-3.5 py-2 text-sm font-medium shadow-xl sm:px-5 sm:py-2.5 sm:text-base lg:px-6;
     color: var(--ink);
     border-color: var(--brass);
     border-radius: 1.75rem;
@@ -98,9 +98,8 @@ body {
       var(--paper-card);
   }
   .word-card-span {
-    @apply rounded-full border px-3 py-1 text-xs font-bold uppercase;
+    @apply rounded-full border px-2 py-1 text-[0.625rem] font-bold sm:px-3 sm:text-sm;
     color: var(--ink-muted);
-    letter-spacing: 0.16em;
     background: var(--paper);
     border-color: var(--brass);
   }
@@ -108,10 +107,10 @@ body {
     @apply flex items-center justify-between;
   }
   .word-card-button-container {
-    @apply flex flex-wrap items-center justify-end gap-3;
+    @apply flex items-center justify-end gap-1.5 sm:gap-3;
   }
   .word-card-title {
-    @apply text-2xl font-semibold;
+    @apply text-base font-semibold break-words md:text-2xl;
     color: var(--ink);
     font-family: var(--font-display);
     letter-spacing: -0.04em;
@@ -146,10 +145,10 @@ body {
     overflow: hidden;
   }
   .word-card-meanings-container {
-    @apply mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3;
+    @apply mt-2.5 grid grid-cols-1 gap-3 sm:mt-3 sm:gap-4 sm:grid-cols-2 xl:grid-cols-3;
   }
   .word-card-meanings {
-    @apply rounded-2xl border p-3;
+    @apply rounded-2xl border p-2.5 sm:p-3;
     background: var(--paper-card);
     border-color: var(--brass);
   }
@@ -161,9 +160,8 @@ body {
     border-color: var(--sage);
   }
   .word-card-meanings-definitions {
-    @apply space-y-1 list-disc list-inside break-words;
+    @apply list-disc list-inside space-y-1 break-words text-sm sm:text-base;
     color: var(--ink-muted);
-    font-size: 0.98rem;
   }
   .keycap-style {
     @apply rounded-md border px-2 py-0.5 text-xs font-bold shadow-sm;

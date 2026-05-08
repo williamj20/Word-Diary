@@ -28,20 +28,20 @@ const DiaryPage = async (props: {
   const totalPages = Math.max(1, await getUserWordsPages(user!.id, q));
 
   return (
-    <main className="px-4">
-      <div className="mt-7 relative mx-auto w-full max-w-7xl rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] pb-4 pt-8">
-        <h2 className="display-font absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-[1.5rem] border border-[var(--brass)] bg-[var(--paper-soft)] px-4 py-1 text-center text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[var(--ink-muted)] sm:px-5 sm:py-1.5 sm:text-[0.74rem]">
+    <main>
+      <div className="relative mx-auto mt-6 w-full max-w-7xl rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] pb-4 pt-7 sm:mt-7 sm:pb-5 sm:pt-8">
+        <h2 className="display-font absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-[1.5rem] border border-[var(--brass)] bg-[var(--paper-soft)] px-3 py-1 text-center text-[0.62rem] font-bold uppercase whitespace-nowrap text-[var(--ink-muted)] sm:px-5 sm:py-1.5 sm:text-[0.74rem]">
           Your Saved Words
         </h2>
-        <div className="flex flex-col items-center px-4">
+        <div className="flex flex-col items-center px-3.5 sm:px-4">
           <div className="w-full max-w-6xl">
-            <div className="flex flex-col gap-2.5 md:relative md:min-h-10 md:items-center">
+            <div className="relative min-h-11 sm:min-h-12">
               <Suspense>
-                <div className="w-full md:mx-auto md:max-w-[30rem]">
+                <div className="mx-auto w-[min(30rem,calc(100%-6rem))]">
                   <SavedWordsSearch />
                 </div>
               </Suspense>
-              <div className="flex justify-end md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2">
+              <div className="absolute right-0 top-1/2 -translate-y-1/2">
                 <AddWord />
               </div>
             </div>
