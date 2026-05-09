@@ -1,4 +1,4 @@
-import AddWord from '@/app/diary/components/add-word';
+import AddWordModal from '@/app/diary/components/add-word-modal';
 import Pagination from '@/app/diary/components/pagination';
 import SavedWordsSearch from '@/app/diary/components/saved-words-search';
 import WordList from '@/app/diary/components/word-list';
@@ -42,7 +42,7 @@ const DiaryPage = async (props: {
                 </div>
               </Suspense>
               <div className="absolute right-0 top-1/2 -translate-y-1/2">
-                <AddWord />
+                <AddWordModal />
               </div>
             </div>
           </div>

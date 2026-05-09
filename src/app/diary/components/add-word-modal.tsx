@@ -12,7 +12,7 @@ const DEFINITION_NOT_FOUND_ERROR_MESSAGE =
   'Definition not found. Please try another word.';
 const SOMETHING_WENT_WRONG = 'Something went wrong. Please try again.';
 
-const AddWord = () => {
+const AddWordModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [word, setWord] = useState('');
   const [error, setError] = useState('');
@@ -205,4 +205,4 @@ const AddWord = () => {
   );
 };
 
-export default AddWord;
+export default AddWordModal;
