@@ -1,7 +1,6 @@
 'use client';
 
-import Modal from '@/app/diary/components/modal';
-import { ModalVariant } from '@/app/lib/definitions';
+import DeleteWordModal from '@/app/diary/components/delete-word-modal';
 import { Trash2 } from 'lucide-react';
 import { useState, useTransition } from 'react';
 
@@ -14,12 +13,6 @@ const DeleteButton = ({
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [isPending, startTransition] = useTransition();
-
-  const modalTitle = `Delete "${word}"?`;
-  const modalDescription = `This will permanently remove this word from your list. This action cannot be undone.`;
-  const modalConfirmText = 'Delete';
-  const modalConfirmLoadingText = 'Deleting..';
-  const modalCancelText = 'Cancel';
 
   const handleDelete = () => {
     startTransition(async () => {
@@ -37,17 +30,12 @@ const DeleteButton = ({
         <Trash2 className="h-4 w-4" />
       </button>
 
-      <Modal
+      <DeleteWordModal
+        word={word}
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         onConfirm={handleDelete}
-        title={modalTitle}
-        description={modalDescription}
-        confirmText={modalConfirmText}
-        confirmLoadingText={modalConfirmLoadingText}
-        cancelText={modalCancelText}
-        variant={ModalVariant.Danger}
-        isLoading={isPending}
+        isDeleting={isPending}
       />
     </>
   );
