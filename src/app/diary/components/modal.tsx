@@ -72,7 +72,7 @@ const Modal = ({
           {title}
         </h3>
 
-        <p className="mb-6 leading-7 text-[var(--ink-muted)]">{description}</p>
+        <p className="mb-6 text-[var(--ink-muted)]">{description}</p>
 
         <div className="flex gap-3">
           <button

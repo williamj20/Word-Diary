@@ -34,7 +34,7 @@ const LandingPage = async () => {
           <h2 className="display-font text-[var(--ink)] text-5xl">
             Keep the words you want to remember.
           </h2>
-          <p className="leading-7 text-[var(--ink-muted)] text-lg">
+          <p className="text-[var(--ink-muted)] text-lg">
             Word Diary helps you search unfamiliar words, save the ones that
             matter, and build a personal lexicon you can return to later.
           </p>
@@ -67,9 +67,7 @@ const LandingPage = async () => {
               {eyebrow}
             </p>
             <h3 className="display-font text-3xl text-[var(--ink)]">{title}</h3>
-            <p className="text-base leading-7 text-[var(--ink-muted)]">
-              {description}
-            </p>
+            <p className="text-base text-[var(--ink-muted)]">{description}</p>
           </div>
         ))}
       </section>
