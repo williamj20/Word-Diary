@@ -25,7 +25,9 @@ const RootLayout = ({
   return (
     <html lang="en">
       <body className={`${fraunces.variable} ${literata.variable} antialiased`}>
-        {children}
+        <div className="overflow-x-auto">
+          <div className="mx-auto min-w-xs px-3">{children}</div>
+        </div>
       </body>
     </html>
   );

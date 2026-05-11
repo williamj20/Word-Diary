@@ -2,12 +2,10 @@ import AppHeader from '@/app/components/app-header';
 
 const PublicLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="overflow-x-auto">
-      <div className="mx-auto min-w-xs px-3">
-        <AppHeader showAuthButtons={false} />
-        {children}
-      </div>
-    </div>
+    <>
+      <AppHeader showAuthButtons={false} />
+      {children}
+    </>
   );
 };
 
