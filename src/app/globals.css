@@ -46,13 +46,13 @@ body {
   }
 
   .auth-form {
-    @apply w-full max-w-md rounded-[2rem] border p-8 shadow-xl;
+    @apply w-full max-w-md rounded-[2rem] border p-5 sm:p-8;
     background: var(--paper-card);
     border-color: var(--brass);
   }
 
   .auth-form-fields {
-    @apply flex flex-col gap-4;
+    @apply flex flex-col gap-3.5 sm:gap-4;
   }
 
   .auth-submit-button {
@@ -67,7 +67,7 @@ body {
   }
 
   .auth-switch-text {
-    @apply text-center;
+    @apply text-center text-sm sm:text-base;
     color: var(--ink-muted);
   }
 
