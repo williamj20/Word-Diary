@@ -112,30 +112,30 @@ const AddWordModal = () => {
       {isOpen
         ? createPortal(
             <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--ink)]/60 p-4"
+              className="fixed inset-0 z-50 flex min-w-xs items-center justify-center bg-[var(--ink)]/60 p-3 sm:p-4"
               onClick={() => closeModal()}
             >
               <div
-                className="relative max-h-[calc(100dvh-3rem)] w-full max-w-4xl overflow-hidden rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] p-6 shadow-2xl"
+                className="relative max-h-[calc(100dvh-2rem)] w-full max-w-4xl overflow-hidden rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] p-4 shadow-2xl sm:max-h-[calc(100dvh-3rem)] sm:p-6"
                 onClick={event => event.stopPropagation()}
               >
-                <div className="flex max-h-[calc(100dvh-6rem)] flex-col">
+                <div className="flex max-h-[calc(100dvh-4rem)] flex-col sm:max-h-[calc(100dvh-6rem)]">
                   <div>
-                    <h3 className="display-font mb-2 text-2xl font-semibold text-[var(--ink)]">
+                    <h3 className="display-font mb-2 text-xl font-semibold text-[var(--ink)] sm:text-2xl">
                       Look up a word
                     </h3>
                     <button
                       type="button"
                       onClick={() => closeModal()}
-                      className="absolute right-3 top-3 rounded-full p-2 text-[var(--ink-muted)] transition-colors hover:bg-[var(--paper)] hover:text-[var(--ink)]"
+                      className="absolute right-2.5 top-2.5 rounded-full p-1.5 text-[var(--ink-muted)] transition-colors hover:bg-[var(--paper)] hover:text-[var(--ink)] sm:right-3 sm:top-3 sm:p-2"
                     >
-                      <X className="h-5 w-5" />
+                      <X className="h-4 w-4 sm:h-5 sm:w-5" />
                     </button>
                   </div>
 
                   <div className="hide-scrollbar mt-2 overflow-y-auto overscroll-contain">
-                    <div className="rounded-[2rem] border border-[var(--sage)] bg-[var(--paper-soft)] p-3">
-                      <div className="flex items-center">
+                    <div className="rounded-[2rem] border border-[var(--sage)] bg-[var(--paper-soft)] p-2 sm:p-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center">
                         <input
                           type="text"
                           id="searchWord"
@@ -147,7 +147,7 @@ const AddWordModal = () => {
                             setError('');
                           }}
                           onKeyDown={handleInputKeyDown}
-                          className="min-w-0 flex-1 px-3 py-3 text-lg font-semibold text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)]"
+                          className="min-w-0 flex-1 px-2.5 py-2.5 text-base font-semibold text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)] sm:px-3 sm:py-3 sm:text-lg"
                         />
                         <div className="flex gap-2 sm:pr-1">
                           <button
@@ -171,12 +171,11 @@ const AddWordModal = () => {
                       {error && (
                         <div className="error-message px-3 pt-1.5">{error}</div>
                       )}
-                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-3 pb-1 pt-1.5 text-sm text-[var(--ink-muted)]">
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-2.5 pb-1 pt-1.5 text-xs text-[var(--ink-muted)] sm:px-3 sm:text-sm">
                         <span className="flex items-center gap-1">
                           <span className="keycap-style">Enter</span>
                           <span>Search</span>
                         </span>
-                        <span>·</span>
                         <span className="flex items-center gap-1">
                           <span className="keycap-style">Shift</span>
                           <span>+</span>

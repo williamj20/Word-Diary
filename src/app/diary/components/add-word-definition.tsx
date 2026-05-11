@@ -28,7 +28,7 @@ const AddWordDefinition = ({
   return (
     <article
       className={clsx(
-        'rounded-[1.75rem] border p-5',
+        'rounded-[1.75rem] border p-3 sm:p-5',
         isAbleToSave
           ? 'border border-[var(--sage-dark)] bg-[var(--sage-soft)] shadow-2xl'
           : 'border border-[var(--brass)] bg-[var(--paper-muted)] saturate-50 shadow-md'
