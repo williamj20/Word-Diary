@@ -2,6 +2,7 @@ import AddWordModal from '@/app/diary/components/add-word-modal';
 import Pagination from '@/app/diary/components/pagination';
 import SavedWordsSearch from '@/app/diary/components/saved-words-search';
 import WordList from '@/app/diary/components/word-list';
+import WordListSkeleton from '@/app/diary/components/word-list-skeleton';
 import { getUserWordsPages } from '@/app/lib/data';
 import { getCurrentUser, redirectToSignupIfNotLoggedIn } from '@/app/lib/utils';
 import { Suspense } from 'react';
@@ -46,7 +47,7 @@ const DiaryPage = async (props: {
               </div>
             </div>
           </div>
-          <Suspense>
+          <Suspense key={`${q}-${currentPage}`} fallback={<WordListSkeleton />}>
             <WordList currentPage={currentPage} query={q} userId={user!.id} />
           </Suspense>
           <div>
