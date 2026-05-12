@@ -1,11 +1,9 @@
 import WordItemSkeleton from '@/app/diary/components/word-item-skeleton';
 
-const WORD_LIST_SKELETON_ROWS = 6;
-
-const WordListSkeleton = () => {
+const WordListSkeleton = ({ rows }: { rows: number }) => {
   return (
     <div className="word-list-container">
-      {Array.from({ length: WORD_LIST_SKELETON_ROWS }, (_, index) => (
+      {Array.from({ length: rows }, (_, index) => (
         <WordItemSkeleton key={index} />
       ))}
     </div>

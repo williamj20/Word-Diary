@@ -144,10 +144,11 @@ export const getUserWordsPages = async (userId: string, query: string) => {
       WHERE uw.user_id = ${userId}
         AND w.word ILIKE ${`%${query}%`}
     `;
-    const totalPages = Math.ceil(Number(data.count) / ENTRIES_PER_PAGE);
-    return totalPages;
+    const totalCount = Number(data.count);
+    const totalPages = Math.ceil(totalCount / ENTRIES_PER_PAGE);
+    return { totalCount, totalPages };
   } catch (error) {
     console.error('Error fetching user word pages:', error);
-    return 0;
+    return { totalCount: 0, totalPages: 0 };
   }
 };

@@ -3,7 +3,7 @@ import Pagination from '@/app/diary/components/pagination';
 import SavedWordsSearch from '@/app/diary/components/saved-words-search';
 import WordList from '@/app/diary/components/word-list';
 import WordListSkeleton from '@/app/diary/components/word-list-skeleton';
-import { getUserWordsPages } from '@/app/lib/data';
+import { ENTRIES_PER_PAGE, getUserWordsPages } from '@/app/lib/data';
 import { getCurrentUser, redirectToSignupIfNotLoggedIn } from '@/app/lib/utils';
 import { Suspense } from 'react';
 
@@ -26,7 +26,18 @@ const DiaryPage = async (props: {
   const searchParams = await props.searchParams;
   const q = normalizeSearchParam(searchParams?.q);
   const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = Math.max(1, await getUserWordsPages(user!.id, q));
+  const { totalCount, totalPages } = await getUserWordsPages(user!.id, q);
+  const paginationTotalPages = Math.max(1, totalPages);
+
+  // if totalCount % ENTRIES_PER_PAGE === 0, it means the last page is full and should show ENTRIES_PER_PAGE skeletons
+  const entriesOnCurrentPage =
+    currentPage < totalPages
+      ? ENTRIES_PER_PAGE
+      : totalCount % ENTRIES_PER_PAGE || ENTRIES_PER_PAGE;
+
+  // Show skeletons only if there are words to show and the current page is within the total pages
+  const wordListSkeletonRows =
+    totalCount > 0 && currentPage <= totalPages ? entriesOnCurrentPage : 0;
 
   return (
     <main>
@@ -47,11 +58,14 @@ const DiaryPage = async (props: {
               </div>
             </div>
           </div>
-          <Suspense key={`${q}-${currentPage}`} fallback={<WordListSkeleton />}>
+          <Suspense
+            key={`${q}-${currentPage}`}
+            fallback={<WordListSkeleton rows={wordListSkeletonRows} />}
+          >
             <WordList currentPage={currentPage} query={q} userId={user!.id} />
           </Suspense>
           <div>
-            <Pagination totalPages={totalPages} />
+            <Pagination totalPages={paginationTotalPages} />
           </div>
         </div>
       </div>
