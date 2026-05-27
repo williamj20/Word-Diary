@@ -21,7 +21,7 @@ const WordItemDisclosure = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const deleteWord = deleteWordFromUserList.bind(null, wordListId);
-  const merriamWebsterUrl = `https://www.merriam-webster.com/dictionary/${encodeURIComponent(wordLabel)}`;
+  const googleDefinitionUrl = `https://www.google.com/search?q=define+${encodeURIComponent(wordLabel)}`;
 
   return (
     <>
@@ -30,7 +30,7 @@ const WordItemDisclosure = ({
         <div className="word-card-button-container">
           <span className="word-card-span">{addedAtLabel}</span>
           <a
-            href={merriamWebsterUrl}
+            href={googleDefinitionUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="icon-button border-[var(--brass-dark)] bg-[var(--paper-card)] text-[var(--brass-dark)] hover:bg-[var(--paper)]"
