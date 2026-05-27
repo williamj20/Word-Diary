@@ -35,8 +35,18 @@ const LandingPage = async () => {
             Keep the words you want to remember.
           </h2>
           <p className="text-base text-[var(--ink-muted)] sm:text-lg">
-            Word Diary helps you search unfamiliar words, save the ones that
-            matter, and build a personal lexicon you can return to later.
+            Word Diary helps you search unfamiliar words with definitions
+            retrieved from the{' '}
+            <a
+              href="https://www.merriam-webster.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold hover:underline"
+            >
+              Merriam-Webster
+            </a>{' '}
+            online dictionary, save the ones that matter, and build a personal
+            lexicon you can return to later.
           </p>
           <div className="flex flex-col items-center gap-3 sm:flex-row">
             <Link
