@@ -18,6 +18,8 @@ const AddWordModal = () => {
   const [error, setError] = useState('');
   const [wordDefinition, setWordDefinition] =
     useState<WordLookupResponse | null>(null);
+  const trimmedWord = word.trim();
+  const googleDefinitionUrl = `https://www.google.com/search?q=define+${encodeURIComponent(trimmedWord)}`;
 
   const resetLookup = () => {
     setWord('');
@@ -53,20 +55,24 @@ const AddWordModal = () => {
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && event.shiftKey) {
-      searchDefinitionWithGoogle();
+      event.preventDefault();
+      if (!trimmedWord) {
+        setError(EMPTY_WORD_ERROR_MESSAGE);
+        return;
+      }
+      window.open(googleDefinitionUrl, '_blank', 'noopener,noreferrer');
     } else if (event.key === 'Enter') {
       searchDefinition();
     }
   };
 
-  const searchDefinitionWithGoogle = () => {
-    const trimmedWord = word.trim();
+  const handleGoogleDefinitionClick = (
+    event: React.MouseEvent<HTMLAnchorElement>
+  ) => {
     if (!trimmedWord) {
+      event.preventDefault();
       setError(EMPTY_WORD_ERROR_MESSAGE);
-      return;
     }
-    const searchUrl = `https://www.google.com/search?q=define+${encodeURIComponent(trimmedWord)}`;
-    window.open(searchUrl, '_blank');
   };
 
   const searchDefinition = async () => {
@@ -158,14 +164,16 @@ const AddWordModal = () => {
                             <Search className="mr-1.5 h-3 w-3 sm:mr-2 sm:h-3.5 sm:w-3.5" />
                             Search
                           </button>
-                          <button
-                            type="button"
-                            onClick={searchDefinitionWithGoogle}
+                          <a
+                            href={googleDefinitionUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={handleGoogleDefinitionClick}
                             className="inline-flex items-center justify-center rounded-full border border-[var(--brass-dark)] bg-[var(--paper-card)] px-3 py-2 text-xs font-bold text-[var(--brass-dark)] transition-all duration-200 hover:bg-[var(--paper)] sm:text-sm"
                           >
                             <ExternalLink className="mr-1.5 h-3 w-3 sm:mr-2 sm:h-3.5 sm:w-3.5" />
                             Google It
-                          </button>
+                          </a>
                         </div>
                       </div>
                       {error && (

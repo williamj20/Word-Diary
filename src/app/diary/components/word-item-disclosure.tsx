@@ -3,7 +3,7 @@
 import DeleteButton from '@/app/diary/components/delete-button';
 import { deleteWordFromUserList } from '@/app/lib/actions/db';
 import clsx from 'clsx';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ExternalLink } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 
 const WordItemDisclosure = ({
@@ -21,6 +21,7 @@ const WordItemDisclosure = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const deleteWord = deleteWordFromUserList.bind(null, wordListId);
+  const merriamWebsterUrl = `https://www.merriam-webster.com/dictionary/${encodeURIComponent(wordLabel)}`;
 
   return (
     <>
@@ -28,6 +29,14 @@ const WordItemDisclosure = ({
         <h3 className="word-card-title">{title}</h3>
         <div className="word-card-button-container">
           <span className="word-card-span">{addedAtLabel}</span>
+          <a
+            href={merriamWebsterUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="icon-button border-[var(--brass-dark)] bg-[var(--paper-card)] text-[var(--brass-dark)] hover:bg-[var(--paper)]"
+          >
+            <ExternalLink className="h-4 w-4" />
+          </a>
           <button
             type="button"
             onClick={() => setIsExpanded(current => !current)}
