@@ -145,10 +145,9 @@ export const getUserWordsPages = async (userId: string, query: string) => {
         AND w.word ILIKE ${`%${query}%`}
     `;
     const totalCount = Number(data.count);
-    const totalPages = Math.ceil(totalCount / ENTRIES_PER_PAGE);
-    return { totalCount, totalPages };
+    return Math.ceil(totalCount / ENTRIES_PER_PAGE);
   } catch (error) {
     console.error('Error fetching user word pages:', error);
-    return { totalCount: 0, totalPages: 0 };
+    return 0;
   }
 };
