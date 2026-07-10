@@ -17,6 +17,12 @@ export interface WordFromUserList {
   added_at: Date;
 }
 
+export interface FlashcardWord {
+  userWordListId: number;
+  word: string;
+  meanings: Meaning[];
+}
+
 // route handler GET response
 export interface WordLookupResponse {
   word: Word;

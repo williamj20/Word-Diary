@@ -1,25 +1,58 @@
 import AuthButtons from '@/app/components/auth-buttons';
-import { BookOpenText } from 'lucide-react';
+import { BookMarked, BookOpenText, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 const AppHeader = ({ showAuthButtons }: { showAuthButtons: boolean }) => {
   return (
-    <header className="relative mx-auto mb-8 mt-1 max-w-7xl sm:mb-10">
-      <Link
-        href="/"
-        className="flex items-center justify-center gap-2.5 sm:gap-3.5"
+    <header className="mx-auto mb-8 mt-1 max-w-7xl sm:mb-10">
+      <div
+        className={
+          showAuthButtons
+            ? 'flex flex-col items-center gap-3 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-4'
+            : 'flex justify-center'
+        }
       >
-        <BookOpenText className="h-5 w-5 sm:h-8 sm:w-8 lg:h-10 lg:w-10" />
-        <h1 className="display-font text-[clamp(1.95rem,8vw,3.65rem)] font-semibold text-[var(--ink)]">
-          Word Diary
-        </h1>
-      </Link>
+        <Link
+          href="/"
+          className="flex min-w-0 items-center justify-center gap-2.5 sm:justify-self-start sm:gap-3.5"
+        >
+          <BookOpenText className="h-5 w-5 sm:h-8 sm:w-8 lg:h-10 lg:w-10" />
+          <h1
+            className={
+              showAuthButtons
+                ? 'display-font text-[clamp(1.95rem,4vw,3.65rem)] font-semibold whitespace-nowrap text-[var(--ink)]'
+                : 'display-font text-[clamp(1.95rem,8vw,3.65rem)] font-semibold text-[var(--ink)]'
+            }
+          >
+            Word Diary
+          </h1>
+        </Link>
 
-      {showAuthButtons && (
-        <div className="mt-2.5 flex justify-center sm:absolute sm:right-0 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2">
-          <AuthButtons />
-        </div>
-      )}
+        {showAuthButtons && (
+          <nav className="flex justify-center gap-2 text-xs font-bold text-[var(--ink-muted)] sm:justify-self-center sm:text-sm">
+            <Link
+              href="/diary"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-3 py-1.5 shadow-sm transition-all duration-200 hover:bg-[var(--paper)] hover:text-[var(--ink)]"
+            >
+              <BookMarked className="h-3.5 w-3.5" />
+              Diary
+            </Link>
+            <Link
+              href="/flashcards"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-3 py-1.5 shadow-sm transition-all duration-200 hover:bg-[var(--paper)] hover:text-[var(--ink)]"
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              Flashcards
+            </Link>
+          </nav>
+        )}
+
+        {showAuthButtons && (
+          <div className="flex justify-center sm:justify-self-end">
+            <AuthButtons />
+          </div>
+        )}
+      </div>
     </header>
   );
 };

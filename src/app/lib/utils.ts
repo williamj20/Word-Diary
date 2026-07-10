@@ -51,6 +51,7 @@ export const redirectToSignupIfNotLoggedIn = async () => {
     console.log('User is not logged in, redirecting to signup page');
     redirect('/signup');
   }
+  return user;
 };
 
 export const redirectToDiaryIfLoggedIn = async () => {
