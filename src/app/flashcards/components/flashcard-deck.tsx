@@ -158,20 +158,18 @@ const FlashcardDeck = ({ words }: { words: FlashcardWord[] }) => {
             type="button"
             onClick={goToPreviousCard}
             disabled={!canGoPrevious}
-            className="inline-flex min-w-32 items-center justify-center gap-2 rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-4 py-2.5 text-sm font-bold text-[var(--ink-muted)] shadow-sm transition-colors duration-200 hover:bg-[var(--paper)] hover:text-[var(--ink)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[var(--paper-card)] disabled:hover:text-[var(--ink-muted)]"
+            className="pagination-nav-button"
             title="Previous card"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span>Previous</span>
           </button>
           <button
             type="button"
             onClick={goToNextCard}
             disabled={!canGoNext}
-            className="inline-flex min-w-32 items-center justify-center gap-2 rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-4 py-2.5 text-sm font-bold text-[var(--paper-card)] shadow-sm transition-all duration-200 hover:bg-[var(--sage)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[var(--sage-dark)]"
+            className="pagination-nav-button"
             title="Next card"
           >
-            <span>Next</span>
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>

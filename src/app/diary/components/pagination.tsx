@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 
@@ -76,32 +76,19 @@ const PaginationArrow = ({
   direction: 'previous' | 'next';
   isDisabled?: boolean;
 }) => {
-  const className = clsx(
-    paginationBaseClassName,
-    'gap-1 px-2 py-1 sm:gap-2 sm:px-4 sm:py-2',
-    {
-      'cursor-not-allowed opacity-55 hover:bg-[var(--paper-card)] hover:text-[var(--ink-muted)]':
-        isDisabled,
-    }
-  );
-
   const icon =
     direction === 'previous' ? (
-      <>
-        <ChevronLeft className="h-4 w-4" />
-        <span>Previous</span>
-      </>
+      <ArrowLeft className="h-4 w-4" />
     ) : (
-      <>
-        <span>Next</span>
-        <ChevronRight className="h-4 w-4" />
-      </>
+      <ArrowRight className="h-4 w-4" />
     );
 
   return isDisabled ? (
-    <span className={className}>{icon}</span>
+    <button type="button" disabled className="pagination-nav-button">
+      {icon}
+    </button>
   ) : (
-    <Link href={href} className={className}>
+    <Link href={href} className="pagination-nav-button">
       {icon}
     </Link>
   );
