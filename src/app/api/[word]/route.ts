@@ -7,6 +7,7 @@ import {
 import { NextRequest, NextResponse } from 'next/server';
 
 const API_KEY = process.env.DICTIONARY_API_KEY;
+const DICTIONARY_CACHE_SECONDS = 60 * 60 * 24 * 30;
 
 export const GET = async (
   _request: NextRequest,
@@ -42,7 +43,7 @@ export const GET = async (
       `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(normalizedWord)}?key=${API_KEY}`,
       {
         next: {
-          revalidate: false,
+          revalidate: DICTIONARY_CACHE_SECONDS,
         },
       }
     );

@@ -11,6 +11,8 @@ export interface Word {
   meanings: Meaning[];
 }
 
+export type WordDefinition = Pick<Word, 'word' | 'meanings'>;
+
 export interface WordFromUserList {
   id: number;
   word: Word;
@@ -25,7 +27,7 @@ export interface FlashcardWord {
 
 // route handler GET response
 export interface WordLookupResponse {
-  word: Word;
+  word: WordDefinition;
   isInUserList: boolean;
 }
 

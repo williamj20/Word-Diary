@@ -1,11 +1,16 @@
-import { DictionaryServiceObject, Meaning } from '@/app/lib/definitions';
+import {
+  DictionaryServiceObject,
+  Meaning,
+  WordDefinition,
+} from '@/app/lib/definitions';
 import createSupabaseServerClient from '@/app/lib/supabase/server';
 import { redirect } from 'next/navigation';
+import { cache } from 'react';
 
 export const convertDictionaryServiceResponse = (
   dictionaryServiceResponse: DictionaryServiceObject[],
   word: string
-) => {
+): WordDefinition | null => {
   dictionaryServiceResponse = dictionaryServiceResponse.map(entry => {
     if (entry.hwi && entry.hwi.hw) {
       entry.hwi.hw = entry.hwi.hw.replaceAll('*', '');
@@ -37,13 +42,13 @@ export const convertDictionaryServiceResponse = (
   return formattedWord;
 };
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = cache(async () => {
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   return user ?? null;
-};
+});
 
 export const redirectToSignupIfNotLoggedIn = async () => {
   const user = await getCurrentUser();

@@ -16,6 +16,7 @@ const AddWordModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [word, setWord] = useState('');
   const [error, setError] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
   const [wordDefinition, setWordDefinition] =
     useState<WordLookupResponse | null>(null);
   const trimmedWord = word.trim();
@@ -24,6 +25,7 @@ const AddWordModal = () => {
   const resetLookup = () => {
     setWord('');
     setError('');
+    setIsSearching(false);
     setWordDefinition(null);
   };
 
@@ -42,6 +44,7 @@ const AddWordModal = () => {
         setIsOpen(false);
         setWord('');
         setError('');
+        setIsSearching(false);
         setWordDefinition(null);
       }
     };
@@ -76,14 +79,21 @@ const AddWordModal = () => {
   };
 
   const searchDefinition = async () => {
-    const trimmedWord = word.trim().toLowerCase();
-    if (!trimmedWord) {
+    if (isSearching) {
+      return;
+    }
+
+    const lookupWord = word.trim().toLowerCase();
+    if (!lookupWord) {
       setError(EMPTY_WORD_ERROR_MESSAGE);
       return;
     }
+
     setError('');
+    setIsSearching(true);
+
     try {
-      const response = await fetch(`/api/${encodeURIComponent(trimmedWord)}`);
+      const response = await fetch(`/api/${encodeURIComponent(lookupWord)}`);
       const data = await response.json();
       if (!response.ok) {
         setWordDefinition(null);
@@ -99,6 +109,8 @@ const AddWordModal = () => {
       console.error('Error fetching definition:', error);
       setWordDefinition(null);
       setError(SOMETHING_WENT_WRONG);
+    } finally {
+      setIsSearching(false);
     }
   };
 
@@ -158,11 +170,12 @@ const AddWordModal = () => {
                         <div className="flex gap-2 sm:pr-1">
                           <button
                             type="button"
+                            disabled={isSearching}
                             onClick={searchDefinition}
-                            className="inline-flex items-center justify-center rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-3 py-2 text-xs font-bold text-[var(--paper-card)] transition-all duration-200 hover:bg-[var(--sage)] sm:text-sm"
+                            className="inline-flex min-w-24 items-center justify-center rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-3 py-2 text-xs font-bold text-[var(--paper-card)] transition-all duration-200 hover:bg-[var(--sage)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-[var(--sage-dark)] sm:text-sm"
                           >
                             <Search className="mr-1.5 h-3 w-3 sm:mr-2 sm:h-3.5 sm:w-3.5" />
-                            Search
+                            {isSearching ? 'Searching...' : 'Search'}
                           </button>
                           <a
                             href={googleDefinitionUrl}
@@ -179,6 +192,11 @@ const AddWordModal = () => {
                       {error && (
                         <div className="error-message px-3 pt-1.5">{error}</div>
                       )}
+                      {isSearching && !error ? (
+                        <div className="px-3 pt-1.5 text-xs font-semibold text-[var(--ink-muted)] sm:text-sm">
+                          Searching dictionary...
+                        </div>
+                      ) : null}
                       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-2.5 pb-1 pt-1.5 text-xs text-[var(--ink-muted)] sm:px-3 sm:text-sm">
                         <span className="flex items-center gap-1">
                           <span className="keycap-style">Enter</span>

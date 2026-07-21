@@ -14,6 +14,18 @@ const normalizeSearchParam = (value?: string | string[]) => {
   return value?.trim() ?? '';
 };
 
+const DiaryPagination = async ({
+  query,
+  userId,
+}: {
+  query: string;
+  userId: string;
+}) => {
+  const totalPages = Math.max(1, await getUserWordsPages(userId, query));
+
+  return <Pagination totalPages={totalPages} />;
+};
+
 const DiaryPage = async (props: {
   searchParams?: Promise<{
     q?: string | string[];
@@ -25,7 +37,6 @@ const DiaryPage = async (props: {
   const searchParams = await props.searchParams;
   const q = normalizeSearchParam(searchParams?.q);
   const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = Math.max(1, await getUserWordsPages(user!.id, q));
 
   return (
     <main>
@@ -53,7 +64,12 @@ const DiaryPage = async (props: {
             <WordList currentPage={currentPage} query={q} userId={user!.id} />
           </Suspense>
           <div>
-            <Pagination totalPages={totalPages} />
+            <Suspense
+              key={`pagination-${q}`}
+              fallback={<div className="mt-4 h-9 sm:mt-5 sm:h-10" />}
+            >
+              <DiaryPagination query={q} userId={user!.id} />
+            </Suspense>
           </div>
         </div>
       </div>

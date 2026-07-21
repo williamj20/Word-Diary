@@ -4,6 +4,7 @@ import SaveButton from '@/app/diary/components/save-button';
 import { addWordToUserList } from '@/app/lib/actions/db';
 import { WordLookupResponse } from '@/app/lib/definitions';
 import clsx from 'clsx';
+import { useTransition } from 'react';
 
 const AddWordDefinition = ({
   wordDefinition,
@@ -12,17 +13,25 @@ const AddWordDefinition = ({
   wordDefinition: WordLookupResponse | null;
   onSave: () => void;
 }) => {
+  const [isSaving, startSavingTransition] = useTransition();
+
   if (!wordDefinition) {
     return null;
   }
   const saveWordAction = addWordToUserList.bind(null, wordDefinition.word);
   const isAbleToSave = !wordDefinition.isInUserList;
 
-  const saveWord = async () => {
-    const res = await saveWordAction();
-    if (res.success) {
-      onSave();
+  const saveWord = () => {
+    if (!isAbleToSave || isSaving) {
+      return;
     }
+
+    startSavingTransition(async () => {
+      const res = await saveWordAction();
+      if (res.success) {
+        onSave();
+      }
+    });
   };
 
   return (
@@ -37,7 +46,11 @@ const AddWordDefinition = ({
       <div className="word-card-preview-container">
         <h3 className="word-card-title">{wordDefinition.word.word}</h3>
         <div>
-          <SaveButton isAbleToSave={isAbleToSave} onSave={saveWord} />
+          <SaveButton
+            isAbleToSave={isAbleToSave}
+            isSaving={isSaving}
+            onSave={saveWord}
+          />
         </div>
       </div>
 

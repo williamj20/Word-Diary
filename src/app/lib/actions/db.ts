@@ -1,11 +1,11 @@
 'use server';
 
 import sql from '@/app/lib/dbClient';
-import { Word } from '@/app/lib/definitions';
+import { WordDefinition } from '@/app/lib/definitions';
 import { getCurrentUser } from '@/app/lib/utils';
 import { revalidatePath } from 'next/cache';
 
-export const addWordToUserList = async (word: Word) => {
+export const addWordToUserList = async (word: WordDefinition) => {
   try {
     const normalizedWord = word.word.trim().toLowerCase();
     const user = await getCurrentUser();
