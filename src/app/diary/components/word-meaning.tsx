@@ -1,6 +1,6 @@
 import { Meaning } from '@/app/lib/definitions';
 
-const WordMeaning = async ({ meaning }: { meaning: Meaning }) => {
+const WordMeaning = ({ meaning }: { meaning: Meaning }) => {
   return (
     <section className="word-card-meanings">
       <div className="word-card-meanings-part-of-speech">

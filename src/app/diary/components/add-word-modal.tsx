@@ -94,7 +94,7 @@ const AddWordModal = () => {
 
     try {
       const response = await fetch(`/api/${encodeURIComponent(lookupWord)}`);
-      const data = await response.json();
+      const data: WordLookupResponse = await response.json();
       if (!response.ok) {
         setWordDefinition(null);
         if (response.status === 404) {
