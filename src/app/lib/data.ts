@@ -5,7 +5,7 @@ import {
   WordLookupResponse,
 } from '@/app/lib/definitions';
 import sql from '@/app/lib/dbClient';
-import { getCurrentUser } from '@/app/lib/utils';
+import { escapeLikePattern, getCurrentUser } from '@/app/lib/utils';
 
 export const ENTRIES_PER_PAGE = 6;
 
@@ -133,7 +133,7 @@ export const getUserWordsByQuery = async (
       from public.user_words_list uw
       join public.words w on w.id = uw.word_id
       where uw.user_id = ${user.id}
-        and w.word ilike ${`%${query}%`}
+        and w.word ilike ${`%${escapeLikePattern(query)}%`}
       order by uw.added_at desc, uw.id desc
       limit ${ENTRIES_PER_PAGE}
       offset ${offset}
@@ -180,7 +180,7 @@ export const getUserWordsPages = async (query: string): Promise<number> => {
     from public.user_words_list uw
     join public.words w on w.id = uw.word_id
     where uw.user_id = ${user.id}
-      and w.word ilike ${`%${query}%`}
+      and w.word ilike ${`%${escapeLikePattern(query)}%`}
   `;
   return Math.ceil(Number(totalCount) / ENTRIES_PER_PAGE);
 };

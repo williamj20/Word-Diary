@@ -7,6 +7,11 @@ import createSupabaseServerClient from '@/app/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { cache } from 'react';
 
+// Prefix PostgreSQL LIKE/ILIKE metacharacters with the default backslash
+// escape character so user-entered `\`, `%`, and `_` are matched literally.
+export const escapeLikePattern = (value: string): string =>
+  value.replace(/[\\%_]/g, character => `\\${character}`);
+
 export const convertDictionaryServiceResponse = (
   dictionaryServiceResponse: DictionaryServiceObject[],
   word: string
