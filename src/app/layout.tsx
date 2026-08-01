@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Fraunces, Literata } from 'next/font/google';
+import { Literata, Newsreader } from 'next/font/google';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: 'A place to keep track of new words.',
 };
 
-const fraunces = Fraunces({
+const newsreader = Newsreader({
   variable: '--font-display',
   subsets: ['latin'],
 });
@@ -24,7 +24,9 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="en">
-      <body className={`${fraunces.variable} ${literata.variable} antialiased`}>
+      <body
+        className={`${newsreader.variable} ${literata.variable} antialiased`}
+      >
         <div className="overflow-x-auto">
           <div className="mx-auto min-w-xs px-3">{children}</div>
         </div>
