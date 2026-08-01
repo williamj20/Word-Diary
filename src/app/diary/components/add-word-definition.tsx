@@ -1,10 +1,10 @@
 'use client';
 
 import SaveButton from '@/app/diary/components/save-button';
-import { addWordToUserList } from '@/app/lib/actions/db';
+import { saveWordToDiary } from '@/app/lib/actions/db';
 import { WordLookupResponse } from '@/app/lib/definitions';
 import clsx from 'clsx';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 
 const AddWordDefinition = ({
   wordDefinition,
@@ -14,11 +14,12 @@ const AddWordDefinition = ({
   onSave: () => void;
 }) => {
   const [isSaving, startSavingTransition] = useTransition();
+  const [saveError, setSaveError] = useState('');
 
   if (!wordDefinition) {
     return null;
   }
-  const saveWordAction = addWordToUserList.bind(null, wordDefinition.word);
+  const saveWordAction = saveWordToDiary.bind(null, wordDefinition.word.word);
   const isAbleToSave = !wordDefinition.isInUserList;
 
   const saveWord = () => {
@@ -27,9 +28,12 @@ const AddWordDefinition = ({
     }
 
     startSavingTransition(async () => {
+      setSaveError('');
       const res = await saveWordAction();
       if (res.success) {
         onSave();
+      } else {
+        setSaveError('Unable to save this word. Please try again.');
       }
     });
   };
@@ -68,6 +72,9 @@ const AddWordDefinition = ({
           </section>
         ))}
       </div>
+      {saveError ? (
+        <p className="error-message mt-3 text-center">{saveError}</p>
+      ) : null}
     </article>
   );
 };

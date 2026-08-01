@@ -14,14 +14,8 @@ const normalizeSearchParam = (value?: string | string[]) => {
   return value?.trim() ?? '';
 };
 
-const DiaryPagination = async ({
-  query,
-  userId,
-}: {
-  query: string;
-  userId: string;
-}) => {
-  const totalPages = Math.max(1, await getUserWordsPages(userId, query));
+const DiaryPagination = async ({ query }: { query: string }) => {
+  const totalPages = Math.max(1, await getUserWordsPages(query));
 
   return <Pagination totalPages={totalPages} />;
 };
@@ -32,8 +26,7 @@ const DiaryPage = async (props: {
     page?: string | string[];
   }>;
 }) => {
-  const user = await redirectToSignupIfNotLoggedIn();
-
+  await redirectToSignupIfNotLoggedIn();
   const searchParams = await props.searchParams;
   const q = normalizeSearchParam(searchParams?.q);
   const currentPage = Number(searchParams?.page) || 1;
@@ -61,14 +54,14 @@ const DiaryPage = async (props: {
             key={`${q}-${currentPage}`}
             fallback={<WordListSkeleton rows={ENTRIES_PER_PAGE} />}
           >
-            <WordList currentPage={currentPage} query={q} userId={user!.id} />
+            <WordList currentPage={currentPage} query={q} />
           </Suspense>
           <div>
             <Suspense
               key={`pagination-${q}`}
               fallback={<div className="mt-4 h-9 sm:mt-5 sm:h-10" />}
             >
-              <DiaryPagination query={q} userId={user!.id} />
+              <DiaryPagination query={q} />
             </Suspense>
           </div>
         </div>

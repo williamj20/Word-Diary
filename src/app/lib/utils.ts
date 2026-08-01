@@ -1,6 +1,6 @@
 import {
   DictionaryServiceObject,
-  Meaning,
+  MeaningContent,
   WordDefinition,
 } from '@/app/lib/definitions';
 import createSupabaseServerClient from '@/app/lib/supabase/server';
@@ -19,27 +19,24 @@ export const convertDictionaryServiceResponse = (
   });
 
   dictionaryServiceResponse = dictionaryServiceResponse.filter(
-    (entry: DictionaryServiceObject) => entry.hwi && entry.hwi.hw === word
+    entry => entry.hwi && entry.hwi.hw === word
   );
 
   if (dictionaryServiceResponse.length === 0) {
     return null;
   }
 
-  dictionaryServiceResponse = dictionaryServiceResponse.slice(0, 6);
-
-  const meanings: Meaning[] = [];
-  for (const entry of dictionaryServiceResponse) {
-    meanings.push({
+  const meanings: MeaningContent[] = dictionaryServiceResponse
+    .slice(0, 6)
+    .map(entry => ({
       part_of_speech: entry.fl,
       definitions: entry.shortdef,
-    });
-  }
-  const formattedWord = {
+    }));
+
+  return {
     word,
     meanings,
   };
-  return formattedWord;
 };
 
 export const getCurrentUser = cache(async () => {

@@ -1,28 +1,28 @@
 import z from 'zod';
 
-export interface Meaning {
+export interface MeaningContent {
   part_of_speech: string;
   definitions: string[];
 }
 
+export interface Meaning extends MeaningContent {
+  id: number;
+}
+
 export interface Word {
   word: string;
-  id: number;
   meanings: Meaning[];
 }
 
-export type WordDefinition = Pick<Word, 'word' | 'meanings'>;
+export interface WordDefinition {
+  word: string;
+  meanings: MeaningContent[];
+}
 
-export interface WordFromUserList {
+export interface UserWordListEntry {
+  addedAt: string;
   id: number;
   word: Word;
-  added_at: Date;
-}
-
-export interface FlashcardWord {
-  userWordListId: number;
-  word: string;
-  meanings: Meaning[];
 }
 
 // route handler GET response
@@ -57,6 +57,10 @@ export const SignupFormSchema = z
     path: ['confirmPassword'],
     error: 'Passwords do not match.',
   });
+
+export interface MutationResult {
+  success: boolean;
+}
 
 export type SignupFormState =
   | {

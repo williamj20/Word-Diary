@@ -1,15 +1,15 @@
 import WordItemDisclosure from '@/app/diary/components/word-item-disclosure';
 import WordMeaning from '@/app/diary/components/word-meaning';
-import { WordFromUserList } from '@/app/lib/definitions';
+import { UserWordListEntry } from '@/app/lib/definitions';
 
-const WordItem = async ({ word }: { word: WordFromUserList }) => {
+const WordItem = ({ word }: { word: UserWordListEntry }) => {
   const wordDefinition = word.word;
   const addedAtLabel = new Intl.DateTimeFormat('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
     timeZone: 'UTC',
-  }).format(new Date(word.added_at));
+  }).format(new Date(word.addedAt));
 
   return (
     <article className="word-card mt-3">
@@ -20,8 +20,8 @@ const WordItem = async ({ word }: { word: WordFromUserList }) => {
         addedAtLabel={addedAtLabel}
       >
         <div className="word-card-meanings-container">
-          {wordDefinition.meanings.map((meaning, index) => (
-            <WordMeaning key={index} meaning={meaning} />
+          {wordDefinition.meanings.map(meaning => (
+            <WordMeaning key={meaning.id} meaning={meaning} />
           ))}
         </div>
       </WordItemDisclosure>

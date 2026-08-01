@@ -8,6 +8,7 @@ interface DeleteWordModalProps {
   word: string;
   isOpen: boolean;
   isDeleting: boolean;
+  error: string;
   onClose: () => void;
   onConfirm: () => void;
 }
@@ -16,6 +17,7 @@ const DeleteWordModal = ({
   word,
   isOpen,
   isDeleting,
+  error,
   onClose,
   onConfirm,
 }: DeleteWordModalProps) => {
@@ -71,6 +73,8 @@ const DeleteWordModal = ({
           This will permanently remove this word from your list. This action
           cannot be undone.
         </p>
+
+        {error ? <p className="error-message mb-4">{error}</p> : null}
 
         <div className="flex gap-2 sm:gap-3">
           <button

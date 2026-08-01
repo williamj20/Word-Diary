@@ -1,10 +1,10 @@
 import FlashcardDeck from '@/app/flashcards/components/flashcard-deck';
-import { getUserWordsForFlashcards } from '@/app/lib/data';
-import { FlashcardWord } from '@/app/lib/definitions';
+import { getFlashcardDeck } from '@/app/lib/data';
+import { WordDefinition } from '@/app/lib/definitions';
 import { redirectToSignupIfNotLoggedIn } from '@/app/lib/utils';
 import Link from 'next/link';
 
-const shuffleWords = (words: FlashcardWord[]) => {
+const shuffleWords = (words: WordDefinition[]) => {
   const shuffled = [...words];
   for (let index = shuffled.length - 1; index > 0; index -= 1) {
     const randomIndex = Math.floor(Math.random() * (index + 1));
@@ -17,8 +17,8 @@ const shuffleWords = (words: FlashcardWord[]) => {
 };
 
 const FlashcardsPage = async () => {
-  const user = await redirectToSignupIfNotLoggedIn();
-  const words = await getUserWordsForFlashcards(user.id);
+  await redirectToSignupIfNotLoggedIn();
+  const words = await getFlashcardDeck();
 
   if (words.length === 0) {
     return (

@@ -1,12 +1,11 @@
-import { getWordFromUserList, getWordFromWordsTable } from '@/app/lib/data';
-import { DictionaryServiceObject } from '@/app/lib/definitions';
+import { getWordLookup, saveWordDefinition } from '@/app/lib/data';
 import {
   convertDictionaryServiceResponse,
   getCurrentUser,
 } from '@/app/lib/utils';
+import { DictionaryServiceObject } from '@/app/lib/definitions';
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_KEY = process.env.DICTIONARY_API_KEY;
 const DICTIONARY_CACHE_SECONDS = 60 * 60 * 24 * 30;
 
 export const GET = async (
@@ -21,49 +20,58 @@ export const GET = async (
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const wordFromUserList = await getWordFromUserList(user.id, normalizedWord);
-    if (wordFromUserList) {
-      console.log('Retrieving word from user list', wordFromUserList);
-      return NextResponse.json({
-        word: wordFromUserList.word,
-        isInUserList: true,
-      });
-    }
-    const wordFromWordsTable = await getWordFromWordsTable(normalizedWord);
-    if (wordFromWordsTable) {
-      console.log('Retrieving word from words table', wordFromWordsTable);
-      return NextResponse.json({
-        word: wordFromWordsTable,
-        isInUserList: false,
-      });
+
+    const storedWord = await getWordLookup(normalizedWord);
+    if (storedWord) {
+      console.log('Word found in database, returning stored definition');
+      return NextResponse.json(storedWord);
     }
 
-    console.log('Fetching definition from external API: ', normalizedWord);
+    const apiKey = process.env.DICTIONARY_API_KEY;
+    if (!apiKey) {
+      throw new Error('DICTIONARY_API_KEY is not configured');
+    }
+
     const response = await fetch(
-      `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(normalizedWord)}?key=${API_KEY}`,
+      `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(normalizedWord)}?key=${apiKey}`,
       {
         next: {
           revalidate: DICTIONARY_CACHE_SECONDS,
         },
       }
     );
+
     if (!response.ok) {
+      console.error('External dictionary request failed', {
+        status: response.status,
+        word: normalizedWord,
+      });
       return NextResponse.json(
         { error: 'Failed to fetch definition' },
         { status: 500 }
       );
     }
-    const res: DictionaryServiceObject[] = await response.json();
-    if (res.length === 0) {
+
+    const dictionaryResponse: DictionaryServiceObject[] = await response.json();
+    const wordDefinition = convertDictionaryServiceResponse(
+      dictionaryResponse,
+      normalizedWord
+    );
+    if (!wordDefinition) {
       return NextResponse.json({ error: 'Word not found' }, { status: 404 });
     }
-    const formattedWord = convertDictionaryServiceResponse(res, normalizedWord);
-    if (!formattedWord) {
-      return NextResponse.json({ error: 'Word not found' }, { status: 404 });
-    }
-    return NextResponse.json({ word: formattedWord, isInUserList: false });
+
+    await saveWordDefinition(wordDefinition);
+    console.log('Word definition found externally and saved to database');
+    return NextResponse.json({
+      word: wordDefinition,
+      isInUserList: false,
+    });
   } catch (error) {
-    console.error('Error fetching definition:', error);
+    console.error('Word lookup failed', {
+      error,
+      word: normalizedWord,
+    });
     return NextResponse.json(
       { error: 'Failed to fetch definition' },
       { status: 500 }

@@ -4,13 +4,11 @@ import { getUserWordsByQuery } from '@/app/lib/data';
 const WordList = async ({
   currentPage,
   query,
-  userId,
 }: {
   currentPage: number;
   query: string;
-  userId: string;
 }) => {
-  const words = await getUserWordsByQuery(userId, query, currentPage);
+  const words = await getUserWordsByQuery(query, currentPage);
 
   const isEmpty = words.length === 0;
 

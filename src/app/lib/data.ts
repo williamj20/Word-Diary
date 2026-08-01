@@ -1,193 +1,216 @@
+import {
+  MeaningContent,
+  UserWordListEntry,
+  WordDefinition,
+  WordLookupResponse,
+} from '@/app/lib/definitions';
 import sql from '@/app/lib/dbClient';
-import { FlashcardWord, Word, WordFromUserList } from '@/app/lib/definitions';
-
-export const getWordFromWordsTable = async (word: string) => {
-  try {
-    const wordFromWordsTable = await sql<Word[]>`
-      SELECT
-        w.word,
-        w.id,
-        COALESCE(
-          jsonb_agg(
-            jsonb_build_object(
-              'part_of_speech', wm.part_of_speech,
-              'definitions', defs.definitions_json
-            )
-          ),
-          '[]'::jsonb
-        ) AS meanings
-      FROM words w
-      LEFT JOIN word_meanings wm ON wm.word_id = w.id
-      LEFT JOIN LATERAL (
-        SELECT COALESCE(
-          jsonb_agg(md.definition ORDER BY md.definition_order),
-          '[]'::jsonb
-        ) AS definitions_json
-        FROM word_meaning_definitions md
-        WHERE md.meaning_id = wm.id
-      ) defs ON true
-      WHERE w.word = ${word}
-      GROUP BY w.id
-    `;
-    return wordFromWordsTable[0];
-  } catch (error) {
-    console.error('Error fetching word from words table', error);
-    return null;
-  }
-};
-
-export const getWordFromUserList = async (userId: string, word: string) => {
-  try {
-    const wordFromUserList = await sql<WordFromUserList[]>`
-      SELECT
-        uw.id,
-        jsonb_build_object(
-          'id', w.id,
-          'word', w.word,
-          'meanings', meanings.meanings_json
-        ) AS word,
-        uw.added_at
-      FROM user_words_list uw
-      JOIN words w ON w.id = uw.word_id
-      LEFT JOIN LATERAL (
-        SELECT COALESCE(
-          jsonb_agg(
-            jsonb_build_object(
-              'part_of_speech', wm.part_of_speech,
-              'definitions', defs.definitions_json
-            )
-          ),
-          '[]'::jsonb
-        ) AS meanings_json
-        FROM word_meanings wm
-        LEFT JOIN LATERAL (
-          SELECT COALESCE(
-            jsonb_agg(md.definition ORDER BY md.definition_order),
-            '[]'::jsonb
-          ) AS definitions_json
-          FROM word_meaning_definitions md
-          WHERE md.meaning_id = wm.id
-        ) defs ON true
-        WHERE wm.word_id = w.id
-      ) meanings ON true
-      WHERE uw.user_id = ${userId}
-        AND w.word = ${word}
-      LIMIT 1
-    `;
-    return wordFromUserList[0] ?? null;
-  } catch (error) {
-    console.error('Error fetching word from user list:', error);
-    return null;
-  }
-};
+import { getCurrentUser } from '@/app/lib/utils';
 
 export const ENTRIES_PER_PAGE = 6;
 
+interface WordLookupRow {
+  word: string;
+  meanings: MeaningContent[];
+  isInUserList: boolean;
+}
+
+const getAuthenticatedUser = async () => {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error('Authenticated database access requires a user');
+  }
+
+  return user;
+};
+
+export const getWordLookup = async (
+  word: string
+): Promise<WordLookupResponse | null> => {
+  const normalizedWord = word.trim().toLowerCase();
+  const user = await getAuthenticatedUser();
+
+  // Fetch the shared word and its ordered meanings, then check whether the
+  // authenticated user has saved it, all in one database query.
+  const [data] = await sql<WordLookupRow[]>`
+    select
+      w.word,
+      meaning_rows.meanings,
+      exists (
+        select 1
+        from public.user_words_list uw
+        where uw.word_id = w.id
+          and uw.user_id = ${user.id}
+      ) as "isInUserList"
+    from public.words w
+    cross join lateral (
+      select coalesce(
+        jsonb_agg(
+          jsonb_build_object(
+            'part_of_speech', wm.part_of_speech,
+            'definitions', wm.definitions
+          )
+          order by wm.meaning_order
+        ),
+        '[]'::jsonb
+      ) as meanings
+      from public.word_meanings wm
+      where wm.word_id = w.id
+    ) meaning_rows
+    where w.word = ${normalizedWord}
+    limit 1
+  `;
+
+  if (!data) {
+    return null;
+  }
+
+  return {
+    word: {
+      word: data.word,
+      meanings: data.meanings,
+    },
+    isInUserList: data.isInUserList,
+  };
+};
+
+export const saveWordDefinition = async (
+  wordDefinition: WordDefinition
+): Promise<void> => {
+  await sql.begin(async transaction => {
+    const [createdWord] = await transaction<{ id: string }[]>`
+      insert into public.words (word)
+      values (${wordDefinition.word})
+      on conflict (word) do nothing
+      returning id
+    `;
+
+    if (!createdWord) {
+      return;
+    }
+
+    const wordId = createdWord.id;
+    const meanings = wordDefinition.meanings.map((meaning, index) => ({
+      meaning_order: index + 1,
+      part_of_speech: meaning.part_of_speech,
+      definitions: meaning.definitions,
+    }));
+
+    await transaction`
+      insert into public.word_meanings (
+        word_id,
+        meaning_order,
+        part_of_speech,
+        definitions
+      )
+      select
+        ${wordId}::bigint,
+        meaning_order,
+        part_of_speech,
+        definitions
+      from jsonb_to_recordset(${transaction.json(meanings)}::jsonb) as meaning(
+        meaning_order integer,
+        part_of_speech text,
+        definitions jsonb
+      )
+    `;
+  });
+};
+
 export const getUserWordsByQuery = async (
-  userId: string,
   query: string,
   page: number
-) => {
+): Promise<UserWordListEntry[]> => {
+  const user = await getAuthenticatedUser();
   const offset = (page - 1) * ENTRIES_PER_PAGE;
-  try {
-    const wordList = await sql<WordFromUserList[]>`
-        SELECT
-          uw.id,
+  const [data] = await sql<{ items: UserWordListEntry[] }[]>`
+    with page_words as (
+      select
+        uw.id,
+        uw.word_id,
+        uw.added_at,
+        w.word
+      from public.user_words_list uw
+      join public.words w on w.id = uw.word_id
+      where uw.user_id = ${user.id}
+        and w.word ilike ${`%${query}%`}
+      order by uw.added_at desc, uw.id desc
+      limit ${ENTRIES_PER_PAGE}
+      offset ${offset}
+    )
+    select
+      coalesce(
+        jsonb_agg(
           jsonb_build_object(
-            'id', w.id,
-            'word', w.word,
-            'meanings', meanings.meanings_json
-          ) AS word,
-          uw.added_at
-        FROM user_words_list uw
-        JOIN words w ON w.id = uw.word_id
-        LEFT JOIN LATERAL (
-          SELECT COALESCE(
-            jsonb_agg(
-              jsonb_build_object(
-                'part_of_speech', wm.part_of_speech,
-                'definitions', defs.definitions_json
-              )
-            ),
-            '[]'::jsonb
-          ) AS meanings_json
-          FROM word_meanings wm
-          LEFT JOIN LATERAL (
-            SELECT COALESCE(
-              jsonb_agg(md.definition ORDER BY md.definition_order),
-              '[]'::jsonb
-            ) AS definitions_json
-            FROM word_meaning_definitions md
-            WHERE md.meaning_id = wm.id
-          ) defs ON true
-          WHERE wm.word_id = w.id
-        ) meanings ON true
-        WHERE uw.user_id = ${userId}
-          AND w.word ILIKE ${`%${query}%`}
-        ORDER BY uw.added_at DESC
-        LIMIT ${ENTRIES_PER_PAGE}
-        OFFSET ${offset}
-      `;
-    return wordList;
-  } catch (error) {
-    console.error('Error fetching user words:', error);
-    return [];
-  }
-};
-
-export const getUserWordsPages = async (userId: string, query: string) => {
-  try {
-    const [data] = await sql<{ count: number }[]>`
-      SELECT COUNT(*)
-      FROM user_words_list uw
-      JOIN words w ON w.id = uw.word_id
-      WHERE uw.user_id = ${userId}
-        AND w.word ILIKE ${`%${query}%`}
-    `;
-    const totalCount = Number(data.count);
-    return Math.ceil(totalCount / ENTRIES_PER_PAGE);
-  } catch (error) {
-    console.error('Error fetching user word pages:', error);
-    return 0;
-  }
-};
-
-export const getUserWordsForFlashcards = async (userId: string) => {
-  try {
-    const wordList = await sql<FlashcardWord[]>`
-      SELECT
-        uw.id AS "userWordListId",
-        w.word,
-        meanings.meanings_json AS meanings
-      FROM user_words_list uw
-      JOIN words w ON w.id = uw.word_id
-      LEFT JOIN LATERAL (
-        SELECT COALESCE(
-          jsonb_agg(
-            jsonb_build_object(
-              'part_of_speech', wm.part_of_speech,
-              'definitions', defs.definitions_json
+            'id', page_words.id,
+            'addedAt', page_words.added_at,
+            'word', jsonb_build_object(
+              'word', page_words.word,
+              'meanings', meaning_rows.meanings
             )
-          ),
-          '[]'::jsonb
-        ) AS meanings_json
-        FROM word_meanings wm
-        LEFT JOIN LATERAL (
-          SELECT COALESCE(
-            jsonb_agg(md.definition ORDER BY md.definition_order),
-            '[]'::jsonb
-          ) AS definitions_json
-          FROM word_meaning_definitions md
-          WHERE md.meaning_id = wm.id
-        ) defs ON true
-        WHERE wm.word_id = w.id
-      ) meanings ON true
-      WHERE uw.user_id = ${userId}
-      ORDER BY uw.added_at DESC
-    `;
-    return wordList;
-  } catch (error) {
-    console.error('Error fetching flashcard words:', error);
-    return [];
-  }
+          )
+          order by page_words.added_at desc, page_words.id desc
+        ),
+        '[]'::jsonb
+      ) as items
+    from page_words
+    cross join lateral (
+      select coalesce(
+        jsonb_agg(
+          jsonb_build_object(
+            'id', wm.id,
+            'part_of_speech', wm.part_of_speech,
+            'definitions', wm.definitions
+          )
+          order by wm.meaning_order
+        ),
+        '[]'::jsonb
+      ) as meanings
+      from public.word_meanings wm
+      where wm.word_id = page_words.word_id
+    ) meaning_rows
+  `;
+  return data.items;
+};
+
+export const getUserWordsPages = async (query: string): Promise<number> => {
+  const user = await getAuthenticatedUser();
+  const [{ totalCount }] = await sql<{ totalCount: string }[]>`
+    select count(*) as "totalCount"
+    from public.user_words_list uw
+    join public.words w on w.id = uw.word_id
+    where uw.user_id = ${user.id}
+      and w.word ilike ${`%${query}%`}
+  `;
+  return Math.ceil(Number(totalCount) / ENTRIES_PER_PAGE);
+};
+
+export const getFlashcardDeck = async (): Promise<WordDefinition[]> => {
+  const user = await getAuthenticatedUser();
+  const rows = await sql<WordDefinition[]>`
+    select
+      w.word,
+      meaning_rows.meanings
+    from public.user_words_list uw
+    join public.words w on w.id = uw.word_id
+    cross join lateral (
+      select coalesce(
+        jsonb_agg(
+          jsonb_build_object(
+            'part_of_speech', wm.part_of_speech,
+            'definitions', wm.definitions
+          )
+          order by wm.meaning_order
+        ),
+        '[]'::jsonb
+      ) as meanings
+      from public.word_meanings wm
+      where wm.word_id = w.id
+    ) meaning_rows
+    where uw.user_id = ${user.id}
+    order by uw.added_at desc, uw.id desc
+    limit 100
+  `;
+
+  return rows;
 };

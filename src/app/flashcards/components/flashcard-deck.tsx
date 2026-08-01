@@ -1,11 +1,11 @@
 'use client';
 
-import { FlashcardWord } from '@/app/lib/definitions';
+import { WordDefinition } from '@/app/lib/definitions';
 import clsx from 'clsx';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const FlashcardDeck = ({ words }: { words: FlashcardWord[] }) => {
+const FlashcardDeck = ({ words }: { words: WordDefinition[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [shouldSkipFlipTransition, setShouldSkipFlipTransition] =
