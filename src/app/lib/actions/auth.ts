@@ -1,35 +1,24 @@
 'use server';
 
 import {
+  getSignupErrors,
   LoginFormState,
-  SignupFormSchema,
   SignupFormState,
 } from '@/app/lib/definitions';
 import createSupabaseServerClient from '@/app/lib/supabase/server';
 import { redirect } from 'next/navigation';
-import z from 'zod';
 
 export const signup = async (_state: SignupFormState, formData: FormData) => {
   const email = String(formData.get('email'));
   const password = String(formData.get('password'));
   const confirmPassword = String(formData.get('confirmPassword'));
+  const fields = { email };
 
-  const validatedFields = SignupFormSchema.safeParse({
-    email,
-    password,
-    confirmPassword,
-  });
-  if (!validatedFields.success) {
-    const tree = z.treeifyError(validatedFields.error);
+  const errors = getSignupErrors({ email, password, confirmPassword });
+  if (errors) {
     return {
-      fields: {
-        email,
-      },
-      errors: {
-        email: tree.properties?.email?.errors,
-        password: tree.properties?.password?.errors,
-        confirmPassword: tree.properties?.confirmPassword?.errors,
-      },
+      fields,
+      errors,
     };
   }
   const supabase = await createSupabaseServerClient();
@@ -37,9 +26,7 @@ export const signup = async (_state: SignupFormState, formData: FormData) => {
 
   if (error) {
     return {
-      fields: {
-        email,
-      },
+      fields,
       errors: {
         email: [error.message],
       },

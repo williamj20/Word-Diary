@@ -44,7 +44,7 @@ export const SignupFormSchema = z
     email: z.email({ error: 'Please enter a valid email.' }).trim(),
     password: z
       .string()
-      .min(8, { error: 'Be at least 8 characters long' })
+      .min(8, { error: 'Be at least 8 characters long.' })
       .regex(/[a-zA-Z]/, { error: 'Contain at least one letter.' })
       .regex(/[0-9]/, { error: 'Contain at least one number.' })
       .regex(/[^a-zA-Z0-9]/, {
@@ -58,6 +58,21 @@ export const SignupFormSchema = z
     error: 'Passwords do not match.',
   });
 
+export interface SignupErrors {
+  email?: string[];
+  password?: string[];
+  confirmPassword?: string[];
+}
+
+export const getSignupErrors = (
+  fields: z.input<typeof SignupFormSchema>
+): SignupErrors | undefined => {
+  const validatedFields = SignupFormSchema.safeParse(fields);
+  return validatedFields.success
+    ? undefined
+    : z.flattenError(validatedFields.error).fieldErrors;
+};
+
 export interface MutationResult {
   success: boolean;
 }
@@ -67,11 +82,7 @@ export type SignupFormState =
       fields?: {
         email?: string;
       };
-      errors?: {
-        email?: string[];
-        password?: string[];
-        confirmPassword?: string[];
-      };
+      errors?: SignupErrors;
       message?: string;
     }
   | undefined;
