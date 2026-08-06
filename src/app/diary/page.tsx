@@ -34,7 +34,7 @@ const DiaryPage = async (props: {
   return (
     <main>
       <div className="relative mx-auto mt-6 w-full max-w-7xl rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] pb-4 pt-7 sm:mt-7 sm:pb-5 sm:pt-8">
-        <h2 className="display-font absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-[1.5rem] border border-[var(--brass)] bg-[var(--paper-soft)] px-3 py-1 text-center text-[0.62rem] font-bold uppercase whitespace-nowrap text-[var(--ink-muted)] sm:px-5 sm:py-1.5 sm:text-[0.74rem]">
+        <h2 className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-[1.5rem] border border-[var(--brass)] bg-[var(--paper-soft)] px-3 py-1 text-center text-[0.62rem] font-bold uppercase whitespace-nowrap text-[var(--ink-muted)] sm:px-5 sm:py-1.5 sm:text-[0.74rem]">
           Your Saved Words
         </h2>
         <div className="flex flex-col items-center px-3.5 sm:px-4">

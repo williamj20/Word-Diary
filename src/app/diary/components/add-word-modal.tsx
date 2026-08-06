@@ -122,9 +122,9 @@ const AddWordModal = () => {
           resetLookup();
           setIsOpen(true);
         }}
-        className="icon-button border-[var(--sage)] bg-[var(--sage-dark)] text-[var(--paper-card)] hover:bg-[var(--sage)]"
+        className="icon-button inline-flex h-9 w-9 items-center justify-center border-[var(--sage)] bg-[var(--sage-dark)] text-[var(--paper-card)] hover:bg-[var(--sage)] sm:h-11 sm:w-11"
       >
-        <Plus className="h-4 w-4" />
+        <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
       </button>
 
       {isOpen
@@ -139,7 +139,7 @@ const AddWordModal = () => {
               >
                 <div className="flex max-h-[calc(100dvh-4rem)] flex-col sm:max-h-[calc(100dvh-6rem)]">
                   <div>
-                    <h3 className="display-font mb-2 text-xl font-semibold text-[var(--ink)] sm:text-2xl">
+                    <h3 className="mb-2 text-xl font-semibold text-[var(--ink)] sm:text-2xl">
                       Look up a word
                     </h3>
                     <button

@@ -14,7 +14,7 @@ Follow the existing Word Diary styling system: Tailwind-first components, tokeni
 - Inspect the component being changed, nearby route/page files, and `src/app/globals.css` before editing styles.
 - It is acceptable to sketch or implement the first pass from the desktop layout when that is the clearest way to reason about the screen. Before finishing, check the result at small widths and make only the responsive adjustments the component actually needs.
 - Preserve the warm paper/card visual language: use existing CSS variables such as `var(--paper-card)`, `var(--paper-soft)`, `var(--ink)`, `var(--ink-muted)`, `var(--sage)`, `var(--sage-dark)`, `var(--brass)`, and danger tokens.
-- Prefer existing shared classes (`auth-*`, `word-card-*`, `form-input`, `icon-button`, `error-message`, `keycap-style`, `display-font`) when the component is visually part of the same family.
+- Prefer existing shared classes (`auth-*`, `word-card-*`, `form-input`, `icon-button`, `error-message`, `keycap-style`) when the component is visually part of the same family.
 
 ## Responsive Rules
 
@@ -37,7 +37,7 @@ Follow the existing Word Diary styling system: Tailwind-first components, tokeni
 ## Typography And Spacing
 
 - Avoid `leading-*` unless a concrete overlap or readability problem requires it. The project generally relies on font defaults plus margin, padding, and gap.
-- Reserve `display-font` for brand, page, section, and word titles. Use the body font for controls, descriptions, errors, and metadata.
+- Use the inherited Literata font throughout the app. Do not add alternate font families or font-family utilities; create hierarchy with size, weight, color, capitalization, and spacing.
 - Keep uppercase metadata compact and token-colored. Use existing tracking patterns only when matching nearby eyebrow/label styles.
 - Prefer spacing utilities (`mt-*`, `mb-*`, `gap-*`, `px-*`, `py-*`) over line-height adjustments to create vertical rhythm.
 

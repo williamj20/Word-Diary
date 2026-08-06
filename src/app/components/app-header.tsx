@@ -21,8 +21,8 @@ const AppHeader = ({ showAuthButtons }: { showAuthButtons: boolean }) => {
           <h1
             className={
               showAuthButtons
-                ? 'display-font text-[clamp(1.75rem,9vw,3.65rem)] font-semibold whitespace-nowrap text-[var(--ink)] md:text-[clamp(1.95rem,4vw,3.65rem)]'
-                : 'display-font text-[clamp(1.95rem,8vw,3.65rem)] font-semibold text-[var(--ink)]'
+                ? 'text-[clamp(1.75rem,9vw,3.65rem)] font-semibold whitespace-nowrap text-[var(--ink)] md:text-[clamp(1.95rem,4vw,3.65rem)]'
+                : 'text-[clamp(1.95rem,8vw,3.65rem)] font-semibold text-[var(--ink)]'
             }
           >
             Word Diary

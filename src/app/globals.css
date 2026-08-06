@@ -29,10 +29,6 @@ body {
 }
 
 @layer components {
-  .display-font {
-    font-family: var(--font-display);
-  }
-
   .auth-button {
     @apply rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm transition-all duration-200 sm:px-4 sm:py-2 sm:text-sm;
     color: var(--ink-muted);
@@ -137,7 +133,6 @@ body {
   .word-card-title {
     @apply text-base font-semibold break-words md:text-2xl;
     color: var(--ink);
-    font-family: var(--font-display);
     letter-spacing: -0.04em;
   }
   .word-card-toggle-button {

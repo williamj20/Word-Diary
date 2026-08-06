@@ -31,7 +31,7 @@ const LandingPage = async () => {
           <p className="text-[0.66rem] font-bold uppercase tracking-[0.14em] text-[var(--ink-muted)] sm:text-xs">
             A Vocabulary Journal For Curious Readers
           </p>
-          <h2 className="display-font text-[clamp(2rem,8.5vw,2.6rem)] text-[var(--ink)] sm:text-[clamp(2.6rem,3.75vw,2.85rem)]">
+          <h2 className="text-[clamp(2rem,8.5vw,2.6rem)] text-[var(--ink)] sm:text-[clamp(2.6rem,3.75vw,2.85rem)]">
             Keep the words you want to remember.
           </h2>
           <p className="text-base text-[var(--ink-muted)] sm:text-lg">
@@ -51,7 +51,7 @@ const LandingPage = async () => {
           <div className="flex flex-col items-center gap-3 sm:flex-row">
             <Link
               href={primaryHref}
-              className="display-font rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-5 py-2.5 text-base font-semibold text-[var(--paper-card)] shadow-lg transition-all duration-200 hover:bg-[var(--sage)] sm:px-7 sm:py-3 sm:text-lg"
+              className="rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-5 py-2.5 text-base font-semibold text-[var(--paper-card)] shadow-lg transition-all duration-200 hover:bg-[var(--sage)] sm:px-7 sm:py-3 sm:text-lg"
             >
               {primaryLabel}
             </Link>
@@ -79,9 +79,7 @@ const LandingPage = async () => {
             <p className="text-[0.66rem] font-bold uppercase tracking-[0.12em] text-[var(--ink-muted)] sm:text-xs sm:tracking-[0.14em]">
               {eyebrow}
             </p>
-            <h3 className="display-font text-xl text-[var(--ink)] sm:text-3xl">
-              {title}
-            </h3>
+            <h3 className="text-xl text-[var(--ink)] sm:text-3xl">{title}</h3>
             <p className="text-sm text-[var(--ink-muted)] sm:text-base">
               {description}
             </p>
