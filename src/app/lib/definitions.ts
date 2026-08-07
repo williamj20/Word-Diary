@@ -31,6 +31,10 @@ export interface WordLookupResponse {
   isInUserList: boolean;
 }
 
+export interface WordLookupSuggestionsResponse {
+  suggestions: string[];
+}
+
 export interface DictionaryServiceObject {
   fl: string; // functional label
   shortdef: string[]; // short definitions
@@ -38,6 +42,8 @@ export interface DictionaryServiceObject {
     hw: string; // headword
   };
 }
+
+export type DictionaryServiceResponse = DictionaryServiceObject[] | string[];
 
 export const SignupFormSchema = z
   .object({

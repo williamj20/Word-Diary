@@ -3,7 +3,10 @@ import {
   convertDictionaryServiceResponse,
   getCurrentUser,
 } from '@/app/lib/utils';
-import { DictionaryServiceObject } from '@/app/lib/definitions';
+import type {
+  DictionaryServiceResponse,
+  WordLookupSuggestionsResponse,
+} from '@/app/lib/definitions';
 import { NextRequest, NextResponse } from 'next/server';
 
 const DICTIONARY_CACHE_SECONDS = 60 * 60 * 24 * 30;
@@ -52,19 +55,26 @@ export const GET = async (
       );
     }
 
-    const dictionaryResponse: DictionaryServiceObject[] = await response.json();
-    const wordDefinition = convertDictionaryServiceResponse(
+    const dictionaryResponse: DictionaryServiceResponse = await response.json();
+    const result = convertDictionaryServiceResponse(
       dictionaryResponse,
       normalizedWord
     );
-    if (!wordDefinition) {
+
+    if (Array.isArray(result)) {
+      return NextResponse.json<WordLookupSuggestionsResponse>({
+        suggestions: result,
+      });
+    }
+
+    if (!result) {
       return NextResponse.json({ error: 'Word not found' }, { status: 404 });
     }
 
-    await saveWordDefinition(wordDefinition);
+    await saveWordDefinition(result);
     console.log('Word definition found externally and saved to database');
     return NextResponse.json({
-      word: wordDefinition,
+      word: result,
       isInUserList: false,
     });
   } catch (error) {
