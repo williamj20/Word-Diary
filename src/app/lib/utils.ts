@@ -2,13 +2,14 @@ import {
   DictionaryServiceObject,
   DictionaryServiceResponse,
   MeaningContent,
-  WordDefinition,
+  SourcedWordDefinition,
 } from '@/app/lib/definitions';
 import createSupabaseServerClient from '@/app/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { cache } from 'react';
 
 const MAX_SUGGESTIONS = 5;
+const MAX_MEANINGS = 6;
 
 // Prefix PostgreSQL LIKE/ILIKE metacharacters with the default backslash
 // escape character so user-entered `\`, `%`, and `_` are matched literally.
@@ -17,6 +18,9 @@ export const escapeLikePattern = (value: string): string =>
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null;
+
+const normalizeDictionaryHeadword = (headword: string): string =>
+  headword.replaceAll('*', '').trim().toLowerCase();
 
 // Nice to have because we are saving the result of the dictionary service to our database
 // and we want to ensure that the data is in the expected format before saving it.
@@ -38,7 +42,7 @@ const isDictionaryServiceObject = (
 export const convertDictionaryServiceResponse = (
   dictionaryServiceResponse: DictionaryServiceResponse,
   word: string
-): WordDefinition | string[] | null => {
+): SourcedWordDefinition | string[] | null => {
   if (dictionaryServiceResponse.length === 0) {
     return null;
   }
@@ -55,22 +59,34 @@ export const convertDictionaryServiceResponse = (
     throw new Error('Dictionary service returned a malformed array payload');
   }
 
-  const matchingEntries = dictionaryServiceResponse.filter(
-    entry => entry.hwi.hw.replaceAll('*', '') === word
+  const normalizedWord = word.trim().toLowerCase();
+  let definitionHeadword = normalizedWord;
+  let matchingEntries = dictionaryServiceResponse.filter(
+    entry => normalizeDictionaryHeadword(entry.hwi.hw) === normalizedWord
   );
 
   if (matchingEntries.length === 0) {
-    return null;
+    definitionHeadword = normalizeDictionaryHeadword(
+      dictionaryServiceResponse[0].hwi.hw
+    );
+    matchingEntries = dictionaryServiceResponse.filter(
+      entry => normalizeDictionaryHeadword(entry.hwi.hw) === definitionHeadword
+    );
   }
 
-  const meanings: MeaningContent[] = matchingEntries.slice(0, 6).map(entry => ({
-    part_of_speech: entry.fl,
-    definitions: entry.shortdef,
-  }));
+  const meanings: MeaningContent[] = matchingEntries
+    .slice(0, MAX_MEANINGS)
+    .map(entry => ({
+      part_of_speech: entry.fl,
+      definitions: entry.shortdef,
+    }));
 
   return {
-    word,
-    meanings,
+    definition: {
+      word: normalizedWord,
+      meanings,
+    },
+    definitionHeadword,
   };
 };
 

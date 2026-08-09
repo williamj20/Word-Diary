@@ -1,5 +1,6 @@
 import {
   MeaningContent,
+  SourcedWordDefinition,
   UserWordListEntry,
   WordDefinition,
   WordLookupResponse,
@@ -75,12 +76,15 @@ export const getWordLookup = async (
 };
 
 export const saveWordDefinition = async (
-  wordDefinition: WordDefinition
+  sourcedWordDefinition: SourcedWordDefinition
 ): Promise<void> => {
+  const { definition: wordDefinition, definitionHeadword } =
+    sourcedWordDefinition;
+
   await sql.begin(async transaction => {
     const [createdWord] = await transaction<{ id: string }[]>`
-      insert into public.words (word)
-      values (${wordDefinition.word})
+      insert into public.words (word, definition_headword)
+      values (${wordDefinition.word}, ${definitionHeadword})
       on conflict (word) do nothing
       returning id
     `;

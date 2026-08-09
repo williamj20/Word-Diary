@@ -19,6 +19,11 @@ export interface WordDefinition {
   meanings: MeaningContent[];
 }
 
+export interface SourcedWordDefinition {
+  definition: WordDefinition;
+  definitionHeadword: string;
+}
+
 export interface UserWordListEntry {
   addedAt: string;
   id: number;

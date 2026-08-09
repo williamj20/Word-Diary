@@ -74,7 +74,7 @@ export const GET = async (
     await saveWordDefinition(result);
     console.log('Word definition found externally and saved to database');
     return NextResponse.json({
-      word: result,
+      word: result.definition,
       isInUserList: false,
     });
   } catch (error) {
