@@ -3,9 +3,9 @@ import {
   convertDictionaryServiceResponse,
   getCurrentUser,
 } from '@/app/lib/utils';
-import type {
-  DictionaryServiceResponse,
-  WordLookupSuggestionsResponse,
+import {
+  DictionaryServiceResponseSchema,
+  type WordLookupSuggestionsResponse,
 } from '@/app/lib/definitions';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -55,9 +55,18 @@ export const GET = async (
       );
     }
 
-    const dictionaryResponse: DictionaryServiceResponse = await response.json();
+    const dictionaryResponsePayload: unknown = await response.json();
+    const dictionaryResponseValidationResult =
+      DictionaryServiceResponseSchema.safeParse(dictionaryResponsePayload);
+
+    if (!dictionaryResponseValidationResult.success) {
+      throw new Error('Dictionary service returned a malformed payload', {
+        cause: dictionaryResponseValidationResult.error,
+      });
+    }
+
     const result = convertDictionaryServiceResponse(
-      dictionaryResponse,
+      dictionaryResponseValidationResult.data,
       normalizedWord
     );
 

@@ -40,15 +40,26 @@ export interface WordLookupSuggestionsResponse {
   suggestions: string[];
 }
 
-export interface DictionaryServiceObject {
-  fl: string; // functional label
-  shortdef: string[]; // short definitions
-  hwi: {
-    hw: string; // headword
-  };
-}
+export const DictionaryServiceObjectSchema = z.object({
+  fl: z.string(), // functional label
+  shortdef: z.array(z.string()), // short definitions
+  hwi: z.object({
+    hw: z.string(), // headword
+  }),
+});
 
-export type DictionaryServiceResponse = DictionaryServiceObject[] | string[];
+export type DictionaryServiceObject = z.infer<
+  typeof DictionaryServiceObjectSchema
+>;
+
+export const DictionaryServiceResponseSchema = z.union([
+  z.array(z.string()),
+  z.array(DictionaryServiceObjectSchema),
+]);
+
+export type DictionaryServiceResponse = z.infer<
+  typeof DictionaryServiceResponseSchema
+>;
 
 export const SignupFormSchema = z
   .object({

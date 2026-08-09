@@ -1,5 +1,4 @@
 import {
-  DictionaryServiceObject,
   DictionaryServiceResponse,
   MeaningContent,
   SourcedWordDefinition,
@@ -16,28 +15,8 @@ const MAX_MEANINGS = 6;
 export const escapeLikePattern = (value: string): string =>
   value.replace(/[\\%_]/g, character => `\\${character}`);
 
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === 'object' && value !== null;
-
 const normalizeDictionaryHeadword = (headword: string): string =>
   headword.replaceAll('*', '').trim().toLowerCase();
-
-// Nice to have because we are saving the result of the dictionary service to our database
-// and we want to ensure that the data is in the expected format before saving it.
-const isDictionaryServiceObject = (
-  value: unknown
-): value is DictionaryServiceObject => {
-  if (!isRecord(value) || !isRecord(value.hwi)) {
-    return false;
-  }
-
-  return (
-    typeof value.fl === 'string' &&
-    Array.isArray(value.shortdef) &&
-    value.shortdef.every(definition => typeof definition === 'string') &&
-    typeof value.hwi.hw === 'string'
-  );
-};
 
 export const convertDictionaryServiceResponse = (
   dictionaryServiceResponse: DictionaryServiceResponse,
@@ -53,10 +32,6 @@ export const convertDictionaryServiceResponse = (
     )
   ) {
     return dictionaryServiceResponse.slice(0, MAX_SUGGESTIONS);
-  }
-
-  if (!dictionaryServiceResponse.every(isDictionaryServiceObject)) {
-    throw new Error('Dictionary service returned a malformed array payload');
   }
 
   const normalizedWord = word.trim().toLowerCase();
