@@ -1,14 +1,18 @@
-import AuthButtons from '@/app/components/auth-buttons';
+import AccountMenu from '@/app/components/account-menu';
 import MobileHeaderMenu from '@/app/components/mobile-header-menu';
 import { BookMarked, BookOpenText, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
-const AppHeader = ({ showAuthButtons }: { showAuthButtons: boolean }) => {
+const AppHeader = ({
+  showAuthenticatedControls,
+}: {
+  showAuthenticatedControls: boolean;
+}) => {
   return (
     <header className="mx-auto mb-8 mt-1 max-w-7xl sm:mb-10">
       <div
         className={
-          showAuthButtons
+          showAuthenticatedControls
             ? 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 md:grid-cols-[1fr_auto_1fr] md:gap-4'
             : 'flex justify-center'
         }
@@ -20,7 +24,7 @@ const AppHeader = ({ showAuthButtons }: { showAuthButtons: boolean }) => {
           <BookOpenText className="h-5 w-5 sm:h-8 sm:w-8 lg:h-10 lg:w-10" />
           <h1
             className={
-              showAuthButtons
+              showAuthenticatedControls
                 ? 'text-[clamp(1.75rem,9vw,3.65rem)] font-semibold whitespace-nowrap text-[var(--ink)] md:text-[clamp(1.95rem,4vw,3.65rem)]'
                 : 'text-[clamp(1.95rem,8vw,3.65rem)] font-semibold text-[var(--ink)]'
             }
@@ -29,9 +33,9 @@ const AppHeader = ({ showAuthButtons }: { showAuthButtons: boolean }) => {
           </h1>
         </Link>
 
-        {showAuthButtons && <MobileHeaderMenu />}
+        {showAuthenticatedControls && <MobileHeaderMenu />}
 
-        {showAuthButtons && (
+        {showAuthenticatedControls && (
           <nav className="hidden justify-center gap-2 text-xs font-bold text-[var(--ink-muted)] md:flex md:justify-self-center md:text-sm">
             <Link
               href="/diary"
@@ -50,9 +54,9 @@ const AppHeader = ({ showAuthButtons }: { showAuthButtons: boolean }) => {
           </nav>
         )}
 
-        {showAuthButtons && (
+        {showAuthenticatedControls && (
           <div className="hidden justify-center md:flex md:justify-self-end">
-            <AuthButtons />
+            <AccountMenu />
           </div>
         )}
       </div>

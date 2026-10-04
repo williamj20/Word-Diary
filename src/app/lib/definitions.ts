@@ -30,6 +30,65 @@ export interface UserWordListEntry {
   word: Word;
 }
 
+export interface CurrentProfile {
+  displayName: string | null;
+  username: string | null;
+}
+
+export interface ProfileFormFields {
+  displayName: string;
+  username: string;
+}
+
+export interface ProfileFormErrors {
+  displayName?: string[];
+  username?: string[];
+}
+
+export interface ProfileFormState {
+  fields: ProfileFormFields;
+  errors?: ProfileFormErrors;
+  message?: string;
+}
+
+export const ProfileFormSchema = z.object({
+  displayName: z
+    .string()
+    .trim()
+    .max(80, { error: 'Display name must be 80 characters or fewer.' })
+    .transform(displayName => (displayName.length === 0 ? null : displayName)),
+  username: z
+    .string()
+    .superRefine((username, context) => {
+      if (username.length === 0) {
+        return;
+      }
+      if (/\s/.test(username)) {
+        context.addIssue({
+          code: 'custom',
+          message: 'Username cannot contain spaces.',
+        });
+        return;
+      }
+      if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+        context.addIssue({
+          code: 'custom',
+          message: 'Use only letters, numbers, and underscores.',
+        });
+        return;
+      }
+      if (username.length < 3 || username.length > 30) {
+        context.addIssue({
+          code: 'custom',
+          message: 'Username must be between 3 and 30 characters.',
+        });
+      }
+    })
+    .transform(username =>
+      username.length === 0 ? null : username.toLowerCase()
+    ),
+});
+
 // route handler GET response
 export interface WordLookupResponse {
   word: WordDefinition;

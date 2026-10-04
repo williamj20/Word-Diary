@@ -1,6 +1,6 @@
 import AppHeader from '@/app/components/app-header';
 
-const FlashcardsLayout = ({ children }: { children: React.ReactNode }) => {
+const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <AppHeader showAuthenticatedControls />
@@ -9,4 +9,4 @@ const FlashcardsLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default FlashcardsLayout;
+export default ProfileLayout;

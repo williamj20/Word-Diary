@@ -1,5 +1,5 @@
 import { logout } from '@/app/lib/actions/auth';
-import { BookMarked, LogOut, Menu, Sparkles } from 'lucide-react';
+import { BookMarked, LogOut, Menu, Sparkles, UserRound } from 'lucide-react';
 import Link from 'next/link';
 
 const menuItemClass =
@@ -20,6 +20,10 @@ const MobileHeaderMenu = () => {
         <Link href="/flashcards" className={menuItemClass}>
           <Sparkles className="h-4 w-4" />
           Flashcards
+        </Link>
+        <Link href="/profile" className={menuItemClass}>
+          <UserRound className="h-4 w-4" />
+          Profile
         </Link>
         <form action={logout}>
           <button type="submit" className={menuItemClass}>

@@ -1,9 +1,12 @@
 import AppHeader from '@/app/components/app-header';
+import { getCurrentUser } from '@/app/lib/utils';
 
-const PublicLayout = ({ children }: { children: React.ReactNode }) => {
+const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
+  const user = await getCurrentUser();
+
   return (
     <>
-      <AppHeader showAuthButtons={false} />
+      <AppHeader showAuthenticatedControls={Boolean(user)} />
       {children}
     </>
   );

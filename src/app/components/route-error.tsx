@@ -22,7 +22,7 @@ const RouteError = ({
           {title}
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-sm text-[var(--ink-muted)] sm:text-base">
-          We could not load this page from the database. Please try again.
+          We could not load this page. Please try again.
         </p>
         <button
           type="button"

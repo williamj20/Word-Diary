@@ -1,4 +1,5 @@
 import {
+  CurrentProfile,
   MeaningContent,
   SourcedWordDefinition,
   UserWordListEntry,
@@ -23,6 +24,24 @@ const getAuthenticatedUser = async () => {
   }
 
   return user;
+};
+
+export const getCurrentProfile = async (): Promise<CurrentProfile> => {
+  const user = await getAuthenticatedUser();
+  const [profile] = await sql<CurrentProfile[]>`
+    select
+      display_name as "displayName",
+      username
+    from public.profiles
+    where id = ${user.id}
+    limit 1
+  `;
+
+  if (!profile) {
+    throw new Error('Authenticated user does not have a profile');
+  }
+
+  return profile;
 };
 
 export const getWordLookup = async (
