@@ -1,13 +1,35 @@
+'use client';
+
 import { logout } from '@/app/lib/actions/auth';
 import { BookMarked, LogOut, Menu, Sparkles, UserRound } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useRef } from 'react';
 
 const menuItemClass =
   'flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-bold text-[var(--ink-muted)] transition-colors hover:bg-[var(--paper)] hover:text-[var(--ink)]';
 
 const MobileHeaderMenu = () => {
+  const detailsRef = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      const details = detailsRef.current;
+      if (
+        details?.open &&
+        event.target instanceof Node &&
+        !details.contains(event.target)
+      ) {
+        details.open = false;
+      }
+    };
+
+    document.addEventListener('pointerdown', closeOnOutsidePointer);
+    return () =>
+      document.removeEventListener('pointerdown', closeOnOutsidePointer);
+  }, []);
+
   return (
-    <details className="relative md:hidden">
+    <details ref={detailsRef} className="relative md:hidden">
       <summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-3 py-1.5 text-xs font-bold text-[var(--ink-muted)] shadow-sm transition-all duration-200 hover:bg-[var(--paper)] hover:text-[var(--ink)] [&::-webkit-details-marker]:hidden">
         <Menu className="h-3.5 w-3.5" />
         Menu
