@@ -5,6 +5,11 @@ import clsx from 'clsx';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+const meaningNavigationButtonClass =
+  'icon-button h-9 w-9 border-[var(--sage)] bg-[var(--sage-soft)] text-[var(--sage-dark)] enabled:hover:bg-[var(--sage)] enabled:hover:text-[var(--paper-card)]';
+const definitionClass =
+  'block rounded-2xl border border-[var(--brass)] bg-[var(--paper-card)]/85 px-3.5 py-2.5 text-sm font-medium break-words text-[var(--ink-muted)] sm:text-base';
+
 const FlashcardDeck = ({ words }: { words: WordDefinition[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -86,20 +91,20 @@ const FlashcardDeck = ({ words }: { words: WordDefinition[] }) => {
             isFlipped && '[transform:rotateY(180deg)]'
           )}
         >
-          <span className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-[var(--brass)] p-5 text-center text-[var(--ink)] shadow-xl [backface-visibility:hidden] [background-image:linear-gradient(135deg,var(--paper-card),var(--paper))] [box-shadow:0_18px_48px_rgb(43_33_24_/_0.16)] sm:p-6">
+          <span className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-[var(--brass)] p-5 text-center text-[var(--ink)] shadow-lg [backface-visibility:hidden] [background-image:linear-gradient(135deg,var(--paper-card),var(--paper))] sm:p-6">
             <span className="block max-w-full break-words text-[clamp(2rem,8vw,3.75rem)] font-semibold text-[var(--ink)] lg:text-6xl">
               {currentWord.word}
             </span>
           </span>
 
-          <span className="absolute inset-0 flex flex-col gap-3 overflow-hidden rounded-[2rem] border border-[var(--brass)] p-4 text-left text-[var(--ink)] shadow-xl [backface-visibility:hidden] [background-image:linear-gradient(180deg,var(--paper-card),var(--paper))] [box-shadow:0_18px_48px_rgb(43_33_24_/_0.16)] [transform:rotateY(180deg)] sm:p-5">
-            <span className="flex items-start justify-between gap-3">
-              <span className="inline-flex w-fit rounded-full border border-[var(--sage)] bg-[var(--sage-soft)] px-3 py-1 text-xs font-bold uppercase text-[var(--sage-dark)]">
+          <span className="absolute inset-0 flex flex-col gap-3 overflow-hidden rounded-[2rem] border border-[var(--brass)] p-4 text-left text-[var(--ink)] shadow-lg [backface-visibility:hidden] [background-image:linear-gradient(180deg,var(--paper-card),var(--paper))] [transform:rotateY(180deg)] sm:p-5">
+            <span className="flex flex-wrap items-start justify-between gap-3">
+              <span className="word-card-meanings-part-of-speech w-fit">
                 {currentMeaning.part_of_speech}
               </span>
 
               {hasMultipleMeanings ? (
-                <span className="flex shrink-0 items-center gap-1.5">
+                <span className="ml-auto flex shrink-0 items-center gap-1.5">
                   <button
                     type="button"
                     onClick={event => {
@@ -107,7 +112,7 @@ const FlashcardDeck = ({ words }: { words: WordDefinition[] }) => {
                       goToPreviousMeaning();
                     }}
                     disabled={!canGoPreviousMeaning}
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--sage)] bg-[var(--sage-soft)] text-[var(--sage-dark)] shadow-sm transition-all duration-200 hover:bg-[var(--sage)] hover:text-[var(--paper-card)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[var(--sage-soft)] disabled:hover:text-[var(--sage-dark)]"
+                    className={meaningNavigationButtonClass}
                     title="Previous meaning"
                   >
                     <ChevronLeft className="h-4 w-4" />
@@ -122,7 +127,7 @@ const FlashcardDeck = ({ words }: { words: WordDefinition[] }) => {
                       goToNextMeaning();
                     }}
                     disabled={!canGoNextMeaning}
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--sage)] bg-[var(--sage-soft)] text-[var(--sage-dark)] shadow-sm transition-all duration-200 hover:bg-[var(--sage)] hover:text-[var(--paper-card)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[var(--sage-soft)] disabled:hover:text-[var(--sage-dark)]"
+                    className={meaningNavigationButtonClass}
                     title="Next meaning"
                   >
                     <ChevronRight className="h-4 w-4" />
@@ -134,16 +139,13 @@ const FlashcardDeck = ({ words }: { words: WordDefinition[] }) => {
               {currentMeaning ? (
                 <span className="flex max-h-full w-full flex-col gap-2.5 overflow-y-auto pr-1">
                   {currentMeaning.definitions.map((definition, index) => (
-                    <span
-                      key={index}
-                      className="block rounded-2xl border border-[var(--brass)] bg-[rgb(255_248_232_/_0.86)] px-3.5 py-2.5 text-sm font-medium break-words text-[var(--ink)] sm:text-base"
-                    >
+                    <span key={index} className={definitionClass}>
                       {definition}
                     </span>
                   ))}
                 </span>
               ) : (
-                <span className="block rounded-2xl border border-[var(--brass)] bg-[rgb(255_248_232_/_0.86)] px-3.5 py-2.5 text-sm font-medium break-words text-[var(--ink)] sm:text-base">
+                <span className={definitionClass}>
                   No definitions saved for this word.
                 </span>
               )}
@@ -173,7 +175,7 @@ const FlashcardDeck = ({ words }: { words: WordDefinition[] }) => {
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>
-        <div className="rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-4 py-1.5 text-sm font-bold text-[var(--ink-muted)] shadow-sm">
+        <div className="rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-4 py-1.5 text-sm font-bold text-[var(--ink-muted)]">
           {currentIndex + 1} / {words.length}
         </div>
       </div>

@@ -97,7 +97,7 @@ const SignupForm = () => {
           </label>
           <div className="relative">
             <input
-              className="form-input"
+              className="form-input pr-12"
               id="password"
               name="password"
               type={showPassword ? 'text' : 'password'}
@@ -112,7 +112,11 @@ const SignupForm = () => {
               aria-label={showPassword ? 'Hide password' : 'Reveal password'}
               title={showPassword ? 'Hide password' : 'Reveal password'}
             >
-              {showPassword ? <EyeOff /> : <Eye />}
+              {showPassword ? (
+                <EyeOff className="h-5 w-5" />
+              ) : (
+                <Eye className="h-5 w-5" />
+              )}
             </button>
           </div>
           {errors?.password && (
@@ -132,7 +136,7 @@ const SignupForm = () => {
           </label>
           <div className="relative">
             <input
-              className="form-input"
+              className="form-input pr-12"
               id="confirmPassword"
               name="confirmPassword"
               type={showConfirmPassword ? 'text' : 'password'}
@@ -149,14 +153,21 @@ const SignupForm = () => {
               }
               title={showConfirmPassword ? 'Hide password' : 'Reveal password'}
             >
-              {showConfirmPassword ? <EyeOff /> : <Eye />}
+              {showConfirmPassword ? (
+                <EyeOff className="h-5 w-5" />
+              ) : (
+                <Eye className="h-5 w-5" />
+              )}
             </button>
           </div>
           {errors?.confirmPassword && (
             <p className="error-message mt-2">{errors.confirmPassword}</p>
           )}
         </div>
-        <button className="auth-submit-button" disabled={isPending}>
+        <button
+          className="action-button action-button-primary w-full px-4 py-3 text-base"
+          disabled={isPending}
+        >
           Sign Up
         </button>
         <p className="auth-switch-text">

@@ -27,13 +27,15 @@ const WordItemDisclosure = ({
     <>
       <div className="word-card-preview-container">
         <h3 className="word-card-title">{title}</h3>
-        <div className="word-card-button-container">
-          <span className="word-card-span">{addedAtLabel}</span>
+        <div className="ml-auto flex flex-wrap items-center justify-end gap-1.5 sm:gap-3">
+          <span className="rounded-full border border-[var(--brass)] bg-[var(--paper)] px-2 py-1 text-[0.625rem] font-bold whitespace-nowrap text-[var(--ink-muted)] sm:px-3 sm:text-xs">
+            {addedAtLabel}
+          </span>
           <a
             href={googleDefinitionUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="icon-button border-[var(--brass-dark)] bg-[var(--paper-card)] text-[var(--brass-dark)] hover:bg-[var(--paper)]"
+            className="icon-button border-[var(--brass)] bg-[var(--paper-card)] text-[var(--ink-muted)] hover:bg-[var(--paper)] hover:text-[var(--ink)]"
           >
             <ExternalLink className="h-4 w-4" />
           </a>
@@ -41,8 +43,10 @@ const WordItemDisclosure = ({
             type="button"
             onClick={() => setIsExpanded(current => !current)}
             className={clsx(
-              'icon-button word-card-toggle-button',
-              isExpanded && 'word-card-toggle-button-expanded'
+              'icon-button border-[var(--sage)] hover:bg-[var(--sage)] hover:text-[var(--paper-card)]',
+              isExpanded
+                ? 'bg-[var(--sage)] text-[var(--paper-card)]'
+                : 'bg-[var(--sage-soft)] text-[var(--sage-dark)]'
             )}
           >
             <ChevronDown
@@ -56,8 +60,11 @@ const WordItemDisclosure = ({
         </div>
       </div>
 
-      <div data-expanded={isExpanded} className="word-card-details-shell">
-        <div className="word-card-details-inner">{children}</div>
+      <div
+        data-expanded={isExpanded}
+        className="grid grid-rows-[0fr] transition-[grid-template-rows,opacity,margin-top] duration-[220ms] ease-[ease] data-[expanded=true]:mt-[0.2rem] data-[expanded=true]:grid-rows-[1fr]"
+      >
+        <div className="min-h-0 overflow-hidden">{children}</div>
       </div>
     </>
   );

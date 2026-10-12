@@ -5,9 +5,6 @@ import { BookMarked, LogOut, Menu, Sparkles, UserRound } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 
-const menuItemClass =
-  'flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-bold text-[var(--ink-muted)] transition-colors hover:bg-[var(--paper)] hover:text-[var(--ink)]';
-
 const MobileHeaderMenu = () => {
   const detailsRef = useRef<HTMLDetailsElement>(null);
 
@@ -30,26 +27,26 @@ const MobileHeaderMenu = () => {
 
   return (
     <details ref={detailsRef} className="relative md:hidden">
-      <summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-3 py-1.5 text-xs font-bold text-[var(--ink-muted)] shadow-sm transition-all duration-200 hover:bg-[var(--paper)] hover:text-[var(--ink)] [&::-webkit-details-marker]:hidden">
+      <summary className="action-button action-button-secondary cursor-pointer list-none gap-1.5 px-3 py-1.5 text-xs md:text-sm [&::-webkit-details-marker]:hidden">
         <Menu className="h-3.5 w-3.5" />
         Menu
       </summary>
-      <div className="absolute right-0 z-20 mt-2 w-44 rounded-2xl border border-[var(--brass)] bg-[var(--paper-card)] p-1.5 shadow-xl">
-        <Link href="/diary" className={menuItemClass}>
-          <BookMarked className="h-4 w-4" />
+      <div className="header-menu-panel">
+        <Link href="/diary" className="header-menu-item">
+          <BookMarked />
           Diary
         </Link>
-        <Link href="/flashcards" className={menuItemClass}>
-          <Sparkles className="h-4 w-4" />
+        <Link href="/flashcards" className="header-menu-item">
+          <Sparkles />
           Flashcards
         </Link>
-        <Link href="/profile" className={menuItemClass}>
-          <UserRound className="h-4 w-4" />
+        <Link href="/profile" className="header-menu-item">
+          <UserRound />
           Profile
         </Link>
         <form action={logout}>
-          <button type="submit" className={menuItemClass}>
-            <LogOut className="h-4 w-4" />
+          <button type="submit" className="header-menu-item">
+            <LogOut />
             Sign Out
           </button>
         </form>

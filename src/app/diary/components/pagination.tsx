@@ -39,9 +39,6 @@ const getPaginationItems = (currentPage: number, totalPages: number) => {
   return paginationItems;
 };
 
-const paginationBaseClassName =
-  'inline-flex items-center justify-center rounded-full border border-[var(--brass)] bg-[var(--paper-card)] text-xs font-semibold text-[var(--ink-muted)] transition-all duration-200 hover:bg-[var(--paper)] hover:text-[var(--ink)] sm:text-sm';
-
 const PaginationNumber = ({
   href,
   isActive,
@@ -55,11 +52,8 @@ const PaginationNumber = ({
     <Link
       href={href}
       className={clsx(
-        paginationBaseClassName,
-        'min-w-8 px-2 py-1 sm:min-w-10 sm:px-3 sm:py-2',
-        isActive
-          ? 'border-[var(--sage)] bg-[var(--sage-dark)] text-[var(--paper-card)] hover:bg-[var(--sage)] hover:text-[var(--paper-card)]'
-          : ''
+        'action-button h-9 min-w-9 px-2 py-0 text-xs sm:h-10 sm:min-w-10 sm:px-3 sm:text-sm',
+        isActive ? 'action-button-primary' : 'action-button-secondary'
       )}
     >
       {pageNumber}
@@ -120,7 +114,7 @@ const Pagination = ({ totalPages }: { totalPages: number }) => {
           item === 'ellipsis' ? (
             <span
               key={`ellipsis-${index}`}
-              className="px-1 text-xs font-bold tracking-[0.2em] text-[var(--ink-muted)] sm:text-sm"
+              className="px-1 text-xs font-bold text-[var(--ink-muted)] sm:text-sm"
             >
               ...
             </span>

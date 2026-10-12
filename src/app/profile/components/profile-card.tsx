@@ -14,7 +14,7 @@ const ProfileCard = ({
     <section className="overflow-hidden rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)]">
       <div className="border-b border-[var(--brass)] bg-[var(--sage-soft)] px-5 py-5 sm:px-8 sm:py-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[var(--sage)] bg-[var(--paper-card)] text-[var(--sage-dark)] shadow-sm">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[var(--sage)] bg-[var(--paper-card)] text-[var(--sage-dark)]">
             <UserRound className="h-5 w-5" />
           </div>
           <h2 className="text-xl font-semibold text-[var(--ink)] sm:text-2xl">
@@ -42,7 +42,7 @@ const ProfileCard = ({
           <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-[var(--brass)] bg-[var(--paper)] px-4 py-3">
             <Mail className="h-4 w-4 shrink-0 text-[var(--ink-muted)]" />
             <div className="min-w-0">
-              <p className="text-[0.62rem] font-bold uppercase tracking-[0.12em] text-[var(--ink-muted)]">
+              <p className="text-[0.625rem] font-bold uppercase text-[var(--ink-muted)] sm:text-xs">
                 Email
               </p>
               <p className="mt-0.5 break-all text-sm font-semibold text-[var(--ink)]">
@@ -52,9 +52,9 @@ const ProfileCard = ({
           </div>
           <Link
             href="/profile/edit"
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-5 py-2.5 text-sm font-bold text-[var(--paper-card)] shadow-sm transition-all duration-200 hover:bg-[var(--sage)]"
+            className="action-button action-button-primary shrink-0"
           >
-            <Pencil className="h-4 w-4" />
+            <Pencil />
             Edit
           </Link>
         </div>

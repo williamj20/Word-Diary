@@ -29,18 +29,40 @@ body {
 }
 
 @layer components {
-  .auth-button {
-    @apply rounded-full border px-3 py-1.5 text-xs font-semibold shadow-sm transition-all duration-200 sm:px-4 sm:py-2 sm:text-sm;
+  /* Shadows: dropdown menus use shadow-sm; study flashcards use shadow-lg. */
+
+  /* Labeled buttons/links: pair with primary for emphasis or secondary for neutral
+     actions. Keep sizing differences inline with Tailwind. */
+  .action-button {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-bold transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .action-button > svg {
+    @apply h-4 w-4 shrink-0;
+  }
+
+  .action-button-primary {
+    color: var(--paper-card);
+    background: var(--sage-dark);
+    border-color: var(--sage);
+  }
+
+  .action-button-primary:not(:disabled):hover {
+    background: var(--sage);
+  }
+
+  .action-button-secondary {
     color: var(--ink-muted);
     background: var(--paper-card);
     border-color: var(--brass);
   }
 
-  .auth-button:hover {
+  .action-button-secondary:not(:disabled):hover {
     color: var(--ink);
     background: var(--paper);
   }
 
+  /* Login/signup form surface and field spacing. */
   .auth-form {
     @apply w-full max-w-md rounded-[2rem] border p-5 sm:p-8;
     background: var(--paper-card);
@@ -51,24 +73,61 @@ body {
     @apply flex flex-col gap-3.5 sm:gap-4;
   }
 
-  .auth-submit-button {
-    @apply w-full rounded-full border px-4 py-3 font-bold shadow-sm transition-all duration-200;
-    color: var(--paper-card);
-    background: var(--sage-dark);
-    border-color: var(--sage);
+  /* Header dropdown surface and rows; place the panel inside a relative wrapper. */
+  .header-menu-panel {
+    @apply absolute right-0 z-20 mt-2 w-44 rounded-2xl border p-1.5 shadow-sm;
+    border-color: var(--brass);
+    background: var(--paper-card);
   }
 
-  .auth-submit-button:hover {
-    background: var(--sage);
+  .header-menu-item {
+    @apply flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-bold transition-colors duration-200;
+    color: var(--ink-muted);
   }
 
+  .header-menu-item:hover {
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  .header-menu-item > svg {
+    @apply h-4 w-4 shrink-0;
+  }
+
+  /* Word dialogs: overlay, viewport-limited panel, and close button.
+     Set panel width and provide a scrollable content area in the component. */
+  .word-modal-backdrop {
+    @apply fixed inset-0 z-50 flex min-w-xs items-center justify-center bg-[var(--ink)]/60 p-3 sm:p-4;
+  }
+
+  .word-modal-panel {
+    @apply relative flex max-h-[calc(100dvh-1.5rem)] w-full flex-col overflow-hidden rounded-[2rem] border p-4 sm:max-h-[calc(100dvh-2rem)] sm:p-6;
+    border-color: var(--brass);
+    background: var(--paper-card);
+  }
+
+  .word-modal-close {
+    @apply absolute right-2.5 top-2.5 rounded-full p-1.5 transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60 sm:right-3 sm:top-3 sm:p-2;
+    color: var(--ink-muted);
+  }
+
+  .word-modal-close:not(:disabled):hover {
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  .word-modal-close > svg {
+    @apply h-4 w-4 sm:h-5 sm:w-5;
+  }
+
+  /* Prompts linking between login and signup. */
   .auth-switch-text {
     @apply text-center text-sm sm:text-base;
     color: var(--ink-muted);
   }
 
   .auth-switch-link {
-    @apply font-bold underline decoration-2 underline-offset-4 transition-colors;
+    @apply font-bold underline decoration-2 underline-offset-4 transition-colors duration-200;
     color: var(--sage-dark);
     text-decoration-color: var(--brass);
   }
@@ -77,125 +136,67 @@ body {
     color: var(--brass-dark);
   }
 
+  /* Form and request errors; add contextual spacing inline. */
   .error-message {
     @apply text-sm font-semibold;
     color: var(--danger);
   }
+  /* Icon-only controls; add colours and any sizing overrides inline. */
   .icon-button {
-    @apply rounded-xl border p-1.5 shadow-sm transition-all duration-200 sm:p-2;
+    @apply inline-flex shrink-0 items-center justify-center rounded-xl border p-1.5 transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60 sm:p-2;
   }
+  /* Previous/next page controls; use action-button for page numbers. */
   .pagination-nav-button {
-    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border shadow-sm transition-colors duration-200 sm:h-10 sm:w-10;
+    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors duration-200 sm:h-10 sm:w-10;
     color: var(--ink-muted);
     background: var(--paper-card);
     border-color: var(--brass);
-    box-shadow:
-      0 1px 0 rgb(255 255 255 / 0.6) inset,
-      0 6px 14px rgb(43 33 24 / 0.08);
   }
-  .pagination-nav-button:hover {
+  .pagination-nav-button:not(:disabled):hover {
     color: var(--ink);
     background: var(--paper);
   }
   .pagination-nav-button:disabled {
-    @apply cursor-not-allowed opacity-55;
-    color: var(--ink-muted);
-    background: var(--paper-card);
+    @apply cursor-not-allowed opacity-60;
   }
-  .pagination-nav-button:disabled:hover {
-    color: var(--ink-muted);
-    background: var(--paper-card);
-  }
+  /* List width and spacing shared by saved words and their loading skeletons. */
   .word-list-container {
     @apply mt-4 w-full max-w-6xl sm:mt-5;
   }
-  .word-card {
-    @apply relative w-full max-w-6xl border px-3.5 py-2 text-sm font-medium shadow-xl sm:px-5 sm:py-2.5 sm:text-base lg:px-6;
-    color: var(--ink);
-    border-color: var(--brass);
-    border-radius: 1.75rem;
-    background:
-      linear-gradient(135deg, var(--paper-card), var(--paper)),
-      var(--paper-card);
-  }
-  .word-card-span {
-    @apply rounded-full border px-2 py-1 text-[0.625rem] font-bold sm:px-3 sm:text-sm;
-    color: var(--ink-muted);
-    background: var(--paper);
-    border-color: var(--brass);
-  }
+  /* Preview layout and titles shared by saved words and lookup results. */
   .word-card-preview-container {
-    @apply flex items-center justify-between;
-  }
-  .word-card-button-container {
-    @apply flex items-center justify-end gap-1.5 sm:gap-3;
+    @apply flex flex-wrap items-center justify-between gap-2;
   }
   .word-card-title {
-    @apply text-base font-semibold break-words md:text-2xl;
+    @apply min-w-0 text-base font-semibold break-words md:text-2xl;
     color: var(--ink);
-    letter-spacing: -0.04em;
   }
-  .word-card-toggle-button {
-    border-color: var(--sage);
-    background: var(--sage-soft);
-    color: var(--sage-dark);
-  }
-  .word-card-toggle-button:hover {
-    background: var(--sage);
-    color: var(--paper-card);
-  }
-  .word-card-toggle-button-expanded {
-    background: var(--sage);
-    color: var(--paper-card);
-  }
-  .word-card-details-shell {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition:
-      grid-template-rows 220ms ease,
-      opacity 220ms ease,
-      margin-top 220ms ease;
-  }
-  .word-card-details-shell[data-expanded='true'] {
-    grid-template-rows: 1fr;
-    margin-top: 0.2rem;
-  }
-  .word-card-details-inner {
-    min-height: 0;
-    overflow: hidden;
-  }
+  /* Definition grids and panels; reuse the part-of-speech badge across word views. */
   .word-card-meanings-container {
     @apply mt-2.5 grid grid-cols-1 gap-3 sm:mt-3 sm:gap-4 sm:grid-cols-2 xl:grid-cols-3;
   }
   .word-card-meanings {
-    @apply rounded-2xl border p-2.5 sm:p-3;
+    @apply min-w-0 rounded-2xl border p-2.5 sm:p-3;
     background: var(--paper-card);
     border-color: var(--brass);
   }
   .word-card-meanings-part-of-speech {
-    @apply mb-1 inline-flex rounded-full border px-3 py-1 text-xs font-bold uppercase;
+    @apply inline-flex max-w-full rounded-full border px-3 py-1 text-xs font-bold break-words uppercase;
     color: var(--sage-dark);
-    letter-spacing: 0.04em;
     background: var(--sage-soft);
     border-color: var(--sage);
   }
   .word-card-meanings-definitions {
-    @apply list-disc list-inside space-y-1 break-words text-sm sm:text-base;
+    @apply list-disc list-inside space-y-1 break-words text-sm font-medium sm:text-base;
     color: var(--ink-muted);
   }
-  .keycap-style {
-    @apply rounded-md border px-2 py-0.5 text-xs font-bold shadow-sm;
-    color: var(--ink);
-    background: linear-gradient(180deg, var(--paper-card), var(--paper-muted));
-    border-color: var(--brass);
-  }
+  /* Labels and standalone form fields. */
   .form-input-label {
     @apply mb-2 block text-xs font-bold uppercase;
     color: var(--ink-muted);
-    letter-spacing: 0.16em;
   }
   .form-input {
-    @apply w-full rounded-2xl border px-4 py-3 outline-none;
+    @apply w-full rounded-2xl border px-4 py-3 text-base font-normal transition-colors duration-200 outline-none placeholder:text-[var(--ink-muted)];
     color: var(--ink);
     background: var(--paper-card);
     border-color: var(--brass);
@@ -204,22 +205,12 @@ body {
     border-color: var(--sage);
     box-shadow: 0 0 0 2px var(--sage-soft);
   }
+  /* Password reveal control; use a relative wrapper and reserve input padding. */
   .show-password-button {
-    @apply absolute inset-y-0 right-3 transition-colors focus:outline-none focus-visible:outline-none;
+    @apply absolute inset-y-0 right-3 transition-colors duration-200 focus:outline-none focus-visible:outline-none;
     color: var(--ink-muted);
   }
   .show-password-button:hover {
     color: var(--ink);
-  }
-}
-
-@layer utilities {
-  .hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
   }
 }

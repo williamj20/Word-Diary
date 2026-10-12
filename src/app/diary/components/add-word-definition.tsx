@@ -43,8 +43,8 @@ const AddWordDefinition = ({
       className={clsx(
         'rounded-[1.75rem] border p-3 sm:p-5',
         isAbleToSave
-          ? 'border border-[var(--sage-dark)] bg-[var(--sage-soft)] shadow-2xl'
-          : 'border border-[var(--brass)] bg-[var(--paper-muted)] saturate-50 shadow-md'
+          ? 'border-[var(--sage)] bg-[var(--sage-soft)]'
+          : 'border-[var(--brass)] bg-[var(--paper-muted)]'
       )}
     >
       <div className="word-card-preview-container">
@@ -61,7 +61,7 @@ const AddWordDefinition = ({
       <div className="word-card-meanings-container">
         {wordDefinition.word.meanings.map((meaning, index) => (
           <section key={index} className="word-card-meanings">
-            <div className="word-card-meanings-part-of-speech">
+            <div className="word-card-meanings-part-of-speech mb-1">
               {meaning.part_of_speech}
             </div>
             <ul className="word-card-meanings-definitions">

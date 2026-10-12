@@ -36,17 +36,17 @@ const AppHeader = ({
         {showAuthenticatedControls && <MobileHeaderMenu />}
 
         {showAuthenticatedControls && (
-          <nav className="hidden justify-center gap-2 text-xs font-bold text-[var(--ink-muted)] md:flex md:justify-self-center md:text-sm">
+          <nav className="hidden justify-center gap-2 md:flex md:justify-self-center">
             <Link
               href="/diary"
-              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-3 py-1.5 shadow-sm transition-all duration-200 hover:bg-[var(--paper)] hover:text-[var(--ink)]"
+              className="action-button action-button-secondary gap-1.5 px-3 py-1.5 text-xs md:text-sm"
             >
               <BookMarked className="h-3.5 w-3.5" />
               Diary
             </Link>
             <Link
               href="/flashcards"
-              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-3 py-1.5 shadow-sm transition-all duration-200 hover:bg-[var(--paper)] hover:text-[var(--ink)]"
+              className="action-button action-button-secondary gap-1.5 px-3 py-1.5 text-xs md:text-sm"
             >
               <Sparkles className="h-3.5 w-3.5" />
               Flashcards

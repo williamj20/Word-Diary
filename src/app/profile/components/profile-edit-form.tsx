@@ -47,7 +47,7 @@ const ProfileEditForm = ({ profile }: { profile: CurrentProfile }) => {
     <section className="overflow-hidden rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)]">
       <div className="border-b border-[var(--brass)] bg-[var(--sage-soft)] px-5 py-5 sm:px-8 sm:py-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[var(--sage)] bg-[var(--paper-card)] text-[var(--sage-dark)] shadow-sm">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[var(--sage)] bg-[var(--paper-card)] text-[var(--sage-dark)]">
             <Pencil className="h-5 w-5" />
           </div>
           <div>
@@ -121,17 +121,17 @@ const ProfileEditForm = ({ profile }: { profile: CurrentProfile }) => {
               type="button"
               disabled={isPending}
               onClick={() => router.replace('/profile')}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-5 py-2.5 text-sm font-bold text-[var(--ink-muted)] shadow-sm transition-all duration-200 enabled:hover:bg-[var(--paper)] enabled:hover:text-[var(--ink)] disabled:cursor-not-allowed disabled:opacity-60"
+              className="action-button action-button-secondary"
             >
-              <X className="h-4 w-4" />
+              <X />
               Cancel
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-5 py-2.5 text-sm font-bold text-[var(--paper-card)] shadow-sm transition-all duration-200 hover:bg-[var(--sage)] disabled:cursor-not-allowed disabled:opacity-60"
+              className="action-button action-button-primary"
             >
-              <Save className="h-4 w-4" />
+              <Save />
               {isPending ? 'Saving...' : 'Save'}
             </button>
           </div>

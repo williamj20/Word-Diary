@@ -10,6 +10,9 @@ import { ExternalLink, Plus, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
+const keycapClass =
+  'rounded-md border border-[var(--brass)] px-2 py-0.5 text-xs font-bold text-[var(--ink)] [background-image:linear-gradient(180deg,var(--paper-card),var(--paper-muted))]';
+
 const EMPTY_WORD_ERROR_MESSAGE = 'Please enter a word before searching.';
 const DEFINITION_NOT_FOUND_ERROR_MESSAGE =
   'Definition not found. Please try another word.';
@@ -151,29 +154,26 @@ const AddWordModal = () => {
 
       {isOpen
         ? createPortal(
-            <div
-              className="fixed inset-0 z-50 flex min-w-xs items-center justify-center bg-[var(--ink)]/60 p-3 sm:p-4"
-              onClick={() => closeModal()}
-            >
+            <div className="word-modal-backdrop" onClick={() => closeModal()}>
               <div
-                className="relative max-h-[calc(100dvh-2rem)] w-full max-w-4xl overflow-hidden rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] p-4 shadow-2xl sm:max-h-[calc(100dvh-3rem)] sm:p-6"
+                className="word-modal-panel max-w-4xl"
                 onClick={event => event.stopPropagation()}
               >
-                <div className="flex max-h-[calc(100dvh-4rem)] flex-col sm:max-h-[calc(100dvh-6rem)]">
-                  <div>
+                <div className="flex min-h-0 flex-col">
+                  <div className="shrink-0 pr-9 sm:pr-10">
                     <h3 className="mb-2 text-xl font-semibold text-[var(--ink)] sm:text-2xl">
                       Look up a word
                     </h3>
                     <button
                       type="button"
                       onClick={() => closeModal()}
-                      className="absolute right-2.5 top-2.5 rounded-full p-1.5 text-[var(--ink-muted)] transition-colors hover:bg-[var(--paper)] hover:text-[var(--ink)] sm:right-3 sm:top-3 sm:p-2"
+                      className="word-modal-close"
                     >
-                      <X className="h-4 w-4 sm:h-5 sm:w-5" />
+                      <X />
                     </button>
                   </div>
 
-                  <div className="hide-scrollbar mt-2 overflow-y-auto overscroll-contain">
+                  <div className="mt-2 min-h-0 overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     <div className="rounded-[2rem] border border-[var(--sage)] bg-[var(--paper-soft)] p-2 sm:p-3">
                       <div className="flex flex-col sm:flex-row sm:items-center">
                         <input
@@ -184,16 +184,16 @@ const AddWordModal = () => {
                           value={word}
                           onChange={event => setWord(event.target.value)}
                           onKeyDown={handleInputKeyDown}
-                          className="min-w-0 flex-1 px-2.5 py-2.5 text-base font-semibold text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)] sm:px-3 sm:py-3 sm:text-lg"
+                          className="min-w-0 flex-1 px-2.5 py-2.5 text-base font-normal text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)] sm:px-3 sm:py-3"
                         />
-                        <div className="flex gap-2 sm:pr-1">
+                        <div className="flex shrink-0 flex-wrap gap-2 sm:pr-1">
                           <button
                             type="button"
                             disabled={isSearching}
                             onClick={() => void searchDefinition()}
-                            className="inline-flex min-w-24 items-center justify-center rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-3 py-2 text-xs font-bold text-[var(--paper-card)] transition-all duration-200 hover:bg-[var(--sage)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-[var(--sage-dark)] sm:text-sm"
+                            className="action-button action-button-primary min-w-24 px-3 py-2 text-xs sm:text-sm"
                           >
-                            <Search className="mr-1.5 h-3 w-3 sm:mr-2 sm:h-3.5 sm:w-3.5" />
+                            <Search />
                             {isSearching ? 'Searching...' : 'Search'}
                           </button>
                           <a
@@ -201,9 +201,9 @@ const AddWordModal = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={handleGoogleDefinitionClick}
-                            className="inline-flex items-center justify-center rounded-full border border-[var(--brass-dark)] bg-[var(--paper-card)] px-3 py-2 text-xs font-bold text-[var(--brass-dark)] transition-all duration-200 hover:bg-[var(--paper)] sm:text-sm"
+                            className="action-button action-button-secondary px-3 py-2 text-xs sm:text-sm"
                           >
-                            <ExternalLink className="mr-1.5 h-3 w-3 sm:mr-2 sm:h-3.5 sm:w-3.5" />
+                            <ExternalLink />
                             Google It
                           </a>
                         </div>
@@ -222,7 +222,7 @@ const AddWordModal = () => {
                                 key={suggestion}
                                 type="button"
                                 onClick={() => selectSuggestion(suggestion)}
-                                className="max-w-full rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-2 py-1 text-[0.6875rem] font-bold break-words text-[var(--brass-dark)] shadow-sm transition-all duration-200 hover:border-[var(--sage)] hover:bg-[var(--sage-soft)] hover:text-[var(--sage-dark)] sm:px-3 sm:py-1.5 sm:text-sm"
+                                className="action-button action-button-secondary block max-w-full px-2 py-1 text-xs break-words sm:px-3 sm:py-1.5 sm:text-sm"
                               >
                                 {suggestion}
                               </button>
@@ -237,13 +237,13 @@ const AddWordModal = () => {
                       ) : null}
                       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-2.5 pb-1 pt-2.5 text-xs text-[var(--ink-muted)] sm:px-3 sm:text-sm">
                         <span className="flex items-center gap-1">
-                          <span className="keycap-style">Enter</span>
+                          <span className={keycapClass}>Enter</span>
                           <span>Search</span>
                         </span>
                         <span className="flex items-center gap-1">
-                          <span className="keycap-style">Shift</span>
+                          <span className={keycapClass}>Shift</span>
                           <span>+</span>
-                          <span className="keycap-style">Enter</span>
+                          <span className={keycapClass}>Enter</span>
                           <span>Google</span>
                         </span>
                       </div>

@@ -23,19 +23,16 @@ const FlashcardsPage = async () => {
   if (words.length === 0) {
     return (
       <main className="mx-auto w-full max-w-3xl">
-        <section className="rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] px-5 py-8 text-center shadow-md sm:py-10">
+        <section className="rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] px-5 py-8 text-center sm:py-10">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-4">
-            <h2 className="text-1xl text-[var(--ink)] sm:text-3xl">
+            <h2 className="text-2xl font-semibold text-[var(--ink)] sm:text-3xl">
               Add words to start studying.
             </h2>
             <p className="max-w-xl text-sm text-[var(--ink-muted)] sm:text-base">
               Your saved words become a shuffled deck here. Add a few words to
               your diary, then come back for a focused review session.
             </p>
-            <Link
-              href="/diary"
-              className="inline-flex items-center gap-2 rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-5 py-2.5 text-sm font-semibold text-[var(--paper-card)] shadow-sm transition-all duration-200 hover:bg-[var(--sage)]"
-            >
+            <Link href="/diary" className="action-button action-button-primary">
               Go To Diary
             </Link>
           </div>

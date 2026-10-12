@@ -32,7 +32,7 @@ const LoginForm = () => {
           </label>
           <div className="relative">
             <input
-              className="form-input"
+              className="form-input pr-12"
               id="password"
               name="password"
               type={showPassword ? 'text' : 'password'}
@@ -44,14 +44,20 @@ const LoginForm = () => {
               aria-label={showPassword ? 'Hide password' : 'Reveal password'}
               title={showPassword ? 'Hide password' : 'Reveal password'}
             >
-              {showPassword ? <EyeOff /> : <Eye />}
+              {showPassword ? (
+                <EyeOff className="h-5 w-5" />
+              ) : (
+                <Eye className="h-5 w-5" />
+              )}
             </button>
           </div>
         </div>
         {state?.errors && (
           <p className="error-message mt-2">Invalid login credentials.</p>
         )}
-        <button className="auth-submit-button">Log In</button>
+        <button className="action-button action-button-primary w-full px-4 py-3 text-base">
+          Log In
+        </button>
         <p className="auth-switch-text">
           Need to create an account?{' '}
           <Link href="/signup" className="auth-switch-link">

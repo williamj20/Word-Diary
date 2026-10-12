@@ -26,9 +26,9 @@ const LandingPage = async () => {
 
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col gap-7 px-0 sm:gap-10 sm:px-4 lg:gap-14 lg:px-8">
-      <section className="rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] px-4 py-8 shadow-lg sm:px-6 sm:py-10">
+      <section className="rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] px-4 py-8 sm:px-6 sm:py-10">
         <div className="flex flex-col items-center gap-4 text-center sm:gap-6">
-          <p className="text-[0.66rem] font-bold uppercase tracking-[0.14em] text-[var(--ink-muted)] sm:text-xs">
+          <p className="text-[0.625rem] font-bold uppercase text-[var(--ink-muted)] sm:text-xs">
             A Vocabulary Journal For Curious Readers
           </p>
           <h2 className="text-[clamp(2rem,8.5vw,2.6rem)] text-[var(--ink)] sm:text-[clamp(2.6rem,3.75vw,2.85rem)]">
@@ -51,14 +51,14 @@ const LandingPage = async () => {
           <div className="flex flex-col items-center gap-3 sm:flex-row">
             <Link
               href={primaryHref}
-              className="rounded-full border border-[var(--sage)] bg-[var(--sage-dark)] px-5 py-2.5 text-base font-semibold text-[var(--paper-card)] shadow-lg transition-all duration-200 hover:bg-[var(--sage)] sm:px-7 sm:py-3 sm:text-lg"
+              className="action-button action-button-primary text-base sm:px-7 sm:py-3 sm:text-lg"
             >
               {primaryLabel}
             </Link>
             {!user && (
               <Link
                 href="/login"
-                className="auth-button px-5 py-2.5 text-base sm:px-7 sm:py-3 sm:text-lg"
+                className="action-button action-button-secondary text-base sm:px-7 sm:py-3 sm:text-lg"
               >
                 Log In
               </Link>
@@ -71,15 +71,17 @@ const LandingPage = async () => {
         {featureCards.map(({ icon: Icon, eyebrow, title, description }) => (
           <div
             key={title}
-            className="flex flex-col gap-3 rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] p-4 shadow-lg sm:p-6"
+            className="flex flex-col gap-3 rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] p-4 sm:p-6"
           >
             <div className="inline-flex w-fit rounded-2xl border border-[var(--sage)] bg-[var(--sage-soft)] p-2.5 text-[var(--sage-dark)] sm:p-3">
               <Icon className="h-5 w-5" />
             </div>
-            <p className="text-[0.66rem] font-bold uppercase tracking-[0.12em] text-[var(--ink-muted)] sm:text-xs sm:tracking-[0.14em]">
+            <p className="text-[0.625rem] font-bold uppercase text-[var(--ink-muted)] sm:text-xs">
               {eyebrow}
             </p>
-            <h3 className="text-xl text-[var(--ink)] sm:text-3xl">{title}</h3>
+            <h3 className="text-xl font-semibold text-[var(--ink)] sm:text-2xl">
+              {title}
+            </h3>
             <p className="text-sm text-[var(--ink-muted)] sm:text-base">
               {description}
             </p>
