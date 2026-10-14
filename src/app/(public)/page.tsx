@@ -1,4 +1,4 @@
-import { getCurrentUser } from '@/app/lib/utils';
+import { requireProfileIsCreatedIfLoggedIn } from '@/app/lib/auth';
 import { BookMarked, Search } from 'lucide-react';
 import Link from 'next/link';
 
@@ -20,9 +20,9 @@ const featureCards = [
 ];
 
 const LandingPage = async () => {
-  const user = await getCurrentUser();
-  const primaryHref = user ? '/diary' : '/signup';
-  const primaryLabel = user ? 'Go To Your Diary' : 'Start Your Diary';
+  const profile = await requireProfileIsCreatedIfLoggedIn();
+  const primaryHref = profile ? '/diary' : '/signup';
+  const primaryLabel = profile ? 'Go To Your Diary' : 'Start Your Diary';
 
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col gap-7 px-0 sm:gap-10 sm:px-4 lg:gap-14 lg:px-8">
@@ -55,7 +55,7 @@ const LandingPage = async () => {
             >
               {primaryLabel}
             </Link>
-            {!user && (
+            {!profile && (
               <Link
                 href="/login"
                 className="action-button action-button-secondary text-base sm:px-7 sm:py-3 sm:text-lg"

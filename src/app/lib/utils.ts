@@ -81,11 +81,3 @@ export const redirectToSignupIfNotLoggedIn = async () => {
   }
   return user;
 };
-
-export const redirectToDiaryIfLoggedIn = async () => {
-  const user = await getCurrentUser();
-  if (user) {
-    console.log('User is logged in, redirecting to diary page');
-    redirect('/diary');
-  }
-};

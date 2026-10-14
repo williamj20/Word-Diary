@@ -31,8 +31,9 @@ export interface UserWordListEntry {
 }
 
 export interface CurrentProfile {
-  displayName: string | null;
-  username: string | null;
+  id: string;
+  displayName: string;
+  username: string;
 }
 
 export interface ProfileFormFields {
@@ -55,12 +56,16 @@ export const ProfileFormSchema = z.object({
   displayName: z
     .string()
     .trim()
-    .max(80, { error: 'Display name must be 80 characters or fewer.' })
-    .transform(displayName => (displayName.length === 0 ? null : displayName)),
+    .min(1, { error: 'Please enter a display name.' })
+    .max(80, { error: 'Display name must be 80 characters or fewer.' }),
   username: z
     .string()
     .superRefine((username, context) => {
       if (username.length === 0) {
+        context.addIssue({
+          code: 'custom',
+          message: 'Please enter a username.',
+        });
         return;
       }
       if (/\s/.test(username)) {
@@ -84,9 +89,7 @@ export const ProfileFormSchema = z.object({
         });
       }
     })
-    .transform(username =>
-      username.length === 0 ? null : username.toLowerCase()
-    ),
+    .transform(username => username.toLowerCase()),
 });
 
 // route handler GET response

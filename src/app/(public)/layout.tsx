@@ -1,12 +1,12 @@
 import AppHeader from '@/app/components/app-header';
-import { getCurrentUser } from '@/app/lib/utils';
+import { requireProfileIsCreatedIfLoggedIn } from '@/app/lib/auth';
 
 const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
-  const user = await getCurrentUser();
+  const profile = await requireProfileIsCreatedIfLoggedIn();
 
   return (
     <>
-      <AppHeader showAuthenticatedControls={Boolean(user)} />
+      <AppHeader showAuthenticatedControls={Boolean(profile)} />
       {children}
     </>
   );

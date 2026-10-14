@@ -1,4 +1,8 @@
-import { getWordLookup, saveWordDefinition } from '@/app/lib/data';
+import {
+  getCurrentProfile,
+  getWordLookup,
+  saveWordDefinition,
+} from '@/app/lib/data';
 import {
   convertDictionaryServiceResponse,
   getCurrentUser,
@@ -19,9 +23,15 @@ export const GET = async (
   const normalizedWord = word.trim().toLowerCase();
 
   try {
-    const user = await getCurrentUser();
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const profile = await getCurrentProfile();
+    if (!profile) {
+      const user = await getCurrentUser();
+      return NextResponse.json(
+        {
+          error: user ? 'Forbidden' : 'Unauthorized',
+        },
+        { status: user ? 403 : 401 }
+      );
     }
 
     const storedWord = await getWordLookup(normalizedWord);

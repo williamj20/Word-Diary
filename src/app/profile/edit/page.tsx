@@ -1,14 +1,12 @@
-import { getCurrentProfile } from '@/app/lib/data';
-import { redirectToSignupIfNotLoggedIn } from '@/app/lib/utils';
-import ProfileEditForm from '@/app/profile/components/profile-edit-form';
+import { requireSignedInProfile } from '@/app/lib/auth';
+import ProfileForm from '@/app/components/profile-form';
 
 const EditProfilePage = async () => {
-  await redirectToSignupIfNotLoggedIn();
-  const profile = await getCurrentProfile();
+  const profile = await requireSignedInProfile();
 
   return (
     <main className="mx-auto w-full max-w-3xl">
-      <ProfileEditForm profile={profile} />
+      <ProfileForm profile={profile} />
     </main>
   );
 };

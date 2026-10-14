@@ -8,6 +8,7 @@ import {
 } from '@/app/lib/definitions';
 import sql from '@/app/lib/dbClient';
 import { escapeLikePattern, getCurrentUser } from '@/app/lib/utils';
+import { cache } from 'react';
 
 export const ENTRIES_PER_PAGE = 6;
 
@@ -17,38 +18,43 @@ interface WordLookupRow {
   isInUserList: boolean;
 }
 
-const getAuthenticatedUser = async () => {
-  const user = await getCurrentUser();
-  if (!user) {
-    throw new Error('Authenticated database access requires a user');
-  }
-
-  return user;
-};
-
-export const getCurrentProfile = async (): Promise<CurrentProfile> => {
-  const user = await getAuthenticatedUser();
-  const [profile] = await sql<CurrentProfile[]>`
-    select
-      display_name as "displayName",
-      username
-    from public.profiles
-    where id = ${user.id}
-    limit 1
-  `;
-
+// Require the signed-in user's profile before accessing their diary data.
+const getRequiredProfile = async () => {
+  const profile = await getCurrentProfile();
   if (!profile) {
-    throw new Error('Authenticated user does not have a profile');
+    throw new Error('Authenticated database access requires a user');
   }
 
   return profile;
 };
 
+// A returned profile belongs to the verified, signed-in user. Null means the
+// user is signed out or has not completed onboarding yet.
+export const getCurrentProfile = cache(
+  async (): Promise<CurrentProfile | null> => {
+    const user = await getCurrentUser();
+    if (!user) {
+      return null;
+    }
+    const [profile] = await sql<CurrentProfile[]>`
+      select
+        id,
+        display_name as "displayName",
+        username
+      from public.profiles
+      where id = ${user.id}
+      limit 1
+    `;
+
+    return profile ?? null;
+  }
+);
+
 export const getWordLookup = async (
   word: string
 ): Promise<WordLookupResponse | null> => {
   const normalizedWord = word.trim().toLowerCase();
-  const user = await getAuthenticatedUser();
+  const profile = await getRequiredProfile();
 
   // Fetch the shared word and its ordered meanings, then check whether the
   // authenticated user has saved it, all in one database query.
@@ -60,7 +66,7 @@ export const getWordLookup = async (
         select 1
         from public.user_words_list uw
         where uw.word_id = w.id
-          and uw.user_id = ${user.id}
+          and uw.user_id = ${profile.id}
       ) as "isInUserList"
     from public.words w
     cross join lateral (
@@ -144,7 +150,7 @@ export const getUserWordsByQuery = async (
   query: string,
   page: number
 ): Promise<UserWordListEntry[]> => {
-  const user = await getAuthenticatedUser();
+  const profile = await getRequiredProfile();
   const offset = (page - 1) * ENTRIES_PER_PAGE;
   const [data] = await sql<{ items: UserWordListEntry[] }[]>`
     with page_words as (
@@ -155,7 +161,7 @@ export const getUserWordsByQuery = async (
         w.word
       from public.user_words_list uw
       join public.words w on w.id = uw.word_id
-      where uw.user_id = ${user.id}
+      where uw.user_id = ${profile.id}
         and w.word ilike ${`%${escapeLikePattern(query)}%`}
       order by uw.added_at desc, uw.id desc
       limit ${ENTRIES_PER_PAGE}
@@ -197,19 +203,19 @@ export const getUserWordsByQuery = async (
 };
 
 export const getUserWordsPages = async (query: string): Promise<number> => {
-  const user = await getAuthenticatedUser();
+  const profile = await getRequiredProfile();
   const [{ totalCount }] = await sql<{ totalCount: string }[]>`
     select count(*) as "totalCount"
     from public.user_words_list uw
     join public.words w on w.id = uw.word_id
-    where uw.user_id = ${user.id}
+    where uw.user_id = ${profile.id}
       and w.word ilike ${`%${escapeLikePattern(query)}%`}
   `;
   return Math.ceil(Number(totalCount) / ENTRIES_PER_PAGE);
 };
 
 export const getFlashcardDeck = async (): Promise<WordDefinition[]> => {
-  const user = await getAuthenticatedUser();
+  const profile = await getRequiredProfile();
   const rows = await sql<WordDefinition[]>`
     select
       w.word,
@@ -230,7 +236,7 @@ export const getFlashcardDeck = async (): Promise<WordDefinition[]> => {
       from public.word_meanings wm
       where wm.word_id = w.id
     ) meaning_rows
-    where uw.user_id = ${user.id}
+    where uw.user_id = ${profile.id}
     order by uw.added_at desc, uw.id desc
     limit 100
   `;

@@ -1,5 +1,5 @@
 import LoginForm from '@/app/(public)/login/components/login-form';
-import { redirectToDiaryIfLoggedIn } from '@/app/lib/utils';
+import { redirectToDiaryIfLoggedIn } from '@/app/lib/auth';
 
 const LoginPage = async () => {
   await redirectToDiaryIfLoggedIn();

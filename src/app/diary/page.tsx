@@ -4,7 +4,7 @@ import SavedWordsSearch from '@/app/diary/components/saved-words-search';
 import WordList from '@/app/diary/components/word-list';
 import WordListSkeleton from '@/app/diary/components/word-list-skeleton';
 import { ENTRIES_PER_PAGE, getUserWordsPages } from '@/app/lib/data';
-import { redirectToSignupIfNotLoggedIn } from '@/app/lib/utils';
+import { requireSignedInProfile } from '@/app/lib/auth';
 import { Suspense } from 'react';
 
 const normalizeSearchParam = (value?: string | string[]) => {
@@ -26,7 +26,7 @@ const DiaryPage = async (props: {
     page?: string | string[];
   }>;
 }) => {
-  await redirectToSignupIfNotLoggedIn();
+  await requireSignedInProfile();
   const searchParams = await props.searchParams;
   const q = normalizeSearchParam(searchParams?.q);
   const currentPage = Number(searchParams?.page) || 1;

@@ -6,6 +6,7 @@ import {
   SignupFormState,
 } from '@/app/lib/definitions';
 import createSupabaseServerClient from '@/app/lib/supabase/server';
+import { getCurrentProfile } from '@/app/lib/data';
 import { redirect } from 'next/navigation';
 
 export const signup = async (_state: SignupFormState, formData: FormData) => {
@@ -32,7 +33,7 @@ export const signup = async (_state: SignupFormState, formData: FormData) => {
       },
     };
   }
-  redirect('/');
+  redirect('/onboarding/profile');
 };
 
 export const login = async (_state: LoginFormState, formData: FormData) => {
@@ -52,7 +53,8 @@ export const login = async (_state: LoginFormState, formData: FormData) => {
       errors: [error.message],
     };
   }
-  redirect('/diary');
+  const profile = await getCurrentProfile();
+  redirect(profile ? '/diary' : '/onboarding/profile');
 };
 
 export const logout = async () => {

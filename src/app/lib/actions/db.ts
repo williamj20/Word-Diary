@@ -2,7 +2,7 @@
 
 import { MutationResult } from '@/app/lib/definitions';
 import sql from '@/app/lib/dbClient';
-import { getCurrentUser } from '@/app/lib/utils';
+import { getCurrentProfile } from '@/app/lib/data';
 import { revalidatePath } from 'next/cache';
 
 const revalidateWordRoutes = () => {
@@ -14,14 +14,14 @@ export const saveWordToDiary = async (
   word: string
 ): Promise<MutationResult> => {
   try {
-    const user = await getCurrentUser();
-    if (!user) {
+    const profile = await getCurrentProfile();
+    if (!profile) {
       return { success: false };
     }
     const normalizedWord = word.trim().toLowerCase();
     await sql`
       insert into public.user_words_list (user_id, word_id)
-      select ${user.id}::uuid, id
+      select ${profile.id}::uuid, id
       from public.words
       where word = ${normalizedWord}
       on conflict (user_id, word_id) do nothing
@@ -39,14 +39,14 @@ export const deleteWordFromUserList = async (
   userWordListId: number
 ): Promise<MutationResult> => {
   try {
-    const user = await getCurrentUser();
-    if (!user) {
+    const profile = await getCurrentProfile();
+    if (!profile) {
       return { success: false };
     }
     await sql`
       delete from public.user_words_list
       where id = ${userWordListId}
-        and user_id = ${user.id}
+        and user_id = ${profile.id}
     `;
 
     revalidateWordRoutes();

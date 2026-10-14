@@ -1,7 +1,7 @@
 import FlashcardDeck from '@/app/flashcards/components/flashcard-deck';
 import { getFlashcardDeck } from '@/app/lib/data';
 import { WordDefinition } from '@/app/lib/definitions';
-import { redirectToSignupIfNotLoggedIn } from '@/app/lib/utils';
+import { requireSignedInProfile } from '@/app/lib/auth';
 import Link from 'next/link';
 
 const shuffleWords = (words: WordDefinition[]) => {
@@ -17,7 +17,7 @@ const shuffleWords = (words: WordDefinition[]) => {
 };
 
 const FlashcardsPage = async () => {
-  await redirectToSignupIfNotLoggedIn();
+  await requireSignedInProfile();
   const words = await getFlashcardDeck();
 
   if (words.length === 0) {

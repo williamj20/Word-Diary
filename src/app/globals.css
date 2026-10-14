@@ -73,6 +73,26 @@ body {
     @apply flex flex-col gap-3.5 sm:gap-4;
   }
 
+  /* Shared profile card and setup/edit form surfaces. Keep page spacing inline. */
+  .profile-panel {
+    @apply overflow-hidden rounded-[2rem] border;
+    background: var(--paper-card);
+    border-color: var(--brass);
+  }
+
+  .profile-panel-header {
+    @apply border-b;
+    background: var(--sage-soft);
+    border-color: var(--brass);
+  }
+
+  .profile-panel-icon {
+    @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border;
+    color: var(--sage-dark);
+    background: var(--paper-card);
+    border-color: var(--sage);
+  }
+
   /* Header dropdown surface and rows; place the panel inside a relative wrapper. */
   .header-menu-panel {
     @apply absolute right-0 z-20 mt-2 w-44 rounded-2xl border p-1.5 shadow-sm;
