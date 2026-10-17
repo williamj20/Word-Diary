@@ -52,6 +52,10 @@ export interface ProfileFormState {
   message?: string;
 }
 
+const DISALLOWED_USERNAMES = new Set(['edit']);
+
+export const USERNAME_TAKEN_MESSAGE = 'This username is unavailable';
+
 export const ProfileFormSchema = z.object({
   displayName: z
     .string()
@@ -86,6 +90,12 @@ export const ProfileFormSchema = z.object({
         context.addIssue({
           code: 'custom',
           message: 'Username must be between 3 and 30 characters.',
+        });
+      }
+      if (DISALLOWED_USERNAMES.has(username.toLowerCase())) {
+        context.addIssue({
+          code: 'custom',
+          message: USERNAME_TAKEN_MESSAGE,
         });
       }
     })

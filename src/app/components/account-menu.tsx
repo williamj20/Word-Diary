@@ -5,7 +5,7 @@ import { LogOut, UserRound } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 
-const AccountMenu = () => {
+const AccountMenu = ({ profileHref }: { profileHref: string }) => {
   const detailsRef = useRef<HTMLDetailsElement>(null);
 
   const closeMenu = () => {
@@ -40,7 +40,11 @@ const AccountMenu = () => {
         <UserRound className="h-5 w-5" />
       </summary>
       <div className="header-menu-panel">
-        <Link href="/profile" onClick={closeMenu} className="header-menu-item">
+        <Link
+          href={profileHref}
+          onClick={closeMenu}
+          className="header-menu-item"
+        >
           <UserRound />
           Profile
         </Link>

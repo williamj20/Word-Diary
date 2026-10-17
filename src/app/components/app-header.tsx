@@ -1,18 +1,22 @@
 import AccountMenu from '@/app/components/account-menu';
 import MobileHeaderMenu from '@/app/components/mobile-header-menu';
+import { getCurrentProfile } from '@/app/lib/data';
 import { BookMarked, BookOpenText, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
-const AppHeader = ({
+const AppHeader = async ({
   showAuthenticatedControls,
 }: {
   showAuthenticatedControls: boolean;
 }) => {
+  const profile = showAuthenticatedControls ? await getCurrentProfile() : null;
+  const profileHref = profile && `/profile/${profile.username}`;
+
   return (
     <header className="mx-auto mb-8 mt-1 max-w-7xl sm:mb-10">
       <div
         className={
-          showAuthenticatedControls
+          profileHref
             ? 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 md:grid-cols-[1fr_auto_1fr] md:gap-4'
             : 'flex justify-center'
         }
@@ -24,7 +28,7 @@ const AppHeader = ({
           <BookOpenText className="h-5 w-5 sm:h-8 sm:w-8 lg:h-10 lg:w-10" />
           <h1
             className={
-              showAuthenticatedControls
+              profileHref
                 ? 'text-[clamp(1.75rem,9vw,3.65rem)] font-semibold whitespace-nowrap text-[var(--ink)] md:text-[clamp(1.95rem,4vw,3.65rem)]'
                 : 'text-[clamp(1.95rem,8vw,3.65rem)] font-semibold text-[var(--ink)]'
             }
@@ -33,9 +37,9 @@ const AppHeader = ({
           </h1>
         </Link>
 
-        {showAuthenticatedControls && <MobileHeaderMenu />}
+        {profileHref && <MobileHeaderMenu profileHref={profileHref} />}
 
-        {showAuthenticatedControls && (
+        {profileHref && (
           <nav className="hidden justify-center gap-2 md:flex md:justify-self-center">
             <Link
               href="/diary"
@@ -54,9 +58,9 @@ const AppHeader = ({
           </nav>
         )}
 
-        {showAuthenticatedControls && (
+        {profileHref && (
           <div className="hidden justify-center md:flex md:justify-self-end">
-            <AccountMenu />
+            <AccountMenu profileHref={profileHref} />
           </div>
         )}
       </div>

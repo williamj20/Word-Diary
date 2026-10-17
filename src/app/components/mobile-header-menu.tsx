@@ -5,7 +5,7 @@ import { BookMarked, LogOut, Menu, Sparkles, UserRound } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 
-const MobileHeaderMenu = () => {
+const MobileHeaderMenu = ({ profileHref }: { profileHref: string }) => {
   const detailsRef = useRef<HTMLDetailsElement>(null);
 
   useEffect(() => {
@@ -32,6 +32,10 @@ const MobileHeaderMenu = () => {
         Menu
       </summary>
       <div className="header-menu-panel">
+        <Link href={profileHref} className="header-menu-item">
+          <UserRound />
+          Profile
+        </Link>
         <Link href="/diary" className="header-menu-item">
           <BookMarked />
           Diary
@@ -39,10 +43,6 @@ const MobileHeaderMenu = () => {
         <Link href="/flashcards" className="header-menu-item">
           <Sparkles />
           Flashcards
-        </Link>
-        <Link href="/profile" className="header-menu-item">
-          <UserRound />
-          Profile
         </Link>
         <form action={logout}>
           <button type="submit" className="header-menu-item">

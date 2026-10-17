@@ -4,6 +4,7 @@ import {
   CurrentProfile,
   ProfileFormSchema,
   ProfileFormState,
+  USERNAME_TAKEN_MESSAGE,
 } from '@/app/lib/definitions';
 import sql from '@/app/lib/dbClient';
 import { getCurrentProfile } from '@/app/lib/data';
@@ -86,7 +87,7 @@ const saveProfile = async (
       return {
         fields,
         errors: {
-          username: ['This username is already taken.'],
+          username: [USERNAME_TAKEN_MESSAGE],
         },
       };
     }
@@ -99,7 +100,9 @@ const saveProfile = async (
   }
 
   revalidatePath('/', 'layout');
-  redirect(mode === 'create' ? '/diary' : '/profile');
+  redirect(
+    mode === 'create' ? '/diary' : `/profile/${validatedFields.data.username}`
+  );
 };
 
 export const createCurrentProfile = async (

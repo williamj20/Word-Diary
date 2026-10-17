@@ -46,7 +46,7 @@ const ProfileCard = ({
           </div>
           <Link
             href="/profile/edit"
-            className="action-button action-button-primary shrink-0"
+            className="action-button action-button-primary shrink-0 self-end sm:self-auto"
           >
             <Pencil />
             Edit

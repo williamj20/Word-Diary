@@ -132,7 +132,7 @@ const ProfileForm = ({ profile }: { profile?: CurrentProfile }) => {
             </p>
           )}
 
-          <div className="mt-3 flex flex-col gap-3 sm:flex-row-reverse">
+          <div className="mt-3 flex flex-col items-end gap-3 sm:flex-row-reverse">
             <button
               type="submit"
               disabled={isPending}
@@ -156,7 +156,7 @@ const ProfileForm = ({ profile }: { profile?: CurrentProfile }) => {
               <button
                 type="button"
                 disabled={isPending}
-                onClick={() => router.replace('/profile')}
+                onClick={() => router.replace(`/profile/${profile.username}`)}
                 className="action-button action-button-secondary"
               >
                 <X />
