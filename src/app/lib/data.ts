@@ -1,6 +1,6 @@
 import {
-  CurrentProfile,
   MeaningContent,
+  Profile,
   SourcedWordDefinition,
   UserWordListEntry,
   WordDefinition,
@@ -30,25 +30,40 @@ const getRequiredProfile = async () => {
 
 // A returned profile belongs to the verified, signed-in user. Null means the
 // user is signed out or has not completed onboarding yet.
-export const getCurrentProfile = cache(
-  async (): Promise<CurrentProfile | null> => {
-    const user = await getCurrentUser();
-    if (!user) {
-      return null;
-    }
-    const [profile] = await sql<CurrentProfile[]>`
-      select
-        id,
-        display_name as "displayName",
-        username
-      from public.profiles
-      where id = ${user.id}
-      limit 1
-    `;
-
-    return profile ?? null;
+export const getCurrentProfile = cache(async (): Promise<Profile | null> => {
+  const user = await getCurrentUser();
+  if (!user) {
+    return null;
   }
-);
+  const [profile] = await sql<Profile[]>`
+    select
+      id,
+      display_name as "displayName",
+      username
+    from public.profiles
+    where id = ${user.id}
+    limit 1
+  `;
+
+  return profile ?? null;
+});
+
+// Public identity lookup only; this does not grant access to the user's diary.
+export const getProfileByUsername = async (
+  username: string
+): Promise<Profile | null> => {
+  const [profile] = await sql<Profile[]>`
+    select
+      id,
+      display_name as "displayName",
+      username
+    from public.profiles
+    where username = ${username.toLowerCase()}
+    limit 1
+  `;
+
+  return profile ?? null;
+};
 
 export const getWordLookup = async (
   word: string

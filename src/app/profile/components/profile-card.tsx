@@ -1,15 +1,16 @@
 import { Mail, Pencil, UserRound } from 'lucide-react';
 import Link from 'next/link';
 
-import { CurrentProfile } from '@/app/lib/definitions';
+import { Profile } from '@/app/lib/definitions';
 
-const ProfileCard = ({
-  email,
-  profile,
-}: {
-  email: string;
-  profile: CurrentProfile;
-}) => {
+type ProfileCardProps = {
+  profile: Profile;
+} & (
+  | { isOwnProfile: true; email: string }
+  | { isOwnProfile: false; email?: never }
+);
+
+const ProfileCard = ({ email, profile, isOwnProfile }: ProfileCardProps) => {
   return (
     <section className="profile-panel">
       <div className="profile-panel-header px-5 py-5 sm:px-8 sm:py-6">
@@ -18,7 +19,7 @@ const ProfileCard = ({
             <UserRound className="h-5 w-5" />
           </div>
           <h2 className="text-xl font-semibold text-[var(--ink)] sm:text-2xl">
-            Your profile
+            {isOwnProfile ? 'Your profile' : 'Profile'}
           </h2>
         </div>
       </div>
@@ -32,26 +33,28 @@ const ProfileCard = ({
           </p>
         </div>
 
-        <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-[var(--brass)] bg-[var(--paper)] px-4 py-3">
-            <Mail className="h-4 w-4 shrink-0 text-[var(--ink-muted)]" />
-            <div className="min-w-0">
-              <p className="text-[0.625rem] font-bold uppercase text-[var(--ink-muted)] sm:text-xs">
-                Email
-              </p>
-              <p className="mt-0.5 break-all text-sm font-semibold text-[var(--ink)]">
-                {email}
-              </p>
+        {isOwnProfile && (
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-[var(--brass)] bg-[var(--paper)] px-4 py-3">
+              <Mail className="h-4 w-4 shrink-0 text-[var(--ink-muted)]" />
+              <div className="min-w-0">
+                <p className="text-[0.625rem] font-bold uppercase text-[var(--ink-muted)] sm:text-xs">
+                  Email
+                </p>
+                <p className="mt-0.5 break-all text-sm font-semibold text-[var(--ink)]">
+                  {email}
+                </p>
+              </div>
             </div>
+            <Link
+              href="/profile/edit"
+              className="action-button action-button-primary shrink-0 self-end sm:self-auto"
+            >
+              <Pencil />
+              Edit
+            </Link>
           </div>
-          <Link
-            href="/profile/edit"
-            className="action-button action-button-primary shrink-0 self-end sm:self-auto"
-          >
-            <Pencil />
-            Edit
-          </Link>
-        </div>
+        )}
       </div>
     </section>
   );

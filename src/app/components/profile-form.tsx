@@ -10,7 +10,7 @@ import {
   updateCurrentProfile,
 } from '@/app/lib/actions/profile';
 import {
-  CurrentProfile,
+  Profile,
   ProfileFormFields,
   ProfileFormState,
 } from '@/app/lib/definitions';
@@ -29,7 +29,7 @@ const FieldErrors = ({ errors }: { errors?: string[] }) => {
   );
 };
 
-const ProfileForm = ({ profile }: { profile?: CurrentProfile }) => {
+const ProfileForm = ({ profile }: { profile?: Profile }) => {
   const router = useRouter();
   const isCreating = !profile;
   const initialFields = profile ?? { displayName: '', username: '' };

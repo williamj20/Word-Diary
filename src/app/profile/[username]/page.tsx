@@ -1,4 +1,4 @@
-import { requireSignedInProfile } from '@/app/lib/auth';
+import { getProfileByUsername } from '@/app/lib/data';
 import { getCurrentUser } from '@/app/lib/utils';
 import ProfileCard from '@/app/profile/components/profile-card';
 import { notFound, redirect } from 'next/navigation';
@@ -9,10 +9,12 @@ const ProfilePage = async ({
   params: Promise<{ username: string }>;
 }) => {
   const { username } = await params;
-  const profile = await requireSignedInProfile();
+  const [profile, viewer] = await Promise.all([
+    getProfileByUsername(username),
+    getCurrentUser(),
+  ]);
 
-  // Only allow the signed-in user's profile, ignoring username capitalization.
-  if (username.toLowerCase() !== profile.username) {
+  if (!profile) {
     notFound();
   }
 
@@ -21,15 +23,17 @@ const ProfilePage = async ({
     redirect(`/profile/${profile.username}`);
   }
 
-  // Email belongs to Supabase Auth rather than the profile table.
-  const user = await getCurrentUser();
-
   return (
     <main className="mx-auto w-full max-w-3xl">
-      <ProfileCard
-        email={user?.email ?? 'Email unavailable'}
-        profile={profile}
-      />
+      {viewer?.id === profile.id ? (
+        <ProfileCard
+          isOwnProfile
+          email={viewer.email ?? 'Email unavailable'}
+          profile={profile}
+        />
+      ) : (
+        <ProfileCard isOwnProfile={false} profile={profile} />
+      )}
     </main>
   );
 };

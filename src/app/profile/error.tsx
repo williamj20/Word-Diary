@@ -8,7 +8,7 @@ const ProfileError = ({ error, unstable_retry }: ErrorInfo) => {
     <RouteError
       error={error}
       retry={unstable_retry}
-      title="Your profile is unavailable"
+      title="Profile is unavailable"
     />
   );
 };

@@ -30,7 +30,7 @@ export interface UserWordListEntry {
   word: Word;
 }
 
-export interface CurrentProfile {
+export interface Profile {
   id: string;
   displayName: string;
   username: string;

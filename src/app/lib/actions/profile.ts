@@ -1,7 +1,7 @@
 'use server';
 
 import {
-  CurrentProfile,
+  Profile,
   ProfileFormSchema,
   ProfileFormState,
   USERNAME_TAKEN_MESSAGE,
@@ -22,7 +22,7 @@ const saveProfile = async (
     username: String(formData.get('username') ?? ''),
   };
 
-  let profile: CurrentProfile | null;
+  let profile: Profile | null;
   let profileId: string | undefined;
   try {
     profile = await getCurrentProfile();
