@@ -45,6 +45,33 @@ There is no `npm test` script. Treat `npm run lint` and `npm run build` as the m
 
 For docs-only changes, lint/build are optional unless the change affects generated docs, examples, or code snippets that should be checked.
 
+## Code Review
+
+When reviewing changes, including through `/review`:
+
+- Check correctness, security, regressions, and edge cases.
+- Evaluate readability, naming, unnecessary complexity, and adherence to this repository's conventions.
+- Check React/Next.js best practices, including server/client component boundaries, state and effects, data fetching, and component props.
+- Use the `vercel-react-best-practices` skill when available.
+- For UI changes, apply `.agents/skills/word-diary-responsive-css/SKILL.md`.
+- Keep suggestions focused on the changed code and its affected callers. Explain the practical benefit of each proposed improvement.
+
+Distinguish bugs and required fixes from optional improvements. Do not present personal style preferences as correctness bugs. For each item, identify the relevant code and suggest a concrete change.
+
+Report which checks were actually performed and what remains unverified. Do not modify files during a review unless explicitly asked.
+
+### Review Output
+
+Provide a detailed report even when no bugs are found:
+
+1. **Bugs and required fixes:** Describe actionable problems with file references, their impact, and suggested fixes. Explicitly state if none.
+2. **Optional improvements:** Separately report worthwhile readability, naming, complexity, convention, and React/Next.js improvements. Explain the practical benefit. Do not invent suggestions to fill space.
+3. **Review coverage:** Briefly explain the assessment of correctness, security, readability, unnecessary complexity, project conventions, and React/Next.js best practices. Include responsive UI when relevant. Identify anything not evaluated.
+4. **Verification:** Distinguish checks performed during this review from earlier results, and identify what remains unverified.
+
+Do not reduce the entire report to “no actionable regressions found.”
+Do not modify files unless explicitly requested.
+
 ## Supabase And Data
 
 Local development uses the Supabase CLI stack. Production uses the hosted Supabase project. Keep local and production credentials separate.
