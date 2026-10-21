@@ -9,18 +9,19 @@ import { ReactNode, useState } from 'react';
 const WordItemDisclosure = ({
   title,
   wordListId,
+  isOwnDiary,
   wordLabel,
   addedAtLabel,
   children,
 }: {
   title: string;
   wordListId: number;
+  isOwnDiary: boolean;
   wordLabel: string;
   addedAtLabel: string;
   children: ReactNode;
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const deleteWord = deleteWordFromUserList.bind(null, wordListId);
   const googleDefinitionUrl = `https://www.google.com/search?q=define+${encodeURIComponent(wordLabel)}`;
 
   return (
@@ -56,7 +57,12 @@ const WordItemDisclosure = ({
               )}
             />
           </button>
-          <DeleteButton word={wordLabel} deleteAction={deleteWord} />
+          {isOwnDiary ? (
+            <DeleteButton
+              word={wordLabel}
+              deleteAction={deleteWordFromUserList.bind(null, wordListId)}
+            />
+          ) : null}
         </div>
       </div>
 

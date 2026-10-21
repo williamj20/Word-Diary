@@ -88,10 +88,15 @@ const PaginationArrow = ({
   );
 };
 
-const Pagination = ({ totalPages }: { totalPages: number }) => {
+const Pagination = ({
+  totalPages,
+  currentPage,
+}: {
+  totalPages: number;
+  currentPage: number;
+}) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get('page')) || 1;
 
   const paginationItems = getPaginationItems(currentPage, totalPages);
 
@@ -106,7 +111,7 @@ const Pagination = ({ totalPages }: { totalPages: number }) => {
       <PaginationArrow
         direction="previous"
         isDisabled={currentPage <= 1}
-        href={createPageURL(currentPage - 1)}
+        href={createPageURL(Math.min(currentPage - 1, totalPages))}
       />
 
       <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">

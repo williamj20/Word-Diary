@@ -48,7 +48,6 @@ export const getCurrentProfile = cache(async (): Promise<Profile | null> => {
   return profile ?? null;
 });
 
-// Public identity lookup only; this does not grant access to the user's diary.
 export const getProfileByUsername = async (
   username: string
 ): Promise<Profile | null> => {
@@ -161,11 +160,13 @@ export const saveWordDefinition = async (
   });
 };
 
+// All diaries are publicly readable for now. The owner ID identifies the diary
+// being viewed, independently of the authenticated viewer.
 export const getUserWordsByQuery = async (
+  ownerId: string,
   query: string,
   page: number
 ): Promise<UserWordListEntry[]> => {
-  const profile = await getRequiredProfile();
   const offset = (page - 1) * ENTRIES_PER_PAGE;
   const [data] = await sql<{ items: UserWordListEntry[] }[]>`
     with page_words as (
@@ -176,7 +177,7 @@ export const getUserWordsByQuery = async (
         w.word
       from public.user_words_list uw
       join public.words w on w.id = uw.word_id
-      where uw.user_id = ${profile.id}
+      where uw.user_id = ${ownerId}
         and w.word ilike ${`%${escapeLikePattern(query)}%`}
       order by uw.added_at desc, uw.id desc
       limit ${ENTRIES_PER_PAGE}
@@ -217,13 +218,15 @@ export const getUserWordsByQuery = async (
   return data.items;
 };
 
-export const getUserWordsPages = async (query: string): Promise<number> => {
-  const profile = await getRequiredProfile();
+export const getUserWordsPages = async (
+  ownerId: string,
+  query: string
+): Promise<number> => {
   const [{ totalCount }] = await sql<{ totalCount: string }[]>`
     select count(*) as "totalCount"
     from public.user_words_list uw
     join public.words w on w.id = uw.word_id
-    where uw.user_id = ${profile.id}
+    where uw.user_id = ${ownerId}
       and w.word ilike ${`%${escapeLikePattern(query)}%`}
   `;
   return Math.ceil(Number(totalCount) / ENTRIES_PER_PAGE);

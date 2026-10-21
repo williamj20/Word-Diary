@@ -2,7 +2,13 @@ import WordItemDisclosure from '@/app/diary/components/word-item-disclosure';
 import WordMeaning from '@/app/diary/components/word-meaning';
 import { UserWordListEntry } from '@/app/lib/definitions';
 
-const WordItem = ({ word }: { word: UserWordListEntry }) => {
+const WordItem = ({
+  word,
+  isOwnDiary,
+}: {
+  word: UserWordListEntry;
+  isOwnDiary: boolean;
+}) => {
   const wordDefinition = word.word;
   const addedAtLabel = new Intl.DateTimeFormat('en-US', {
     month: 'short',
@@ -16,6 +22,7 @@ const WordItem = ({ word }: { word: UserWordListEntry }) => {
       <WordItemDisclosure
         title={wordDefinition.word}
         wordListId={word.id}
+        isOwnDiary={isOwnDiary}
         wordLabel={wordDefinition.word}
         addedAtLabel={addedAtLabel}
       >

@@ -5,8 +5,8 @@ import sql from '@/app/lib/dbClient';
 import { getCurrentProfile } from '@/app/lib/data';
 import { revalidatePath } from 'next/cache';
 
-const revalidateWordRoutes = () => {
-  revalidatePath('/diary');
+const revalidateWordRoutes = (username: string) => {
+  revalidatePath(`/diary/${username}`);
   revalidatePath('/flashcards');
 };
 
@@ -27,7 +27,7 @@ export const saveWordToDiary = async (
       on conflict (user_id, word_id) do nothing
     `;
 
-    revalidateWordRoutes();
+    revalidateWordRoutes(profile.username);
     return { success: true };
   } catch (error) {
     console.error('Failed to save word to diary', error);
@@ -49,7 +49,7 @@ export const deleteWordFromUserList = async (
         and user_id = ${profile.id}
     `;
 
-    revalidateWordRoutes();
+    revalidateWordRoutes(profile.username);
     return { success: true };
   } catch (error) {
     console.error('Failed to delete word from diary', error);

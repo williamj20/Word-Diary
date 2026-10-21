@@ -1,4 +1,4 @@
-import { Mail, Pencil, UserRound } from 'lucide-react';
+import { BookMarked, Mail, Pencil, UserRound } from 'lucide-react';
 import Link from 'next/link';
 
 import { Profile } from '@/app/lib/definitions';
@@ -32,6 +32,14 @@ const ProfileCard = ({ email, profile, isOwnProfile }: ProfileCardProps) => {
             @{profile.username}
           </p>
         </div>
+
+        <Link
+          href={`/diary/${profile.username}`}
+          className="action-button action-button-primary mt-5 max-sm:gap-1.5 max-sm:px-3 max-sm:py-2 max-sm:text-xs sm:mt-6"
+        >
+          <BookMarked className="max-sm:h-3.5 max-sm:w-3.5" />
+          View diary
+        </Link>
 
         {isOwnProfile && (
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

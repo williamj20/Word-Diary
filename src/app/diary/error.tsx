@@ -8,7 +8,7 @@ const DiaryError = ({ error, unstable_retry }: ErrorInfo) => {
     <RouteError
       error={error}
       retry={unstable_retry}
-      title="Your diary is unavailable"
+      title="Diary is unavailable"
     />
   );
 };

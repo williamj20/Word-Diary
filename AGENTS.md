@@ -6,7 +6,7 @@ This is a Next.js App Router project using React 19, TypeScript, Tailwind CSS 4,
 
 - `src/app/`: routes, layouts, pages, API routes, and UI components.
 - `src/app/(public)/`: public landing, login, and signup routes.
-- `src/app/diary/`: authenticated diary route and diary-specific components.
+- `src/app/diary/`: authenticated diary shortcut, public username routes, and diary-specific components.
 - `src/app/components/`: shared app-level UI.
 - `src/app/lib/`: data access, server actions, Supabase helpers, utilities, shared types, and validation schemas.
 - `src/proxy.ts`: Supabase/session proxy middleware.
