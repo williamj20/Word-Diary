@@ -34,7 +34,7 @@ body {
   /* Labeled buttons/links: pair with primary for emphasis or secondary for neutral
      actions. Keep sizing differences inline with Tailwind. */
   .action-button {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-bold transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-bold transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .action-button > svg {
@@ -47,7 +47,7 @@ body {
     border-color: var(--sage);
   }
 
-  .action-button-primary:not(:disabled):hover {
+  .action-button-primary:not(:disabled):active {
     background: var(--sage);
   }
 
@@ -57,7 +57,7 @@ body {
     border-color: var(--brass);
   }
 
-  .action-button-secondary:not(:disabled):hover {
+  .action-button-secondary:not(:disabled):active {
     color: var(--ink);
     background: var(--paper);
   }
@@ -101,11 +101,11 @@ body {
   }
 
   .header-menu-item {
-    @apply flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-bold transition-colors duration-200;
+    @apply flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-bold transition-colors duration-100;
     color: var(--ink-muted);
   }
 
-  .header-menu-item:hover {
+  .header-menu-item:not(:disabled):active {
     color: var(--ink);
     background: var(--paper);
   }
@@ -127,11 +127,11 @@ body {
   }
 
   .word-modal-close {
-    @apply absolute right-2.5 top-2.5 rounded-full p-1.5 transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60 sm:right-3 sm:top-3 sm:p-2;
+    @apply absolute right-2.5 top-2.5 rounded-full p-1.5 transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-60 sm:right-3 sm:top-3 sm:p-2;
     color: var(--ink-muted);
   }
 
-  .word-modal-close:not(:disabled):hover {
+  .word-modal-close:not(:disabled):active {
     color: var(--ink);
     background: var(--paper);
   }
@@ -147,12 +147,12 @@ body {
   }
 
   .auth-switch-link {
-    @apply font-bold underline decoration-2 underline-offset-4 transition-colors duration-200;
+    @apply font-bold underline decoration-2 underline-offset-4 transition-colors duration-100;
     color: var(--sage-dark);
     text-decoration-color: var(--brass);
   }
 
-  .auth-switch-link:hover {
+  .auth-switch-link:active {
     color: var(--brass-dark);
   }
 
@@ -163,16 +163,16 @@ body {
   }
   /* Icon-only controls; add colours and any sizing overrides inline. */
   .icon-button {
-    @apply inline-flex shrink-0 items-center justify-center rounded-xl border p-1.5 transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60 sm:p-2;
+    @apply inline-flex shrink-0 items-center justify-center rounded-xl border p-1.5 transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-60 sm:p-2;
   }
   /* Previous/next page controls; use action-button for page numbers. */
   .pagination-nav-button {
-    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors duration-200 sm:h-10 sm:w-10;
+    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors duration-100 sm:h-10 sm:w-10;
     color: var(--ink-muted);
     background: var(--paper-card);
     border-color: var(--brass);
   }
-  .pagination-nav-button:not(:disabled):hover {
+  .pagination-nav-button:not(:disabled):active {
     color: var(--ink);
     background: var(--paper);
   }
@@ -227,10 +227,46 @@ body {
   }
   /* Password reveal control; use a relative wrapper and reserve input padding. */
   .show-password-button {
-    @apply absolute inset-y-0 right-3 transition-colors duration-200 focus:outline-none focus-visible:outline-none;
+    @apply absolute inset-y-0 right-3 transition-colors duration-100 focus:outline-none focus-visible:outline-none;
     color: var(--ink-muted);
   }
-  .show-password-button:hover {
+  .show-password-button:not(:disabled):active {
     color: var(--ink);
+  }
+
+  /* Apply hover colors only on devices that support hovering. */
+  @media (hover: hover) {
+    .action-button-primary:not(:disabled):hover {
+      background: var(--sage);
+    }
+
+    .action-button-secondary:not(:disabled):hover,
+    .header-menu-item:not(:disabled):hover,
+    .word-modal-close:not(:disabled):hover,
+    .pagination-nav-button:not(:disabled):hover {
+      color: var(--ink);
+      background: var(--paper);
+    }
+
+    .auth-switch-link:hover {
+      color: var(--brass-dark);
+    }
+
+    .show-password-button:not(:disabled):hover {
+      color: var(--ink);
+    }
+  }
+
+  /* Apply the pressed color immediately for touch, mouse, and keyboard input. */
+  :is(
+      .action-button,
+      .header-menu-item,
+      .word-modal-close,
+      .auth-switch-link,
+      .icon-button,
+      .pagination-nav-button,
+      .show-password-button
+    ):not(:disabled):active {
+    transition-duration: 0s;
   }
 }

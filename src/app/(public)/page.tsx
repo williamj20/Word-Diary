@@ -41,7 +41,7 @@ const LandingPage = async () => {
               href="https://www.merriam-webster.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-bold hover:underline"
+              className="font-bold hover:underline active:underline"
             >
               Merriam-Webster
             </a>{' '}

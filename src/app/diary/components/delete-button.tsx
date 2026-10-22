@@ -35,7 +35,7 @@ const DeleteButton = ({
           setDeleteError('');
           setShowModal(true);
         }}
-        className="icon-button border-[var(--danger)] bg-[var(--danger-soft)] text-[var(--danger)] hover:bg-[var(--danger)] hover:text-[var(--paper-card)]"
+        className="icon-button border-[var(--danger)] bg-[var(--danger-soft)] text-[var(--danger)] hover:bg-[var(--danger)] hover:text-[var(--paper-card)] active:bg-[var(--danger)] active:text-[var(--paper-card)]"
       >
         <Trash2 className="h-4 w-4" />
       </button>

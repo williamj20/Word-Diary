@@ -147,7 +147,7 @@ const AddWordModal = () => {
           resetLookup();
           setIsOpen(true);
         }}
-        className="icon-button inline-flex h-9 w-9 items-center justify-center border-[var(--sage)] bg-[var(--sage-dark)] text-[var(--paper-card)] hover:bg-[var(--sage)] sm:h-11 sm:w-11"
+        className="icon-button inline-flex h-9 w-9 items-center justify-center border-[var(--sage)] bg-[var(--sage-dark)] text-[var(--paper-card)] hover:bg-[var(--sage)] active:bg-[var(--sage)] sm:h-11 sm:w-11"
       >
         <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
       </button>

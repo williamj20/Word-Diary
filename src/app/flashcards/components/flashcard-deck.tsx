@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const meaningNavigationButtonClass =
-  'icon-button h-9 w-9 border-[var(--sage)] bg-[var(--sage-soft)] text-[var(--sage-dark)] enabled:hover:bg-[var(--sage)] enabled:hover:text-[var(--paper-card)]';
+  'icon-button h-9 w-9 border-[var(--sage)] bg-[var(--sage-soft)] text-[var(--sage-dark)] enabled:hover:bg-[var(--sage)] enabled:hover:text-[var(--paper-card)] enabled:active:bg-[var(--sage)] enabled:active:text-[var(--paper-card)]';
 const definitionClass =
   'block rounded-2xl border border-[var(--brass)] bg-[var(--paper-card)]/85 px-3.5 py-2.5 text-sm font-medium break-words text-[var(--ink-muted)] sm:text-base';
 

@@ -84,7 +84,7 @@ const DeleteWordModal = ({
           <button
             onClick={onConfirm}
             disabled={isDeleting}
-            className="action-button border-[var(--danger)] bg-[var(--danger)] text-[var(--paper-card)] enabled:hover:bg-[var(--danger-dark)]"
+            className="action-button border-[var(--danger)] bg-[var(--danger)] text-[var(--paper-card)] enabled:hover:bg-[var(--danger-dark)] enabled:active:bg-[var(--danger-dark)]"
           >
             {isDeleting ? 'Deleting...' : 'Delete'}
           </button>

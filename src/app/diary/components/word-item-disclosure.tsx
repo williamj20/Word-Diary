@@ -36,7 +36,7 @@ const WordItemDisclosure = ({
             href={googleDefinitionUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="icon-button border-[var(--brass)] bg-[var(--paper-card)] text-[var(--ink-muted)] hover:bg-[var(--paper)] hover:text-[var(--ink)]"
+            className="icon-button border-[var(--brass)] bg-[var(--paper-card)] text-[var(--ink-muted)] hover:bg-[var(--paper)] hover:text-[var(--ink)] active:bg-[var(--paper)] active:text-[var(--ink)]"
           >
             <ExternalLink className="h-4 w-4" />
           </a>
@@ -44,7 +44,7 @@ const WordItemDisclosure = ({
             type="button"
             onClick={() => setIsExpanded(current => !current)}
             className={clsx(
-              'icon-button border-[var(--sage)] hover:bg-[var(--sage)] hover:text-[var(--paper-card)]',
+              'icon-button border-[var(--sage)] hover:bg-[var(--sage)] hover:text-[var(--paper-card)] active:bg-[var(--sage)] active:text-[var(--paper-card)]',
               isExpanded
                 ? 'bg-[var(--sage)] text-[var(--paper-card)]'
                 : 'bg-[var(--sage-soft)] text-[var(--sage-dark)]'

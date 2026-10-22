@@ -79,7 +79,7 @@ Headings use ink; supporting copy, labels, and metadata use ink-muted. Keep inte
 - Keep fills aligned with the current surface hierarchy: `paper-soft` for page/background-like areas, `paper-card` for cards and forms, `paper` or `paper-muted` for secondary surfaces.
 - Use sage for positive/primary actions, brass for neutral structure, and danger tokens for destructive actions.
 - Keep hover states simple token color swaps. Do not desaturate a whole content subtree to indicate a saved state; use neutral surface tokens and the saved control state.
-- Use `transition-colors duration-200` for ordinary controls; preserve disclosure and flashcard transform animations. Disabled controls retain their resting colors on hover.
+- Use `transition-colors duration-100` for buttons and action links on all devices. Gate custom hover rules with `@media (hover: hover)`; Tailwind `hover:` utilities already do this. Give controls an immediate `:active` color change with a zero-duration transition, then use the normal 100ms transition on release. Keep shared timing in `globals.css` and custom control colors inline. Preserve disclosure and flashcard transform animations. Disabled controls retain their resting colors on hover and press.
 
 ## Review Checklist
 

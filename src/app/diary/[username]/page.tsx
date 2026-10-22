@@ -66,7 +66,7 @@ const DiaryPage = async ({
         </h2>
         <Link
           href={`/profile/${profile.username}`}
-          className="mt-2 inline-block max-w-full text-sm font-semibold break-all text-[var(--sage-dark)] underline decoration-[var(--brass)] underline-offset-4 transition-colors duration-200 hover:text-[var(--brass-dark)] sm:text-base"
+          className="mt-2 inline-block max-w-full text-sm font-semibold break-all text-[var(--sage-dark)] underline decoration-[var(--brass)] underline-offset-4 transition-colors duration-100 hover:text-[var(--brass-dark)] active:text-[var(--brass-dark)] active:duration-0 sm:text-base"
         >
           @{profile.username}
         </Link>
