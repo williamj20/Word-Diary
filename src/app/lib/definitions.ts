@@ -9,19 +9,15 @@ export interface Meaning extends MeaningContent {
   id: number;
 }
 
-export interface Word {
-  word: string;
+export interface Word extends WordDefinition {
   meanings: Meaning[];
 }
 
 export interface WordDefinition {
   word: string;
-  meanings: MeaningContent[];
-}
-
-export interface SourcedWordDefinition {
-  definition: WordDefinition;
   definitionHeadword: string;
+  pronunciationUrl: string | null;
+  meanings: MeaningContent[];
 }
 
 export interface UserWordListEntry {
@@ -112,11 +108,24 @@ export interface WordLookupSuggestionsResponse {
   suggestions: string[];
 }
 
+// Ignore malformed optional audio without losing otherwise usable definitions
+// or valid recordings elsewhere in the pronunciation array.
+const DictionaryPronunciationSchema = z
+  .object({
+    sound: z
+      .object({ audio: z.string().optional().catch(undefined) })
+      .optional()
+      .catch(undefined),
+  })
+  .nullable()
+  .catch(null);
+
 export const DictionaryServiceObjectSchema = z.object({
   fl: z.string(), // functional label
   shortdef: z.array(z.string()), // short definitions
   hwi: z.object({
     hw: z.string(), // headword
+    prs: z.array(DictionaryPronunciationSchema).optional().catch(undefined),
   }),
 });
 

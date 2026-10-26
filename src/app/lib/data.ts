@@ -1,7 +1,5 @@
 import {
-  MeaningContent,
   Profile,
-  SourcedWordDefinition,
   UserWordListEntry,
   WordDefinition,
   WordLookupResponse,
@@ -12,9 +10,7 @@ import { cache } from 'react';
 
 export const ENTRIES_PER_PAGE = 6;
 
-interface WordLookupRow {
-  word: string;
-  meanings: MeaningContent[];
+interface WordLookupRow extends WordDefinition {
   isInUserList: boolean;
 }
 
@@ -75,6 +71,8 @@ export const getWordLookup = async (
   const [data] = await sql<WordLookupRow[]>`
     select
       w.word,
+      w.definition_headword as "definitionHeadword",
+      w.pronunciation_url as "pronunciationUrl",
       meaning_rows.meanings,
       exists (
         select 1
@@ -108,6 +106,8 @@ export const getWordLookup = async (
   return {
     word: {
       word: data.word,
+      definitionHeadword: data.definitionHeadword,
+      pronunciationUrl: data.pronunciationUrl,
       meanings: data.meanings,
     },
     isInUserList: data.isInUserList,
@@ -115,15 +115,16 @@ export const getWordLookup = async (
 };
 
 export const saveWordDefinition = async (
-  sourcedWordDefinition: SourcedWordDefinition
+  wordDefinition: WordDefinition
 ): Promise<void> => {
-  const { definition: wordDefinition, definitionHeadword } =
-    sourcedWordDefinition;
-
   await sql.begin(async transaction => {
     const [createdWord] = await transaction<{ id: string }[]>`
-      insert into public.words (word, definition_headword)
-      values (${wordDefinition.word}, ${definitionHeadword})
+      insert into public.words (word, definition_headword, pronunciation_url)
+      values (
+        ${wordDefinition.word},
+        ${wordDefinition.definitionHeadword},
+        ${wordDefinition.pronunciationUrl}
+      )
       on conflict (word) do nothing
       returning id
     `;
@@ -174,7 +175,9 @@ export const getUserWordsByQuery = async (
         uw.id,
         uw.word_id,
         uw.added_at,
-        w.word
+        w.word,
+        w.definition_headword,
+        w.pronunciation_url
       from public.user_words_list uw
       join public.words w on w.id = uw.word_id
       where uw.user_id = ${ownerId}
@@ -191,6 +194,8 @@ export const getUserWordsByQuery = async (
             'addedAt', page_words.added_at,
             'word', jsonb_build_object(
               'word', page_words.word,
+              'definitionHeadword', page_words.definition_headword,
+              'pronunciationUrl', page_words.pronunciation_url,
               'meanings', meaning_rows.meanings
             )
           )
@@ -237,6 +242,8 @@ export const getFlashcardDeck = async (): Promise<WordDefinition[]> => {
   const rows = await sql<WordDefinition[]>`
     select
       w.word,
+      w.definition_headword as "definitionHeadword",
+      w.pronunciation_url as "pronunciationUrl",
       meaning_rows.meanings
     from public.user_words_list uw
     join public.words w on w.id = uw.word_id

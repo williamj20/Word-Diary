@@ -3,10 +3,8 @@ import {
   getWordLookup,
   saveWordDefinition,
 } from '@/app/lib/data';
-import {
-  convertDictionaryServiceResponse,
-  getCurrentUser,
-} from '@/app/lib/utils';
+import { convertDictionaryServiceResponse } from '@/app/lib/dictionary';
+import { getCurrentUser } from '@/app/lib/utils';
 import {
   DictionaryServiceResponseSchema,
   type WordLookupSuggestionsResponse,
@@ -93,7 +91,7 @@ export const GET = async (
     await saveWordDefinition(result);
     console.log('Word definition found externally and saved to database');
     return NextResponse.json({
-      word: result.definition,
+      word: result,
       isInUserList: false,
     });
   } catch (error) {

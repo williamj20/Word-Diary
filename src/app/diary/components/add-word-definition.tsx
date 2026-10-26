@@ -1,5 +1,6 @@
 'use client';
 
+import PronunciationButton from '@/app/components/pronunciation-button';
 import SaveButton from '@/app/diary/components/save-button';
 import { saveWordToDiary } from '@/app/lib/actions/db';
 import { WordLookupResponse } from '@/app/lib/definitions';
@@ -47,9 +48,16 @@ const AddWordDefinition = ({
           : 'border-[var(--brass)] bg-[var(--paper-muted)]'
       )}
     >
-      <div className="word-card-preview-container">
-        <h3 className="word-card-title">{wordDefinition.word.word}</h3>
-        <div>
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
+          <PronunciationButton
+            word={wordDefinition.word.word}
+            definitionHeadword={wordDefinition.word.definitionHeadword}
+            pronunciationUrl={wordDefinition.word.pronunciationUrl}
+          />
+          <h3 className="word-card-title">{wordDefinition.word.word}</h3>
+        </div>
+        <div className="shrink-0">
           <SaveButton
             isAbleToSave={isAbleToSave}
             isSaving={isSaving}

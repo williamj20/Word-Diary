@@ -183,10 +183,7 @@ body {
   .word-list-container {
     @apply mt-4 w-full max-w-6xl sm:mt-5;
   }
-  /* Preview layout and titles shared by saved words and lookup results. */
-  .word-card-preview-container {
-    @apply flex flex-wrap items-center justify-between gap-2;
-  }
+  /* Titles shared by saved words and lookup results. */
   .word-card-title {
     @apply min-w-0 text-base font-semibold break-words md:text-2xl;
     color: var(--ink);

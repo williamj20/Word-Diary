@@ -1,5 +1,6 @@
 'use client';
 
+import PronunciationButton from '@/app/components/pronunciation-button';
 import { WordDefinition } from '@/app/lib/definitions';
 import clsx from 'clsx';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -92,8 +93,21 @@ const FlashcardDeck = ({ words }: { words: WordDefinition[] }) => {
           )}
         >
           <span className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-[var(--brass)] p-5 text-center text-[var(--ink)] shadow-lg [backface-visibility:hidden] [background-image:linear-gradient(135deg,var(--paper-card),var(--paper))] sm:p-6">
-            <span className="block max-w-full break-words text-[clamp(2rem,8vw,3.75rem)] font-semibold text-[var(--ink)] lg:text-6xl">
-              {currentWord.word}
+            <span className="max-h-full w-full overflow-x-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <span className="grid w-full min-w-max grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
+                <span className="flex justify-end">
+                  {!isFlipped ? (
+                    <PronunciationButton
+                      word={currentWord.word}
+                      definitionHeadword={currentWord.definitionHeadword}
+                      pronunciationUrl={currentWord.pronunciationUrl}
+                    />
+                  ) : null}
+                </span>
+                <span className="block text-[clamp(2rem,8vw,3.75rem)] font-semibold whitespace-nowrap text-[var(--ink)]">
+                  {currentWord.word}
+                </span>
+              </span>
             </span>
           </span>
 

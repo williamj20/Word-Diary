@@ -24,6 +24,8 @@ const WordItem = ({
         wordListId={word.id}
         isOwnDiary={isOwnDiary}
         wordLabel={wordDefinition.word}
+        definitionHeadword={wordDefinition.definitionHeadword}
+        pronunciationUrl={wordDefinition.pronunciationUrl}
         addedAtLabel={addedAtLabel}
       >
         <div className="word-card-meanings-container">
