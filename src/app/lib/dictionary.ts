@@ -85,7 +85,7 @@ export const convertDictionaryServiceResponse = (
     definitionHeadword,
     pronunciationUrl,
     meanings: displayedEntries.map(entry => ({
-      part_of_speech: entry.fl,
+      part_of_speech: entry.fl ?? 'unknown',
       definitions: entry.shortdef,
     })),
   };

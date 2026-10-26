@@ -121,7 +121,7 @@ const DictionaryPronunciationSchema = z
   .catch(null);
 
 export const DictionaryServiceObjectSchema = z.object({
-  fl: z.string(), // functional label
+  fl: z.string().optional(), // functional label; omitted by some variants
   shortdef: z.array(z.string()), // short definitions
   hwi: z.object({
     hw: z.string(), // headword
