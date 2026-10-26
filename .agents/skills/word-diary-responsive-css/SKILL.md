@@ -17,11 +17,13 @@ Preserve Word Diary's warm paper-and-ink journal aesthetic. Use inline Tailwind,
 
 ## Responsive Rules
 
-- Base utilities must work at 320px. Add `sm`, `md`, or `lg` rules when content needs more room; do not overfit with many breakpoints. A desktop-first sketch still requires narrow-width verification before completion.
-- Use responsive typography, spacing and control sizes appropriate to each screen width. Wrap or stack content when it cannot fit comfortably, keeping text readable and controls easy to use. Use `min-w-0` on constrained flex/grid children, `shrink-0` on icons, and `break-words` for long words or `break-all` for email/username values where needed.
-- Keep controls comfortably usable and separated on touch screens. Keep menus inside the viewport and make all functionality available without hover.
-- Constrain dialogs to the dynamic viewport height (`100dvh`). Use `min-h-0 overflow-y-auto overscroll-contain` for scrollable content, reserve space for close buttons, and keep actions reachable in short/landscape viewports. Do not hide overflow on content that must be read without providing a scroll path.
-- Avoid unintended horizontal page scrolling at supported widths. Check populated, empty, expanded, pending, and error states as applicable, including long content.
+- Prioritize horizontal overflow scrolling across the entire app and all components when space becomes too narrow. Preserve the intended layout and arrangement of content and controls; treat wrapping or stacking as deliberate design choices rather than the default response to insufficient width.
+- Adapt typography, spacing, and control sizes while keeping text readable and controls comfortably usable. Once a layout reaches its practical minimum width, allow horizontal scrolling. Let content needs determine that threshold rather than prescribing a fixed breakpoint or component-specific CSS recipe.
+- Keep horizontal scrollbars visually hidden while preserving native scrolling and access to all content and actions. Content extending beyond the visible area must remain reachable through scrolling.
+- Base layouts must remain usable at 320px, including through intentional scrolling. Use a small number of meaningful responsive breakpoints and verify behavior below a layout's minimum width.
+- Keep controls comfortably separated on touch screens and make all functionality available without hover.
+- Constrain overlays to the available viewport height and allow vertical scrolling when needed, keeping dismissal controls and actions reachable in short or landscape viewports.
+- Keep overflow deliberate and contained to the appropriate scroll container. Avoid accidental page overflow and unnecessary nested scroll areas. Check populated, empty, expanded, pending, and error states as applicable, including long content.
 - Keep border radius stable across widths. Do not add responsive `rounded-*` changes for small screens; adjust spacing or layout instead.
 
 ## CSS Class Placement
@@ -84,7 +86,8 @@ Headings use ink; supporting copy, labels, and metadata use ink-muted. Keep inte
 ## Review Checklist
 
 - Check affected screens at 320, 375, 768, and 1280px, plus a short/landscape viewport for dialogs. Verify relevant empty, populated, expanded, pending, and error states and long content.
-- Confirm no unintended horizontal scrolling, clipped controls, overlapping text, unreachable dialog actions, or hover-only functionality. Check field focus and disabled hover presentation.
+- Confirm no unintended horizontal scrolling, controls clipped without a scroll path, overlapping text, unreachable dialog actions, or hover-only functionality. Check field focus and disabled hover presentation.
+- Verify the horizontal overflow convention across affected pages and components: preserve the intended layout at narrow widths, scroll only when needed, hide horizontal scrollbars, and keep all content and actions reachable. Treat deliberate horizontal scrolling as expected behavior in reviews.
 - Confirm no new responsive rounded-radius changes were added.
 - Confirm every new global class is used by at least two distinct, visually similar components and adds value beyond renaming a small utility bundle. Verify the shared consumers after changes.
 - Confirm consumers do not repeat sizing or other defaults already owned by their shared class. Keep overrides only when the component needs a real difference.
