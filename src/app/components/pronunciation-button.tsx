@@ -1,6 +1,6 @@
 'use client';
 
-import type { WordDefinition } from '@/app/lib/definitions';
+import type { Pronunciation } from '@/app/lib/definitions';
 import {
   playPronunciation,
   type StopPlayback,
@@ -8,54 +8,49 @@ import {
 import { Volume2, VolumeX } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
-type PronunciationButtonProps = Pick<
-  WordDefinition,
-  'word' | 'definitionHeadword' | 'pronunciationUrl'
->;
-
-const PlaybackButton = ({
-  definitionHeadword,
+const PronunciationButton = ({
+  pronunciationWord,
+  pronunciationText,
   pronunciationUrl,
-}: PronunciationButtonProps) => {
+}: Pronunciation) => {
   const stopPlayback = useRef<StopPlayback | null>(null);
-
-  useEffect(() => {
-    return () => stopPlayback.current?.();
-  }, []);
-
+  useEffect(
+    () => () => stopPlayback.current?.(),
+    [pronunciationWord, pronunciationText, pronunciationUrl]
+  );
+  if (!pronunciationUrl && !pronunciationText) {
+    return null;
+  }
   const title = pronunciationUrl
-    ? `Play pronunciation of ${definitionHeadword}`
-    : 'Pronunciation unavailable';
+    ? `Play pronunciation of ${pronunciationWord}`
+    : `Audio unavailable for ${pronunciationWord}`;
   const Icon = pronunciationUrl ? Volume2 : VolumeX;
-
-  const handlePlay = () => {
-    if (pronunciationUrl) {
-      stopPlayback.current = playPronunciation(pronunciationUrl);
-    }
-  };
-
   return (
     <span
-      className="inline-flex shrink-0 align-middle"
-      title={title}
+      className="inline-flex max-w-full shrink-0 overflow-x-auto align-middle [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       onClick={event => event.stopPropagation()}
     >
       <button
         type="button"
         title={title}
         disabled={!pronunciationUrl}
-        onClick={handlePlay}
-        className="icon-button h-7 w-7 border-[var(--brass)] bg-[var(--paper-card)] p-1 text-[var(--ink-muted)] enabled:hover:bg-[var(--paper)] enabled:hover:text-[var(--ink)] enabled:active:bg-[var(--paper)] enabled:active:text-[var(--ink)] sm:h-8 sm:w-8 sm:p-1.5"
+        onClick={() => {
+          if (pronunciationUrl) {
+            stopPlayback.current = playPronunciation(pronunciationUrl);
+          }
+        }}
+        className="action-button action-button-secondary min-h-10 shrink-0 gap-1 px-3 py-1.5 text-xs font-medium whitespace-nowrap disabled:opacity-100 sm:text-sm"
       >
-        <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+        <span className="font-semibold">{pronunciationWord}</span>
+        {pronunciationText ? (
+          <>
+            <span className="text-[var(--brass)]">·</span>
+            <span>{pronunciationText}</span>
+          </>
+        ) : null}
+        <Icon className="ml-0.5 h-4 w-4 shrink-0" />
       </button>
     </span>
   );
 };
-
-const PronunciationButton = (props: PronunciationButtonProps) => (
-  // Changing the displayed word or recording stops playback.
-  <PlaybackButton key={`${props.word}:${props.pronunciationUrl}`} {...props} />
-);
-
 export default PronunciationButton;

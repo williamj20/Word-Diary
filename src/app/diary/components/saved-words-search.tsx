@@ -4,15 +4,13 @@ import { Search } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 
-const normalizeQuery = (value?: string | null) => value?.trim() ?? '';
-
 const SavedWordsSearch = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const buildDiaryUrl = (value: string) => {
-    const normalizedQuery = normalizeQuery(value);
+    const normalizedQuery = value.trim();
     const params = new URLSearchParams(searchParams.toString());
     if (normalizedQuery) {
       params.set('q', normalizedQuery);

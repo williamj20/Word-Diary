@@ -3,6 +3,7 @@ import {
   UserWordListEntry,
   WordDefinition,
   WordLookupResponse,
+  WordDefinitionSchema,
 } from '@/app/lib/definitions';
 import sql from '@/app/lib/dbClient';
 import { escapeLikePattern, getCurrentUser } from '@/app/lib/utils';
@@ -60,164 +61,118 @@ export const getProfileByUsername = async (
   return profile ?? null;
 };
 
+// One projection serves lookup, public diaries and flashcards.
+const meaningJson = () => sql`jsonb_build_object(
+  'id', wm.id,
+  'definitionHeadword', wm.definition_headword,
+  'matchKind', wm.match_kind,
+  'searchedWordPartOfSpeech', wm.searched_word_part_of_speech,
+  'definitionPartOfSpeech', wm.definition_part_of_speech,
+  'definitions', wm.definitions,
+  'pronunciationWord', wm.pronunciation_word,
+  'pronunciationText', wm.pronunciation_text,
+  'pronunciationUrl', wm.pronunciation_url
+)`;
+
+// EXISTS keeps a word with multiple matching sources from appearing twice.
+const savedWordPredicate = (query: string) => {
+  const pattern = `%${escapeLikePattern(query)}%`;
+  return sql`(w.word ilike ${pattern} or exists (
+    select 1 from public.word_meanings source
+    where source.word_id = w.id and source.definition_headword ilike ${pattern}
+  ))`;
+};
+
 export const getWordLookup = async (
   word: string
 ): Promise<WordLookupResponse | null> => {
-  const normalizedWord = word.trim().toLowerCase();
   const profile = await getRequiredProfile();
-
-  // Fetch the shared word and its ordered meanings, then check whether the
-  // authenticated user has saved it, all in one database query.
   const [data] = await sql<WordLookupRow[]>`
-    select
-      w.word,
-      w.definition_headword as "definitionHeadword",
-      w.pronunciation_url as "pronunciationUrl",
-      meaning_rows.meanings,
+    select w.word, meaning_rows.meanings,
       exists (
-        select 1
-        from public.user_words_list uw
-        where uw.word_id = w.id
-          and uw.user_id = ${profile.id}
+        select 1 from public.user_words_list uw
+        where uw.word_id = w.id and uw.user_id = ${profile.id}
       ) as "isInUserList"
     from public.words w
     cross join lateral (
-      select coalesce(
-        jsonb_agg(
-          jsonb_build_object(
-            'part_of_speech', wm.part_of_speech,
-            'definitions', wm.definitions
-          )
-          order by wm.meaning_order
-        ),
-        '[]'::jsonb
-      ) as meanings
-      from public.word_meanings wm
-      where wm.word_id = w.id
+      select jsonb_agg(${meaningJson()} order by wm.meaning_order) as meanings
+      from public.word_meanings wm where wm.word_id = w.id
     ) meaning_rows
-    where w.word = ${normalizedWord}
+    where w.word = ${word.trim().toLowerCase()} and meaning_rows.meanings is not null
     limit 1
   `;
-
-  if (!data) {
-    return null;
-  }
-
-  return {
-    word: {
-      word: data.word,
-      definitionHeadword: data.definitionHeadword,
-      pronunciationUrl: data.pronunciationUrl,
-      meanings: data.meanings,
-    },
-    isInUserList: data.isInUserList,
-  };
+  return data
+    ? {
+        word: { word: data.word, meanings: data.meanings },
+        isInUserList: data.isInUserList,
+      }
+    : null;
 };
 
 export const saveWordDefinition = async (
-  wordDefinition: WordDefinition
+  input: WordDefinition
 ): Promise<void> => {
+  // Reject all invalid content before opening a transaction or creating a word.
+  const wordDefinition = WordDefinitionSchema.parse(input);
   await sql.begin(async transaction => {
     const [createdWord] = await transaction<{ id: string }[]>`
-      insert into public.words (word, definition_headword, pronunciation_url)
-      values (
-        ${wordDefinition.word},
-        ${wordDefinition.definitionHeadword},
-        ${wordDefinition.pronunciationUrl}
-      )
-      on conflict (word) do nothing
-      returning id
+      insert into public.words (word) values (${wordDefinition.word})
+      on conflict (word) do nothing returning id
     `;
-
     if (!createdWord) {
       return;
     }
-
-    const wordId = createdWord.id;
     const meanings = wordDefinition.meanings.map((meaning, index) => ({
       meaning_order: index + 1,
-      part_of_speech: meaning.part_of_speech,
+      definition_headword: meaning.definitionHeadword,
+      match_kind: meaning.matchKind,
+      searched_word_part_of_speech: meaning.searchedWordPartOfSpeech,
+      definition_part_of_speech: meaning.definitionPartOfSpeech,
       definitions: meaning.definitions,
+      pronunciation_word: meaning.pronunciationWord,
+      pronunciation_text: meaning.pronunciationText,
+      pronunciation_url: meaning.pronunciationUrl,
     }));
-
     await transaction`
       insert into public.word_meanings (
-        word_id,
-        meaning_order,
-        part_of_speech,
-        definitions
+        word_id, meaning_order, definition_headword, match_kind,
+        searched_word_part_of_speech, definition_part_of_speech, definitions,
+        pronunciation_word, pronunciation_text, pronunciation_url
       )
-      select
-        ${wordId}::bigint,
-        meaning_order,
-        part_of_speech,
-        definitions
+      select ${createdWord.id}::bigint, meaning.*
       from jsonb_to_recordset(${transaction.json(meanings)}::jsonb) as meaning(
-        meaning_order integer,
-        part_of_speech text,
-        definitions jsonb
+        meaning_order integer, definition_headword text,
+        match_kind text, searched_word_part_of_speech text, definition_part_of_speech text,
+        definitions jsonb, pronunciation_word text,
+        pronunciation_text text, pronunciation_url text
       )
     `;
   });
 };
 
-// All diaries are publicly readable for now. The owner ID identifies the diary
-// being viewed, independently of the authenticated viewer.
+// Public diary ownership is independent of the authenticated viewer.
 export const getUserWordsByQuery = async (
   ownerId: string,
   query: string,
   page: number
 ): Promise<UserWordListEntry[]> => {
-  const offset = (page - 1) * ENTRIES_PER_PAGE;
   const [data] = await sql<{ items: UserWordListEntry[] }[]>`
     with page_words as (
-      select
-        uw.id,
-        uw.word_id,
-        uw.added_at,
-        w.word,
-        w.definition_headword,
-        w.pronunciation_url
+      select uw.id, uw.word_id, uw.added_at, w.word
       from public.user_words_list uw
       join public.words w on w.id = uw.word_id
-      where uw.user_id = ${ownerId}
-        and w.word ilike ${`%${escapeLikePattern(query)}%`}
+      where uw.user_id = ${ownerId} and ${savedWordPredicate(query)}
       order by uw.added_at desc, uw.id desc
-      limit ${ENTRIES_PER_PAGE}
-      offset ${offset}
+      limit ${ENTRIES_PER_PAGE} offset ${(page - 1) * ENTRIES_PER_PAGE}
     )
-    select
-      coalesce(
-        jsonb_agg(
-          jsonb_build_object(
-            'id', page_words.id,
-            'addedAt', page_words.added_at,
-            'word', jsonb_build_object(
-              'word', page_words.word,
-              'definitionHeadword', page_words.definition_headword,
-              'pronunciationUrl', page_words.pronunciation_url,
-              'meanings', meaning_rows.meanings
-            )
-          )
-          order by page_words.added_at desc, page_words.id desc
-        ),
-        '[]'::jsonb
-      ) as items
+    select coalesce(jsonb_agg(jsonb_build_object(
+      'id', page_words.id, 'addedAt', page_words.added_at,
+      'word', jsonb_build_object('word', page_words.word, 'meanings', meaning_rows.meanings)
+    ) order by page_words.added_at desc, page_words.id desc), '[]'::jsonb) as items
     from page_words
     cross join lateral (
-      select coalesce(
-        jsonb_agg(
-          jsonb_build_object(
-            'id', wm.id,
-            'part_of_speech', wm.part_of_speech,
-            'definitions', wm.definitions
-          )
-          order by wm.meaning_order
-        ),
-        '[]'::jsonb
-      ) as meanings
-      from public.word_meanings wm
-      where wm.word_id = page_words.word_id
+      select coalesce(jsonb_agg(${meaningJson()} order by wm.meaning_order), '[]'::jsonb) as meanings
+      from public.word_meanings wm where wm.word_id = page_words.word_id
     ) meaning_rows
   `;
   return data.items;
@@ -231,40 +186,23 @@ export const getUserWordsPages = async (
     select count(*) as "totalCount"
     from public.user_words_list uw
     join public.words w on w.id = uw.word_id
-    where uw.user_id = ${ownerId}
-      and w.word ilike ${`%${escapeLikePattern(query)}%`}
+    where uw.user_id = ${ownerId} and ${savedWordPredicate(query)}
   `;
   return Math.ceil(Number(totalCount) / ENTRIES_PER_PAGE);
 };
 
 export const getFlashcardDeck = async (): Promise<WordDefinition[]> => {
   const profile = await getRequiredProfile();
-  const rows = await sql<WordDefinition[]>`
-    select
-      w.word,
-      w.definition_headword as "definitionHeadword",
-      w.pronunciation_url as "pronunciationUrl",
-      meaning_rows.meanings
+  return sql<WordDefinition[]>`
+    select w.word, meaning_rows.meanings
     from public.user_words_list uw
     join public.words w on w.id = uw.word_id
     cross join lateral (
-      select coalesce(
-        jsonb_agg(
-          jsonb_build_object(
-            'part_of_speech', wm.part_of_speech,
-            'definitions', wm.definitions
-          )
-          order by wm.meaning_order
-        ),
-        '[]'::jsonb
-      ) as meanings
-      from public.word_meanings wm
-      where wm.word_id = w.id
+      select jsonb_agg(${meaningJson()} order by wm.meaning_order) as meanings
+      from public.word_meanings wm where wm.word_id = w.id
     ) meaning_rows
-    where uw.user_id = ${profile.id}
+    where uw.user_id = ${profile.id} and meaning_rows.meanings is not null
     order by uw.added_at desc, uw.id desc
     limit 100
   `;
-
-  return rows;
 };

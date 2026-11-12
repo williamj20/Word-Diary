@@ -99,35 +99,29 @@ const AddWordModal = () => {
     }
 
     setError('');
+    setWordDefinition(null);
     setIsSearching(true);
     setSuggestions([]);
 
     try {
       const response = await fetch(`/api/${encodeURIComponent(lookupWord)}`);
       if (!response.ok) {
-        setWordDefinition(null);
-        if (response.status === 404) {
-          setError(DEFINITION_NOT_FOUND_ERROR_MESSAGE);
-        } else {
-          setError(SOMETHING_WENT_WRONG);
-        }
+        setError(
+          response.status === 404
+            ? DEFINITION_NOT_FOUND_ERROR_MESSAGE
+            : SOMETHING_WENT_WRONG
+        );
         return;
       }
-
       const data = (await response.json()) as
         | WordLookupResponse
         | WordLookupSuggestionsResponse;
       if ('suggestions' in data) {
-        setWordDefinition(null);
-        setError(DEFINITION_NOT_FOUND_ERROR_MESSAGE);
         setSuggestions(data.suggestions);
-        return;
+      } else {
+        setWordDefinition(data);
       }
-
-      setWordDefinition(data);
-    } catch (error) {
-      console.error('Error fetching definition:', error);
-      setWordDefinition(null);
+    } catch {
       setError(SOMETHING_WENT_WRONG);
     } finally {
       setIsSearching(false);
@@ -249,6 +243,7 @@ const AddWordModal = () => {
                       </div>
                       <div className={clsx(wordDefinition ? 'mt-4' : 'mt-0')}>
                         <AddWordDefinition
+                          key={wordDefinition?.word.word}
                           wordDefinition={wordDefinition}
                           onSave={() => {
                             setIsOpen(false);

@@ -1,9 +1,36 @@
 import z from 'zod';
 
-export interface MeaningContent {
-  part_of_speech: string;
-  definitions: string[];
+export enum MatchKind {
+  Exact = 'exact',
+  Inflection = 'inflection',
+  Variant = 'variant',
+  Derived = 'derived',
+  Phrase = 'phrase',
+  Related = 'related',
 }
+
+const NonblankText = z.string().trim().min(1);
+export const MeaningContentSchema = z.object({
+  definitionHeadword: NonblankText,
+  matchKind: z.enum(MatchKind),
+  searchedWordPartOfSpeech: NonblankText.max(64).nullable(),
+  definitionPartOfSpeech: NonblankText.max(64).nullable(),
+  definitions: z.array(NonblankText).min(1),
+  pronunciationWord: NonblankText,
+  pronunciationText: NonblankText.nullable(),
+  pronunciationUrl: z.url().nullable(),
+});
+
+export type MeaningContent = z.infer<typeof MeaningContentSchema>;
+export type Pronunciation = Pick<
+  MeaningContent,
+  'pronunciationWord' | 'pronunciationText' | 'pronunciationUrl'
+>;
+
+export const WordDefinitionSchema = z.object({
+  word: NonblankText.max(128).refine(word => word === word.toLowerCase()),
+  meanings: z.array(MeaningContentSchema).min(1),
+});
 
 export interface Meaning extends MeaningContent {
   id: number;
@@ -13,12 +40,7 @@ export interface Word extends WordDefinition {
   meanings: Meaning[];
 }
 
-export interface WordDefinition {
-  word: string;
-  definitionHeadword: string;
-  pronunciationUrl: string | null;
-  meanings: MeaningContent[];
-}
+export type WordDefinition = z.infer<typeof WordDefinitionSchema>;
 
 export interface UserWordListEntry {
   addedAt: string;
@@ -112,6 +134,7 @@ export interface WordLookupSuggestionsResponse {
 // or valid recordings elsewhere in the pronunciation array.
 const DictionaryPronunciationSchema = z
   .object({
+    mw: z.string().optional(),
     sound: z
       .object({ audio: z.string().optional().catch(undefined) })
       .optional()
@@ -120,13 +143,86 @@ const DictionaryPronunciationSchema = z
   .nullable()
   .catch(null);
 
+export const DictionaryPronunciationsSchema = z
+  .array(DictionaryPronunciationSchema)
+  .optional()
+  .catch(undefined);
+
+const pronunciationFields = { prs: DictionaryPronunciationsSchema };
+
+const VariantSchema = z.object({
+  va: z.string(),
+  ...pronunciationFields,
+});
+
+const InflectionSchema = z.object({
+  if: z.string().optional(),
+  ...pronunciationFields,
+});
+
+const formFields = {
+  ins: z.array(InflectionSchema).optional(),
+  vrs: z.array(VariantSchema).optional(),
+};
+
+const sourceFields = {
+  fl: z.string().optional(),
+  shortdef: z.array(z.string()).optional(),
+  // Only the limited sense extractor reads these sections. Keep their structure
+  // without requiring unrelated illustrations/etymologies to validate.
+  def: z
+    .array(
+      z.object({
+        vd: z.string().optional(),
+        sseq: z.array(z.unknown()),
+      })
+    )
+    .optional(),
+};
+
 export const DictionaryServiceObjectSchema = z.object({
-  fl: z.string().optional(), // functional label; omitted by some variants
-  shortdef: z.array(z.string()), // short definitions
-  hwi: z.object({
-    hw: z.string(), // headword
-    prs: z.array(DictionaryPronunciationSchema).optional().catch(undefined),
-  }),
+  meta: z.object({ id: NonblankText, stems: z.array(z.string()).optional() }),
+  hwi: z.object({ hw: NonblankText, ...pronunciationFields }),
+  ...sourceFields,
+  ...formFields,
+  ahws: z
+    .array(z.object({ hw: z.string(), ...pronunciationFields }))
+    .optional(),
+  uros: z
+    .array(
+      z.object({
+        ure: z.string(),
+        fl: z.string().optional(),
+        ...pronunciationFields,
+        ...formFields,
+      })
+    )
+    .optional(),
+  dros: z
+    .array(
+      z.object({
+        drp: z.string(),
+        ...sourceFields,
+        ...pronunciationFields,
+        ...formFields,
+      })
+    )
+    .optional(),
+  cxs: z
+    .array(
+      z.object({
+        cxl: z.string().optional(),
+        cxtis: z.array(
+          z.object({
+            cxt: z.string(),
+            cxr: z.string().optional(),
+            cxn: z.string().optional(),
+            cxl: z.string().optional(),
+          })
+        ),
+      })
+    )
+    .optional(),
 });
 
 export type DictionaryServiceObject = z.infer<

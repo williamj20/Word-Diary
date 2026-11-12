@@ -3,104 +3,58 @@ import {
   getWordLookup,
   saveWordDefinition,
 } from '@/app/lib/data';
-import { convertDictionaryServiceResponse } from '@/app/lib/dictionary';
+import { resolveDictionaryLookup } from '@/app/lib/dictionary-resolver';
 import { getCurrentUser } from '@/app/lib/utils';
-import {
-  DictionaryServiceResponseSchema,
-  type WordLookupSuggestionsResponse,
-} from '@/app/lib/definitions';
 import { NextRequest, NextResponse } from 'next/server';
-
-const DICTIONARY_CACHE_SECONDS = 60 * 60 * 24 * 30;
 
 export const GET = async (
   _request: NextRequest,
   { params }: { params: Promise<{ word: string }> }
 ) => {
   const { word } = await params;
-  const normalizedWord = word.trim().toLowerCase();
-
+  const normalizedWord = word.trim().normalize('NFC').toLowerCase();
+  if (!normalizedWord || normalizedWord.length > 128) {
+    return NextResponse.json(
+      { error: 'Enter a word of 1–128 characters.' },
+      { status: 400 }
+    );
+  }
   try {
     const profile = await getCurrentProfile();
     if (!profile) {
       const user = await getCurrentUser();
       return NextResponse.json(
-        {
-          error: user ? 'Forbidden' : 'Unauthorized',
-        },
+        { error: user ? 'Forbidden' : 'Unauthorized' },
         { status: user ? 403 : 401 }
       );
     }
-
     const storedWord = await getWordLookup(normalizedWord);
     if (storedWord) {
-      console.log('Word found in database, returning stored definition');
-      return NextResponse.json(storedWord);
-    }
-
-    const apiKey = process.env.DICTIONARY_API_KEY;
-    if (!apiKey) {
-      throw new Error('DICTIONARY_API_KEY is not configured');
-    }
-
-    const response = await fetch(
-      `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(normalizedWord)}?key=${apiKey}`,
-      {
-        next: {
-          revalidate: DICTIONARY_CACHE_SECONDS,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      console.error('External dictionary request failed', {
-        status: response.status,
+      console.log('Word found in database, returning stored definition', {
         word: normalizedWord,
       });
-      return NextResponse.json(
-        { error: 'Failed to fetch definition' },
-        { status: 500 }
-      );
+      return NextResponse.json(storedWord);
     }
-
-    const dictionaryResponsePayload: unknown = await response.json();
-    const dictionaryResponseValidationResult =
-      DictionaryServiceResponseSchema.safeParse(dictionaryResponsePayload);
-
-    if (!dictionaryResponseValidationResult.success) {
-      throw new Error('Dictionary service returned a malformed payload', {
-        cause: dictionaryResponseValidationResult.error,
-      });
+    const result = await resolveDictionaryLookup(normalizedWord);
+    switch (result.status) {
+      case 'suggestions':
+        return NextResponse.json({ suggestions: result.suggestions });
+      case 'not-found':
+        return NextResponse.json({ error: 'Word not found' }, { status: 404 });
+      case 'success':
+        await saveWordDefinition(result.word);
+        console.log('Word definition found externally and saved to database', {
+          word: normalizedWord,
+        });
+        return NextResponse.json({
+          word: result.word,
+          isInUserList: false,
+        });
     }
-
-    const result = convertDictionaryServiceResponse(
-      dictionaryResponseValidationResult.data,
-      normalizedWord
-    );
-
-    if (Array.isArray(result)) {
-      return NextResponse.json<WordLookupSuggestionsResponse>({
-        suggestions: result,
-      });
-    }
-
-    if (!result) {
-      return NextResponse.json({ error: 'Word not found' }, { status: 404 });
-    }
-
-    await saveWordDefinition(result);
-    console.log('Word definition found externally and saved to database');
-    return NextResponse.json({
-      word: result,
-      isInUserList: false,
-    });
   } catch (error) {
-    console.error('Word lookup failed', {
-      error,
-      word: normalizedWord,
-    });
+    console.error('Word lookup failed', { error, word: normalizedWord });
     return NextResponse.json(
-      { error: 'Failed to fetch definition' },
+      { error: 'Unable to load this word. Please try again.' },
       { status: 500 }
     );
   }

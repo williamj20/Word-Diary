@@ -31,11 +31,9 @@ const WordList = async ({
           {emptyMessage}
         </p>
       ) : null}
-      {!isEmpty
-        ? words.map(word => (
-            <WordItem key={word.id} word={word} isOwnDiary={isOwnDiary} />
-          ))
-        : null}
+      {words.map(word => (
+        <WordItem key={word.id} word={word} isOwnDiary={isOwnDiary} />
+      ))}
     </div>
   );
 };

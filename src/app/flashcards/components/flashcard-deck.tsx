@@ -1,200 +1,130 @@
 'use client';
 
 import PronunciationButton from '@/app/components/pronunciation-button';
-import { WordDefinition } from '@/app/lib/definitions';
+import WordMeaning from '@/app/diary/components/word-meaning';
+import type { WordDefinition } from '@/app/lib/definitions';
 import clsx from 'clsx';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const meaningNavigationButtonClass =
-  'icon-button h-9 w-9 border-[var(--sage)] bg-[var(--sage-soft)] text-[var(--sage-dark)] enabled:hover:bg-[var(--sage)] enabled:hover:text-[var(--paper-card)] enabled:active:bg-[var(--sage)] enabled:active:text-[var(--paper-card)]';
-const definitionClass =
-  'block rounded-2xl border border-[var(--brass)] bg-[var(--paper-card)]/85 px-3.5 py-2.5 text-sm font-medium break-words text-[var(--ink-muted)] sm:text-base';
-
 const FlashcardDeck = ({ words }: { words: WordDefinition[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [shouldSkipFlipTransition, setShouldSkipFlipTransition] =
-    useState(false);
   const [meaningIndex, setMeaningIndex] = useState(0);
-
-  const currentWord = words[currentIndex];
-  const meanings = currentWord.meanings;
-  const currentMeaning = meanings[meaningIndex];
-  const hasMultipleMeanings = meanings.length > 1;
-  const canGoPrevious = currentIndex > 0;
-  const canGoNext = currentIndex < words.length - 1;
-  const canGoPreviousMeaning = meaningIndex > 0;
-  const canGoNextMeaning = meaningIndex < meanings.length - 1;
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [skipTransition, setSkipTransition] = useState(false);
+  const wordIndex = Math.min(currentIndex, words.length - 1);
+  const currentWord = words[wordIndex];
+  const sourceIndex = Math.min(meaningIndex, currentWord.meanings.length - 1);
+  const meaning = currentWord.meanings[sourceIndex];
 
   useEffect(() => {
-    if (!shouldSkipFlipTransition) {
+    if (!skipTransition) {
       return;
     }
-    const frameId = window.requestAnimationFrame(() => {
-      setShouldSkipFlipTransition(false);
-    });
-    return () => {
-      window.cancelAnimationFrame(frameId);
-    };
-  }, [shouldSkipFlipTransition]);
+    const frame = requestAnimationFrame(() => setSkipTransition(false));
+    return () => cancelAnimationFrame(frame);
+  }, [skipTransition]);
 
-  const resetCardFace = () => {
-    setShouldSkipFlipTransition(true);
-    setIsFlipped(false);
+  const changeWord = (next: number) => {
+    setCurrentIndex(next);
     setMeaningIndex(0);
+    setIsFlipped(false);
+    setSkipTransition(true);
   };
-
-  const goToPreviousCard = () => {
-    if (!canGoPrevious) {
-      return;
-    }
-    setCurrentIndex(current => current - 1);
-    resetCardFace();
-  };
-
-  const goToNextCard = () => {
-    if (!canGoNext) {
-      return;
-    }
-    setCurrentIndex(current => current + 1);
-    resetCardFace();
-  };
-
-  const goToPreviousMeaning = () => {
-    if (!canGoPreviousMeaning) {
-      return;
-    }
-    setMeaningIndex(current => current - 1);
-  };
-
-  const goToNextMeaning = () => {
-    if (!canGoNextMeaning) {
-      return;
-    }
-    setMeaningIndex(current => current + 1);
-  };
-
-  const flipCard = () => {
-    setIsFlipped(current => !current);
-  };
-
   return (
     <section className="mx-auto flex w-full max-w-6xl flex-col gap-4 sm:gap-5">
+      <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex min-w-max items-center justify-center gap-3">
+          <button
+            type="button"
+            title="Previous source"
+            disabled={sourceIndex === 0}
+            onClick={() => setMeaningIndex(sourceIndex - 1)}
+            className="pagination-nav-button"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <span className="text-xs font-semibold text-[var(--ink-muted)] sm:text-sm">
+            Source {sourceIndex + 1} of {currentWord.meanings.length}
+          </span>
+          <button
+            type="button"
+            title="Next source"
+            disabled={sourceIndex === currentWord.meanings.length - 1}
+            onClick={() => setMeaningIndex(sourceIndex + 1)}
+            className="pagination-nav-button"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
       <div className="mx-auto flex w-full justify-center [perspective:1400px]">
         <div
-          onClick={flipCard}
+          onClick={event => {
+            if ((event.target as HTMLElement).closest('a')) {
+              return;
+            }
+            setIsFlipped(current => !current);
+          }}
           className={clsx(
-            'relative block h-[clamp(14rem,52vw,20rem)] w-[min(86vw,38rem)] cursor-pointer outline-none [transform-style:preserve-3d] lg:h-[23rem] lg:w-full lg:max-w-2xl',
-            shouldSkipFlipTransition
+            'relative h-[clamp(20rem,52vw,26rem)] w-[min(90vw,42rem)] cursor-pointer [transform-style:preserve-3d]',
+            skipTransition
               ? 'transition-none'
               : 'transition-[transform] duration-[520ms] [transition-timing-function:cubic-bezier(0.2,0.85,0.2,1)]',
             isFlipped && '[transform:rotateY(180deg)]'
           )}
         >
-          <span className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-[var(--brass)] p-5 text-center text-[var(--ink)] shadow-lg [backface-visibility:hidden] [background-image:linear-gradient(135deg,var(--paper-card),var(--paper))] sm:p-6">
-            <span className="max-h-full w-full overflow-x-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              <span className="grid w-full min-w-max grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
-                <span className="flex justify-end">
-                  {!isFlipped ? (
-                    <PronunciationButton
-                      word={currentWord.word}
-                      definitionHeadword={currentWord.definitionHeadword}
-                      pronunciationUrl={currentWord.pronunciationUrl}
-                    />
-                  ) : null}
-                </span>
-                <span className="block text-[clamp(2rem,8vw,3.75rem)] font-semibold whitespace-nowrap text-[var(--ink)]">
-                  {currentWord.word}
-                </span>
-              </span>
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 overflow-hidden rounded-[2rem] border border-[var(--brass)] p-5 text-center text-[var(--ink)] shadow-lg [backface-visibility:hidden] [background-image:linear-gradient(135deg,var(--paper-card),var(--paper))] sm:p-6">
+            <div className="w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="min-w-max text-[clamp(2rem,8vw,3.75rem)] font-semibold">
+                {currentWord.word}
+              </div>
+            </div>
+            {!isFlipped ? (
+              <PronunciationButton
+                pronunciationWord={meaning.pronunciationWord}
+                pronunciationText={meaning.pronunciationText}
+                pronunciationUrl={meaning.pronunciationUrl}
+              />
+            ) : null}
+            <span className="text-xs text-[var(--ink-muted)]">
+              Tap to reveal definitions
             </span>
-          </span>
-
-          <span className="absolute inset-0 flex flex-col gap-3 overflow-hidden rounded-[2rem] border border-[var(--brass)] p-4 text-left text-[var(--ink)] shadow-lg [backface-visibility:hidden] [background-image:linear-gradient(180deg,var(--paper-card),var(--paper))] [transform:rotateY(180deg)] sm:p-5">
-            <span className="flex flex-wrap items-start justify-between gap-3">
-              <span className="word-card-meanings-part-of-speech w-fit">
-                {currentMeaning.part_of_speech}
-              </span>
-
-              {hasMultipleMeanings ? (
-                <span className="ml-auto flex shrink-0 items-center gap-1.5">
-                  <button
-                    type="button"
-                    onClick={event => {
-                      event.stopPropagation();
-                      goToPreviousMeaning();
-                    }}
-                    disabled={!canGoPreviousMeaning}
-                    className={meaningNavigationButtonClass}
-                    title="Previous meaning"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  <span className="rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-2.5 py-1 text-xs font-bold whitespace-nowrap text-[var(--ink-muted)]">
-                    {meaningIndex + 1} / {meanings.length}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={event => {
-                      event.stopPropagation();
-                      goToNextMeaning();
-                    }}
-                    disabled={!canGoNextMeaning}
-                    className={meaningNavigationButtonClass}
-                    title="Next meaning"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                </span>
-              ) : null}
-            </span>
-            <span className="flex min-h-0 flex-1 items-center">
-              {currentMeaning ? (
-                <span className="flex max-h-full w-full flex-col gap-2.5 overflow-y-auto pr-1">
-                  {currentMeaning.definitions.map((definition, index) => (
-                    <span key={index} className={definitionClass}>
-                      {definition}
-                    </span>
-                  ))}
-                </span>
-              ) : (
-                <span className={definitionClass}>
-                  No definitions saved for this word.
-                </span>
-              )}
-            </span>
-          </span>
+          </div>
+          <div className="absolute inset-0 overflow-hidden rounded-[2rem] border border-[var(--brass)] p-4 text-left text-[var(--ink)] shadow-lg [backface-visibility:hidden] [background-image:linear-gradient(180deg,var(--paper-card),var(--paper))] [transform:rotateY(180deg)] sm:p-6">
+            <div className="h-full overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="mb-3 flex items-center justify-between gap-3 text-sm text-[var(--ink-muted)] sm:text-base">
+                <span className="font-semibold">{currentWord.word}</span>
+              </div>
+              {isFlipped ? <WordMeaning meaning={meaning} /> : null}
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="flex flex-col items-center gap-2.5">
-        <div className="flex items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={goToPreviousCard}
-            disabled={!canGoPrevious}
-            className="pagination-nav-button"
-            title="Previous card"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            onClick={goToNextCard}
-            disabled={!canGoNext}
-            className="pagination-nav-button"
-            title="Next card"
-          >
-            <ArrowRight className="h-4 w-4" />
-          </button>
-        </div>
-        <div className="rounded-full border border-[var(--brass)] bg-[var(--paper-card)] px-4 py-1.5 text-sm font-bold text-[var(--ink-muted)]">
-          {currentIndex + 1} / {words.length}
-        </div>
+      <div className="flex items-center justify-center gap-3">
+        <button
+          type="button"
+          title="Previous card"
+          disabled={wordIndex === 0}
+          onClick={() => changeWord(wordIndex - 1)}
+          className="pagination-nav-button"
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </button>
+        <span className="text-sm font-semibold text-[var(--ink-muted)]">
+          {wordIndex + 1} / {words.length}
+        </span>
+        <button
+          type="button"
+          title="Next card"
+          disabled={wordIndex === words.length - 1}
+          onClick={() => changeWord(wordIndex + 1)}
+          className="pagination-nav-button"
+        >
+          <ArrowRight className="h-4 w-4" />
+        </button>
       </div>
     </section>
   );
 };
-
 export default FlashcardDeck;

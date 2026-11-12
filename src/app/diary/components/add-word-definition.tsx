@@ -1,6 +1,6 @@
 'use client';
 
-import PronunciationButton from '@/app/components/pronunciation-button';
+import WordMeaning from '@/app/diary/components/word-meaning';
 import SaveButton from '@/app/diary/components/save-button';
 import { saveWordToDiary } from '@/app/lib/actions/db';
 import { WordLookupResponse } from '@/app/lib/definitions';
@@ -48,16 +48,11 @@ const AddWordDefinition = ({
           : 'border-[var(--brass)] bg-[var(--paper-muted)]'
       )}
     >
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
-          <PronunciationButton
-            word={wordDefinition.word.word}
-            definitionHeadword={wordDefinition.word.definitionHeadword}
-            pronunciationUrl={wordDefinition.word.pronunciationUrl}
-          />
-          <h3 className="word-card-title">{wordDefinition.word.word}</h3>
-        </div>
-        <div className="shrink-0">
+      <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex min-w-max items-center justify-between gap-4">
+          <h3 className="word-card-title whitespace-nowrap">
+            {wordDefinition.word.word}
+          </h3>
           <SaveButton
             isAbleToSave={isAbleToSave}
             isSaving={isSaving}
@@ -65,19 +60,9 @@ const AddWordDefinition = ({
           />
         </div>
       </div>
-
-      <div className="word-card-meanings-container">
+      <div className="mt-3">
         {wordDefinition.word.meanings.map((meaning, index) => (
-          <section key={index} className="word-card-meanings">
-            <div className="word-card-meanings-part-of-speech mb-1">
-              {meaning.part_of_speech}
-            </div>
-            <ul className="word-card-meanings-definitions">
-              {meaning.definitions.map((definition, defIndex) => (
-                <li key={defIndex}>{definition}</li>
-              ))}
-            </ul>
-          </section>
+          <WordMeaning key={index} meaning={meaning} />
         ))}
       </div>
       {saveError ? (

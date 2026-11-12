@@ -12,7 +12,7 @@ export const getCurrentUser = cache(async () => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  return user ?? null;
+  return user;
 });
 
 export const redirectToSignupIfNotLoggedIn = async () => {

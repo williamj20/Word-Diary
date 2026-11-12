@@ -1,6 +1,5 @@
 'use client';
 
-import PronunciationButton from '@/app/components/pronunciation-button';
 import DeleteButton from '@/app/diary/components/delete-button';
 import { deleteWordFromUserList } from '@/app/lib/actions/db';
 import clsx from 'clsx';
@@ -12,8 +11,6 @@ const WordItemDisclosure = ({
   wordListId,
   isOwnDiary,
   wordLabel,
-  definitionHeadword,
-  pronunciationUrl,
   addedAtLabel,
   children,
 }: {
@@ -21,8 +18,6 @@ const WordItemDisclosure = ({
   wordListId: number;
   isOwnDiary: boolean;
   wordLabel: string;
-  definitionHeadword: string;
-  pronunciationUrl: string | null;
   addedAtLabel: string;
   children: ReactNode;
 }) => {
@@ -33,14 +28,7 @@ const WordItemDisclosure = ({
     <>
       <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <div className="flex min-w-max items-center gap-2 sm:gap-3">
-          <div className="flex flex-1 items-center gap-1.5 sm:gap-2">
-            <PronunciationButton
-              word={wordLabel}
-              definitionHeadword={definitionHeadword}
-              pronunciationUrl={pronunciationUrl}
-            />
-            <h3 className="word-card-title whitespace-nowrap">{title}</h3>
-          </div>
+          <h3 className="word-card-title flex-1 whitespace-nowrap">{title}</h3>
           <span className="shrink-0 rounded-full border border-[var(--brass)] bg-[var(--paper)] px-2 py-1 text-[0.625rem] font-bold whitespace-nowrap text-[var(--ink-muted)] sm:px-3 sm:text-xs">
             {addedAtLabel}
           </span>
@@ -55,6 +43,7 @@ const WordItemDisclosure = ({
             </a>
             <button
               type="button"
+              title={isExpanded ? 'Hide definitions' : 'Show definitions'}
               onClick={() => setIsExpanded(current => !current)}
               className={clsx(
                 'icon-button border-[var(--sage)] hover:bg-[var(--sage)] hover:text-[var(--paper-card)] active:bg-[var(--sage)] active:text-[var(--paper-card)]',
@@ -84,7 +73,9 @@ const WordItemDisclosure = ({
         data-expanded={isExpanded}
         className="grid grid-rows-[0fr] transition-[grid-template-rows,opacity,margin-top] duration-[220ms] ease-[ease] data-[expanded=true]:mt-[0.2rem] data-[expanded=true]:grid-rows-[1fr]"
       >
-        <div className="min-h-0 overflow-hidden">{children}</div>
+        <div className="min-h-0 overflow-hidden" inert={!isExpanded}>
+          {children}
+        </div>
       </div>
     </>
   );
