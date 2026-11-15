@@ -2,52 +2,30 @@
 
 import { logout } from '@/app/lib/actions/auth';
 import { LogOut, UserRound } from 'lucide-react';
-import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import HeaderNavLink from '@/app/components/header-nav-link';
+import { useHeaderMenu } from '@/app/lib/use-header-menu';
 
 const AccountMenu = ({ profileHref }: { profileHref: string }) => {
-  const detailsRef = useRef<HTMLDetailsElement>(null);
-
-  const closeMenu = () => {
-    if (detailsRef.current) {
-      detailsRef.current.open = false;
-    }
-  };
-
-  useEffect(() => {
-    const closeOnOutsidePointer = (event: PointerEvent) => {
-      const details = detailsRef.current;
-      if (
-        details?.open &&
-        event.target instanceof Node &&
-        !details.contains(event.target)
-      ) {
-        details.open = false;
-      }
-    };
-
-    document.addEventListener('pointerdown', closeOnOutsidePointer);
-    return () =>
-      document.removeEventListener('pointerdown', closeOnOutsidePointer);
-  }, []);
+  const { detailsRef, closeMenu } = useHeaderMenu();
 
   return (
     <details ref={detailsRef} className="relative">
       <summary
-        className="action-button action-button-secondary h-10 w-10 p-0 cursor-pointer list-none [&::-webkit-details-marker]:hidden"
+        className="action-button action-button-secondary h-11 w-11 p-0 cursor-pointer list-none [&::-webkit-details-marker]:hidden"
         title="Account menu"
       >
         <UserRound className="h-5 w-5" />
       </summary>
       <div className="header-menu-panel">
-        <Link
+        <HeaderNavLink
           href={profileHref}
           onClick={closeMenu}
-          className="header-menu-item"
+          section="/profile"
+          inMenu
         >
           <UserRound />
           Profile
-        </Link>
+        </HeaderNavLink>
         <form action={logout} onSubmit={closeMenu}>
           <button type="submit" className="header-menu-item">
             <LogOut />

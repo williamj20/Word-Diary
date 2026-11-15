@@ -26,7 +26,7 @@ const LandingPage = async () => {
 
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col gap-7 px-0 sm:gap-10 sm:px-4 lg:gap-14 lg:px-8">
-      <section className="rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] px-4 py-8 sm:px-6 sm:py-10">
+      <section className="rounded-[2rem] border border-[var(--paper-muted)] bg-[var(--paper-card)] px-4 py-8 sm:px-6 sm:py-10">
         <div className="flex flex-col items-center gap-4 text-center sm:gap-6">
           <p className="text-[0.625rem] font-bold uppercase text-[var(--ink-muted)] sm:text-xs">
             A Vocabulary Journal For Curious Readers
@@ -34,9 +34,9 @@ const LandingPage = async () => {
           <h2 className="text-[clamp(2rem,8.5vw,2.6rem)] text-[var(--ink)] sm:text-[clamp(2.6rem,3.75vw,2.85rem)]">
             Keep the words you want to remember.
           </h2>
-          <p className="text-base text-[var(--ink-muted)] sm:text-lg">
-            Word Diary helps you search unfamiliar words with definitions
-            retrieved from the{' '}
+          <p className="max-w-[60ch] text-base text-[var(--ink-muted)] sm:text-lg">
+            Look up unfamiliar words, collect the ones worth remembering, and
+            revisit them with flashcards. Definitions from{' '}
             <a
               href="https://www.merriam-webster.com/"
               target="_blank"
@@ -44,9 +44,8 @@ const LandingPage = async () => {
               className="font-bold hover:underline active:underline"
             >
               Merriam-Webster
-            </a>{' '}
-            online dictionary, save the ones that matter, and build a personal
-            lexicon you can return to later.
+            </a>
+            .
           </p>
           <div className="flex flex-col items-center gap-3 sm:flex-row">
             <Link
@@ -71,7 +70,7 @@ const LandingPage = async () => {
         {featureCards.map(({ icon: Icon, eyebrow, title, description }) => (
           <div
             key={title}
-            className="flex flex-col gap-3 rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] p-4 sm:p-6"
+            className="flex flex-col gap-3 rounded-[2rem] border border-[var(--paper-muted)] bg-[var(--paper-card)] p-4 sm:p-6"
           >
             <div className="inline-flex w-fit rounded-2xl border border-[var(--sage)] bg-[var(--sage-soft)] p-2.5 text-[var(--sage-dark)] sm:p-3">
               <Icon className="h-5 w-5" />

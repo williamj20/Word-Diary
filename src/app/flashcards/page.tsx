@@ -23,7 +23,7 @@ const FlashcardsPage = async () => {
   if (words.length === 0) {
     return (
       <main className="mx-auto w-full max-w-3xl">
-        <section className="rounded-[2rem] border border-[var(--brass)] bg-[var(--paper-card)] px-5 py-8 text-center sm:py-10">
+        <section className="rounded-[2rem] border border-[var(--paper-muted)] bg-[var(--paper-card)] px-5 py-8 text-center sm:py-10">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-4">
             <h2 className="text-2xl font-semibold text-[var(--ink)] sm:text-3xl">
               Add words to start studying.
@@ -42,7 +42,7 @@ const FlashcardsPage = async () => {
   }
 
   return (
-    <main className="flex min-h-[calc(100svh-8.5rem)] items-center">
+    <main className="flex min-h-[calc(100svh-8.5rem)] min-w-min items-center">
       <FlashcardDeck words={shuffleWords(words)} />
     </main>
   );

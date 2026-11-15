@@ -2,28 +2,17 @@
 
 import { logout } from '@/app/lib/actions/auth';
 import { BookMarked, LogOut, Menu, Sparkles, UserRound } from 'lucide-react';
-import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import HeaderNavLink from '@/app/components/header-nav-link';
+import { useHeaderMenu } from '@/app/lib/use-header-menu';
 
-const MobileHeaderMenu = ({ profileHref }: { profileHref: string }) => {
-  const detailsRef = useRef<HTMLDetailsElement>(null);
-
-  useEffect(() => {
-    const closeOnOutsidePointer = (event: PointerEvent) => {
-      const details = detailsRef.current;
-      if (
-        details?.open &&
-        event.target instanceof Node &&
-        !details.contains(event.target)
-      ) {
-        details.open = false;
-      }
-    };
-
-    document.addEventListener('pointerdown', closeOnOutsidePointer);
-    return () =>
-      document.removeEventListener('pointerdown', closeOnOutsidePointer);
-  }, []);
+const MobileHeaderMenu = ({
+  profileHref,
+  diaryHref,
+}: {
+  profileHref: string;
+  diaryHref: string;
+}) => {
+  const { detailsRef, closeMenu } = useHeaderMenu();
 
   return (
     <details ref={detailsRef} className="relative md:hidden">
@@ -32,19 +21,34 @@ const MobileHeaderMenu = ({ profileHref }: { profileHref: string }) => {
         Menu
       </summary>
       <div className="header-menu-panel">
-        <Link href={profileHref} className="header-menu-item">
+        <HeaderNavLink
+          href={profileHref}
+          section="/profile"
+          inMenu
+          onClick={closeMenu}
+        >
           <UserRound />
           Profile
-        </Link>
-        <Link href="/diary" className="header-menu-item">
+        </HeaderNavLink>
+        <HeaderNavLink
+          href="/diary"
+          section={diaryHref}
+          inMenu
+          onClick={closeMenu}
+        >
           <BookMarked />
           Diary
-        </Link>
-        <Link href="/flashcards" className="header-menu-item">
+        </HeaderNavLink>
+        <HeaderNavLink
+          href="/flashcards"
+          section="/flashcards"
+          inMenu
+          onClick={closeMenu}
+        >
           <Sparkles />
           Flashcards
-        </Link>
-        <form action={logout}>
+        </HeaderNavLink>
+        <form action={logout} onSubmit={closeMenu}>
           <button type="submit" className="header-menu-item">
             <LogOut />
             Sign Out

@@ -62,8 +62,8 @@ const DeleteWordModal = ({
           <X />
         </button>
 
-        <h3 className="mb-2 pr-9 break-words text-xl font-semibold text-[var(--ink)] sm:pr-10 sm:text-2xl">
-          {`Delete "${word}"?`}
+        <h3 className="mb-2 pr-12 break-words text-xl font-semibold text-[var(--ink)] sm:text-2xl">
+          {`Remove "${word}"?`}
         </h3>
 
         <p className="text-sm text-[var(--ink-muted)] sm:text-base">

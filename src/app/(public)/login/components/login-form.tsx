@@ -6,13 +6,13 @@ import Link from 'next/link';
 import { useActionState, useState } from 'react';
 
 const LoginForm = () => {
-  const [state, action] = useActionState(login, undefined);
+  const [state, action, isPending] = useActionState(login, undefined);
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => setShowPassword(prev => !prev);
 
   return (
-    <form action={action} className="auth-form">
+    <form action={action} className="auth-form" noValidate>
       <div className="auth-form-fields">
         <div>
           <label className="form-input-label" htmlFor="email">
@@ -23,6 +23,8 @@ const LoginForm = () => {
             id="email"
             name="email"
             type="email"
+            autoComplete="email"
+            readOnly={isPending}
             defaultValue={state?.fields?.email ?? ''}
           />
         </div>
@@ -36,6 +38,7 @@ const LoginForm = () => {
               id="password"
               name="password"
               type={showPassword ? 'text' : 'password'}
+              readOnly={isPending}
             />
             <button
               type="button"
@@ -55,8 +58,11 @@ const LoginForm = () => {
         {state?.errors && (
           <p className="error-message mt-2">Invalid login credentials.</p>
         )}
-        <button className="action-button action-button-primary w-full px-4 py-3 text-base">
-          Log In
+        <button
+          disabled={isPending}
+          className="action-button action-button-primary w-full px-4 py-3 text-base"
+        >
+          {isPending ? 'Logging in…' : 'Log In'}
         </button>
         <p className="auth-switch-text">
           Need to create an account?{' '}

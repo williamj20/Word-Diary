@@ -23,7 +23,7 @@ const DeleteButton = ({
       if (result.success) {
         setShowModal(false);
       } else {
-        setDeleteError('Unable to delete this word. Please try again.');
+        setDeleteError('Unable to remove this word. Please try again.');
       }
     });
   };
@@ -35,9 +35,10 @@ const DeleteButton = ({
           setDeleteError('');
           setShowModal(true);
         }}
-        className="icon-button border-[var(--danger)] bg-[var(--danger-soft)] text-[var(--danger)] hover:bg-[var(--danger)] hover:text-[var(--paper-card)] active:bg-[var(--danger)] active:text-[var(--paper-card)]"
+        title="Remove word"
+        className="icon-button h-8 w-8 border-[var(--danger)]/40 bg-[var(--danger-soft)]/50 text-[var(--danger)] hover:border-[var(--danger)] hover:bg-[var(--danger-soft)] active:border-[var(--danger)] active:bg-[var(--danger-soft)] sm:h-10 sm:w-10"
       >
-        <Trash2 className="h-4 w-4" />
+        <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
       </button>
 
       <DeleteWordModal

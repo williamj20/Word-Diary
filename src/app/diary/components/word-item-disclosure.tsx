@@ -26,46 +26,44 @@ const WordItemDisclosure = ({
 
   return (
     <>
-      <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="flex min-w-max items-center gap-2 sm:gap-3">
-          <h3 className="word-card-title flex-1 whitespace-nowrap">{title}</h3>
-          <span className="shrink-0 rounded-full border border-[var(--brass)] bg-[var(--paper)] px-2 py-1 text-[0.625rem] font-bold whitespace-nowrap text-[var(--ink-muted)] sm:px-3 sm:text-xs">
-            {addedAtLabel}
-          </span>
-          <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
-            <a
-              href={googleDefinitionUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="icon-button border-[var(--brass)] bg-[var(--paper-card)] text-[var(--ink-muted)] hover:bg-[var(--paper)] hover:text-[var(--ink)] active:bg-[var(--paper)] active:text-[var(--ink)]"
-            >
-              <ExternalLink className="h-4 w-4" />
-            </a>
-            <button
-              type="button"
-              title={isExpanded ? 'Hide definitions' : 'Show definitions'}
-              onClick={() => setIsExpanded(current => !current)}
+      <div className="flex min-w-max items-center gap-1.5 sm:gap-3">
+        <h3 className="word-card-title flex-1 whitespace-nowrap">{title}</h3>
+        <span className="shrink-0 rounded-full border border-[var(--paper-muted)] bg-[var(--paper)] px-1.5 py-1 text-[0.625rem] font-bold whitespace-nowrap text-[var(--ink-muted)] sm:px-3 sm:text-xs">
+          {addedAtLabel}
+        </span>
+        <div className="flex shrink-0 items-center gap-1 sm:gap-3">
+          <a
+            href={googleDefinitionUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="icon-button h-8 w-8 border-[var(--brass)] bg-[var(--paper-card)] text-[var(--ink-muted)] hover:bg-[var(--paper)] hover:text-[var(--ink)] active:bg-[var(--paper)] active:text-[var(--ink)] sm:h-10 sm:w-10"
+          >
+            <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          </a>
+          <button
+            type="button"
+            title={isExpanded ? 'Hide definitions' : 'Show definitions'}
+            onClick={() => setIsExpanded(current => !current)}
+            className={clsx(
+              'icon-button h-8 w-8 border-[var(--sage)] hover:bg-[var(--sage)] hover:text-[var(--paper-card)] active:bg-[var(--sage)] active:text-[var(--paper-card)] sm:h-10 sm:w-10',
+              isExpanded
+                ? 'bg-[var(--sage)] text-[var(--paper-card)]'
+                : 'bg-[var(--sage-soft)] text-[var(--sage-dark)]'
+            )}
+          >
+            <ChevronDown
               className={clsx(
-                'icon-button border-[var(--sage)] hover:bg-[var(--sage)] hover:text-[var(--paper-card)] active:bg-[var(--sage)] active:text-[var(--paper-card)]',
-                isExpanded
-                  ? 'bg-[var(--sage)] text-[var(--paper-card)]'
-                  : 'bg-[var(--sage-soft)] text-[var(--sage-dark)]'
+                'h-3.5 w-3.5 transition-transform duration-200 sm:h-4 sm:w-4',
+                isExpanded && 'rotate-180'
               )}
-            >
-              <ChevronDown
-                className={clsx(
-                  'h-4 w-4 transition-transform duration-200',
-                  isExpanded && 'rotate-180'
-                )}
-              />
-            </button>
-            {isOwnDiary ? (
-              <DeleteButton
-                word={wordLabel}
-                deleteAction={deleteWordFromUserList.bind(null, wordListId)}
-              />
-            ) : null}
-          </div>
+            />
+          </button>
+          {isOwnDiary ? (
+            <DeleteButton
+              word={wordLabel}
+              deleteAction={deleteWordFromUserList.bind(null, wordListId)}
+            />
+          ) : null}
         </div>
       </div>
 
@@ -73,7 +71,10 @@ const WordItemDisclosure = ({
         data-expanded={isExpanded}
         className="grid grid-rows-[0fr] transition-[grid-template-rows,opacity,margin-top] duration-[220ms] ease-[ease] data-[expanded=true]:mt-[0.2rem] data-[expanded=true]:grid-rows-[1fr]"
       >
-        <div className="min-h-0 overflow-hidden" inert={!isExpanded}>
+        <div
+          className={clsx('min-h-0 overflow-hidden', isExpanded && 'min-w-min')}
+          inert={!isExpanded}
+        >
           {children}
         </div>
       </div>

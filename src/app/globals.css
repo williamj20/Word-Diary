@@ -66,7 +66,7 @@ body {
   .auth-form {
     @apply w-full max-w-md rounded-[2rem] border p-5 sm:p-8;
     background: var(--paper-card);
-    border-color: var(--brass);
+    border-color: var(--paper-muted);
   }
 
   .auth-form-fields {
@@ -77,13 +77,13 @@ body {
   .profile-panel {
     @apply overflow-hidden rounded-[2rem] border;
     background: var(--paper-card);
-    border-color: var(--brass);
+    border-color: var(--paper-muted);
   }
 
   .profile-panel-header {
     @apply border-b;
     background: var(--sage-soft);
-    border-color: var(--brass);
+    border-color: var(--paper-muted);
   }
 
   .profile-panel-icon {
@@ -127,7 +127,7 @@ body {
   }
 
   .word-modal-close {
-    @apply absolute right-2.5 top-2.5 rounded-full p-1.5 transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-60 sm:right-3 sm:top-3 sm:p-2;
+    @apply absolute right-2.5 top-2.5 inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-60 sm:right-3 sm:top-3;
     color: var(--ink-muted);
   }
 
@@ -163,14 +163,17 @@ body {
   }
   /* Icon-only controls; add colours and any sizing overrides inline. */
   .icon-button {
-    @apply inline-flex shrink-0 items-center justify-center rounded-xl border p-1.5 transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-60 sm:p-2;
+    @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-60;
   }
-  /* Previous/next page controls; use action-button for page numbers. */
+  /* Diary and flashcard navigation controls; use action-button for page numbers. */
   .pagination-nav-button {
-    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors duration-100 sm:h-10 sm:w-10;
+    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors duration-100 sm:h-11 sm:w-11;
     color: var(--ink-muted);
     background: var(--paper-card);
     border-color: var(--brass);
+  }
+  .pagination-nav-button > svg {
+    @apply h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4;
   }
   .pagination-nav-button:not(:disabled):active {
     color: var(--ink);
@@ -181,7 +184,7 @@ body {
   }
   /* List width and spacing shared by saved words and their loading skeletons. */
   .word-list-container {
-    @apply mt-4 w-full max-w-6xl sm:mt-5;
+    @apply mt-4 w-full min-w-min max-w-6xl sm:mt-5;
   }
   /* Titles shared by saved words and lookup results. */
   .word-card-title {
@@ -194,18 +197,14 @@ body {
     color: var(--ink-muted);
   }
   .form-input {
-    @apply w-full rounded-2xl border px-4 py-3 text-base font-normal transition-colors duration-200 outline-none placeholder:text-[var(--ink-muted)];
+    @apply w-full rounded-2xl border px-4 py-3 text-base font-normal outline-none placeholder:text-[var(--ink-muted)];
     color: var(--ink);
     background: var(--paper-card);
     border-color: var(--brass);
   }
-  .form-input:focus {
-    border-color: var(--sage);
-    box-shadow: 0 0 0 2px var(--sage-soft);
-  }
   /* Password reveal control; use a relative wrapper and reserve input padding. */
   .show-password-button {
-    @apply absolute inset-y-0 right-3 transition-colors duration-100 focus:outline-none focus-visible:outline-none;
+    @apply absolute inset-y-0 right-1 inline-flex w-11 items-center justify-center transition-colors duration-100 focus:outline-none focus-visible:outline-none;
     color: var(--ink-muted);
   }
   .show-password-button:not(:disabled):active {

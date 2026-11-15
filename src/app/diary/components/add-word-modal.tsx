@@ -5,13 +5,13 @@ import type {
   WordLookupResponse,
   WordLookupSuggestionsResponse,
 } from '@/app/lib/definitions';
-import clsx from 'clsx';
+import Link from 'next/link';
 import { ExternalLink, Plus, Search, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 const keycapClass =
-  'rounded-md border border-[var(--brass)] px-2 py-0.5 text-xs font-bold text-[var(--ink)] [background-image:linear-gradient(180deg,var(--paper-card),var(--paper-muted))]';
+  'rounded-md border border-[var(--paper-muted)] px-2 py-0.5 text-xs font-bold text-[var(--ink)] [background-image:linear-gradient(180deg,var(--paper-card),var(--paper-muted))]';
 
 const EMPTY_WORD_ERROR_MESSAGE = 'Please enter a word before searching.';
 const DEFINITION_NOT_FOUND_ERROR_MESSAGE =
@@ -21,7 +21,7 @@ const SOMETHING_WENT_WRONG = 'Something went wrong. Please try again.';
 const AddWordModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [word, setWord] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<ReactNode>('');
   const [isSearching, setIsSearching] = useState(false);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [wordDefinition, setWordDefinition] =
@@ -106,11 +106,23 @@ const AddWordModal = () => {
     try {
       const response = await fetch(`/api/${encodeURIComponent(lookupWord)}`);
       if (!response.ok) {
-        setError(
-          response.status === 404
-            ? DEFINITION_NOT_FOUND_ERROR_MESSAGE
-            : SOMETHING_WENT_WRONG
-        );
+        if (response.status === 401) {
+          setError(
+            <>
+              Your session has expired.{' '}
+              <Link href="/login" className="auth-switch-link">
+                Log in
+              </Link>{' '}
+              again to look up words.
+            </>
+          );
+        } else {
+          setError(
+            response.status === 404
+              ? DEFINITION_NOT_FOUND_ERROR_MESSAGE
+              : SOMETHING_WENT_WRONG
+          );
+        }
         return;
       }
       const data = (await response.json()) as
@@ -141,26 +153,27 @@ const AddWordModal = () => {
           resetLookup();
           setIsOpen(true);
         }}
-        className="icon-button inline-flex h-9 w-9 items-center justify-center border-[var(--sage)] bg-[var(--sage-dark)] text-[var(--paper-card)] hover:bg-[var(--sage)] active:bg-[var(--sage)] sm:h-11 sm:w-11"
+        title="Look up a word"
+        className="icon-button border-[var(--sage)] bg-[var(--sage-dark)] text-[var(--paper-card)] hover:bg-[var(--sage)] active:bg-[var(--sage)]"
       >
         <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
       </button>
 
       {isOpen
         ? createPortal(
-            <div className="word-modal-backdrop" onClick={() => closeModal()}>
+            <div className="word-modal-backdrop" onClick={closeModal}>
               <div
                 className="word-modal-panel max-w-4xl"
                 onClick={event => event.stopPropagation()}
               >
                 <div className="flex min-h-0 flex-col">
-                  <div className="shrink-0 pr-9 sm:pr-10">
+                  <div className="shrink-0 pr-12">
                     <h3 className="mb-2 text-xl font-semibold text-[var(--ink)] sm:text-2xl">
                       Look up a word
                     </h3>
                     <button
                       type="button"
-                      onClick={() => closeModal()}
+                      onClick={closeModal}
                       className="word-modal-close"
                     >
                       <X />
@@ -168,17 +181,19 @@ const AddWordModal = () => {
                   </div>
 
                   <div className="mt-2 min-h-0 overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                    <div className="rounded-[2rem] border border-[var(--sage)] bg-[var(--paper-soft)] p-2 sm:p-3">
-                      <div className="flex flex-col sm:flex-row sm:items-center">
+                    <div className="px-0.5 pt-1">
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
                         <input
                           type="text"
                           id="searchWord"
+                          placeholder="Enter a word"
+                          maxLength={128}
                           autoFocus
                           autoComplete="off"
                           value={word}
                           onChange={event => setWord(event.target.value)}
                           onKeyDown={handleInputKeyDown}
-                          className="min-w-0 flex-1 px-2.5 py-2.5 text-base font-normal text-[var(--ink)] outline-none placeholder:text-[var(--ink-muted)] sm:px-3 sm:py-3"
+                          className="form-input min-w-0 flex-1"
                         />
                         <div className="flex shrink-0 flex-wrap gap-2 sm:pr-1">
                           <button
@@ -203,7 +218,7 @@ const AddWordModal = () => {
                         </div>
                       </div>
                       {error ? (
-                        <div className="error-message px-3 pt-1.5">{error}</div>
+                        <div className="error-message px-1 pt-3">{error}</div>
                       ) : null}
                       {suggestions.length > 0 ? (
                         <div className="px-3 pt-2">
@@ -241,14 +256,11 @@ const AddWordModal = () => {
                           <span>Google</span>
                         </span>
                       </div>
-                      <div className={clsx(wordDefinition ? 'mt-4' : 'mt-0')}>
+                      <div className={wordDefinition ? 'mt-4' : undefined}>
                         <AddWordDefinition
                           key={wordDefinition?.word.word}
                           wordDefinition={wordDefinition}
-                          onSave={() => {
-                            setIsOpen(false);
-                            resetLookup();
-                          }}
+                          onSave={closeModal}
                         />
                       </div>
                     </div>

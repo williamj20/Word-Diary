@@ -20,7 +20,7 @@ const RootLayout = ({
   return (
     <html lang="en">
       <body className={`${literata.variable} antialiased`}>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="mx-auto min-w-xs px-3">{children}</div>
         </div>
       </body>

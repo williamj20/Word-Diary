@@ -16,7 +16,7 @@ const WordList = async ({
 
   const isEmpty = words.length === 0;
   let emptyMessage = isOwnDiary
-    ? 'Your saved words will appear here.'
+    ? 'Look up your first word and save it to start your diary.'
     : 'This diary has no saved words yet.';
   if (currentPage > 1) {
     emptyMessage = 'No saved words on this page.';
@@ -27,7 +27,7 @@ const WordList = async ({
   return (
     <div className="word-list-container">
       {isEmpty ? (
-        <p className="mt-4 text-center text-sm font-semibold text-[var(--ink-muted)]">
+        <p className="my-6 text-center text-sm text-[var(--ink-muted)] sm:text-base">
           {emptyMessage}
         </p>
       ) : null}

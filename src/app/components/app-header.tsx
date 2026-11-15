@@ -1,3 +1,4 @@
+import HeaderNavLink from '@/app/components/header-nav-link';
 import AccountMenu from '@/app/components/account-menu';
 import MobileHeaderMenu from '@/app/components/mobile-header-menu';
 import { getCurrentProfile } from '@/app/lib/data';
@@ -11,6 +12,7 @@ const AppHeader = async ({
 }) => {
   const profile = showAuthenticatedControls ? await getCurrentProfile() : null;
   const profileHref = profile && `/profile/${profile.username}`;
+  const diaryHref = profile && `/diary/${profile.username}`;
 
   return (
     <header className="mx-auto mb-8 mt-1 max-w-7xl sm:mb-10">
@@ -29,32 +31,28 @@ const AppHeader = async ({
           <h1
             className={
               profileHref
-                ? 'text-[clamp(1.75rem,9vw,3.65rem)] font-semibold whitespace-nowrap text-[var(--ink)] md:text-[clamp(1.95rem,4vw,3.65rem)]'
-                : 'text-[clamp(1.95rem,8vw,3.65rem)] font-semibold text-[var(--ink)]'
+                ? 'text-[clamp(1.75rem,9vw,2.75rem)] font-semibold whitespace-nowrap text-[var(--ink)] md:text-[clamp(1.95rem,4vw,2.75rem)]'
+                : 'text-[clamp(1.95rem,8vw,2.75rem)] font-semibold text-[var(--ink)]'
             }
           >
             Word Diary
           </h1>
         </Link>
 
-        {profileHref && <MobileHeaderMenu profileHref={profileHref} />}
+        {profileHref && diaryHref && (
+          <MobileHeaderMenu profileHref={profileHref} diaryHref={diaryHref} />
+        )}
 
-        {profileHref && (
+        {diaryHref && (
           <nav className="hidden justify-center gap-2 md:flex md:justify-self-center">
-            <Link
-              href="/diary"
-              className="action-button action-button-secondary gap-1.5 px-3 py-1.5 text-xs md:text-sm"
-            >
+            <HeaderNavLink href="/diary" section={diaryHref}>
               <BookMarked className="h-3.5 w-3.5" />
               Diary
-            </Link>
-            <Link
-              href="/flashcards"
-              className="action-button action-button-secondary gap-1.5 px-3 py-1.5 text-xs md:text-sm"
-            >
+            </HeaderNavLink>
+            <HeaderNavLink href="/flashcards" section="/flashcards">
               <Sparkles className="h-3.5 w-3.5" />
               Flashcards
-            </Link>
+            </HeaderNavLink>
           </nav>
         )}
 

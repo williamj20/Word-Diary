@@ -55,7 +55,7 @@ const ProfileForm = ({ profile }: { profile?: Profile }) => {
             )}
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-[var(--ink)] sm:text-2xl">
+            <h2 className="text-lg font-semibold text-[var(--ink)] sm:text-xl">
               {isCreating ? 'Create your profile' : 'Edit your profile'}
             </h2>
           </div>
@@ -139,7 +139,7 @@ const ProfileForm = ({ profile }: { profile?: Profile }) => {
               className="action-button action-button-primary"
             >
               <Save />
-              {isPending ? 'Saving...' : isCreating ? 'Create profile' : 'Save'}
+              {isPending ? 'Saving…' : isCreating ? 'Create profile' : 'Save'}
             </button>
             {isCreating ? (
               <button

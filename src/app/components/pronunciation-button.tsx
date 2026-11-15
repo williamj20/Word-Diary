@@ -39,7 +39,7 @@ const PronunciationButton = ({
             stopPlayback.current = playPronunciation(pronunciationUrl);
           }
         }}
-        className="action-button action-button-secondary min-h-10 shrink-0 gap-1 px-3 py-1.5 text-xs font-medium whitespace-nowrap disabled:opacity-100 sm:text-sm"
+        className="action-button action-button-secondary min-h-9 shrink-0 gap-1 px-1.5 py-1 text-xs font-medium whitespace-nowrap disabled:opacity-100 sm:min-h-10 sm:px-3 sm:py-1.5 sm:text-sm"
       >
         <span className="font-semibold">{pronunciationWord}</span>
         {pronunciationText ? (

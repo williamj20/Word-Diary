@@ -18,7 +18,7 @@ const WordItem = ({
   }).format(new Date(word.addedAt));
 
   return (
-    <article className="relative mt-3 w-full max-w-6xl rounded-[1.75rem] border border-[var(--brass)] bg-[var(--paper-card)] px-3.5 py-2 text-sm font-medium text-[var(--ink)] [background-image:linear-gradient(135deg,var(--paper-card),var(--paper))] sm:px-5 sm:py-2.5 sm:text-base lg:px-6">
+    <article className="relative mt-3 w-full min-w-min max-w-6xl rounded-[1.75rem] border border-[var(--paper-muted)] bg-[var(--paper-card)] px-3 py-2 text-sm font-normal text-[var(--ink)] [background-image:linear-gradient(135deg,var(--paper-card),var(--paper))] sm:px-5 sm:py-2.5 sm:text-base lg:px-6">
       <WordItemDisclosure
         title={wordDefinition.word}
         wordListId={word.id}

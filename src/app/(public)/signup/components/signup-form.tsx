@@ -21,8 +21,6 @@ const SignupForm = () => {
     formData: FormData
   ) => {
     const nextState = await signup(previousState, formData);
-    editedFields.current.add('password');
-    editedFields.current.add('confirmPassword');
     editedFields.current.delete('email');
     setErrors(nextState?.errors);
     return nextState;
@@ -37,8 +35,8 @@ const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Debounce Zod validation and update errors only for edited fields
-  const validate = useDebouncedCallback((form: HTMLFormElement) => {
+  // Validate edited fields while typing and all fields on submission.
+  const validate = (form: HTMLFormElement) => {
     const formData = new FormData(form);
     const fields = {
       email: String(formData.get('email')),
@@ -57,7 +55,9 @@ const SignupForm = () => {
       signupValidationErrors.email = submittedEmailErrors;
     }
     setErrors(signupValidationErrors);
-  }, 700);
+    return signupValidationErrors;
+  };
+  const validateWhileTyping = useDebouncedCallback(validate, 700);
 
   const togglePasswordVisibility = () => setShowPassword(prev => !prev);
 
@@ -68,11 +68,25 @@ const SignupForm = () => {
     <form
       action={action}
       className="auth-form"
+      noValidate
       onChange={event => {
         editedFields.current.add(event.target.name);
-        validate(event.currentTarget);
+        validateWhileTyping(event.currentTarget);
       }}
-      onSubmit={validate.cancel}
+      onSubmit={event => {
+        validateWhileTyping.cancel();
+        editedFields.current = new Set([
+          'email',
+          'password',
+          'confirmPassword',
+        ]);
+        if (
+          isPending ||
+          Object.keys(validate(event.currentTarget)).length > 0
+        ) {
+          event.preventDefault();
+        }
+      }}
     >
       <div className="auth-form-fields">
         <div>
@@ -84,6 +98,7 @@ const SignupForm = () => {
             id="email"
             name="email"
             type="email"
+            autoComplete="email"
             defaultValue={submittedState?.fields?.email ?? ''}
             readOnly={isPending}
           />
@@ -168,7 +183,7 @@ const SignupForm = () => {
           className="action-button action-button-primary w-full px-4 py-3 text-base"
           disabled={isPending}
         >
-          Sign Up
+          {isPending ? 'Creating account…' : 'Sign Up'}
         </button>
         <p className="auth-switch-text">
           Already have an account?{' '}

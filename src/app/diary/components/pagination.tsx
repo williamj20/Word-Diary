@@ -52,7 +52,7 @@ const PaginationNumber = ({
     <Link
       href={href}
       className={clsx(
-        'action-button h-9 min-w-9 px-2 py-0 text-xs sm:h-10 sm:min-w-10 sm:px-3 sm:text-sm',
+        'action-button h-9 min-w-9 px-2 py-0 text-xs sm:h-11 sm:min-w-11 sm:px-3 sm:text-sm',
         isActive ? 'action-button-primary' : 'action-button-secondary'
       )}
     >
@@ -70,12 +70,7 @@ const PaginationArrow = ({
   direction: 'previous' | 'next';
   isDisabled?: boolean;
 }) => {
-  const icon =
-    direction === 'previous' ? (
-      <ArrowLeft className="h-4 w-4" />
-    ) : (
-      <ArrowRight className="h-4 w-4" />
-    );
+  const icon = direction === 'previous' ? <ArrowLeft /> : <ArrowRight />;
 
   return isDisabled ? (
     <button type="button" disabled className="pagination-nav-button">
@@ -107,14 +102,14 @@ const Pagination = ({
   };
 
   return (
-    <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 sm:mt-5 sm:gap-3">
+    <div className="mt-4 flex min-w-max items-center justify-center gap-2.5 sm:mt-5 sm:gap-3">
       <PaginationArrow
         direction="previous"
         isDisabled={currentPage <= 1}
         href={createPageURL(Math.min(currentPage - 1, totalPages))}
       />
 
-      <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+      <div className="flex items-center justify-center gap-1.5 sm:gap-2">
         {paginationItems.map((item, index) =>
           item === 'ellipsis' ? (
             <span
