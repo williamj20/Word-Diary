@@ -6,7 +6,7 @@ import {
   WordDefinitionSchema,
 } from '@/app/lib/definitions';
 import sql from '@/app/lib/dbClient';
-import { escapeLikePattern, getCurrentUser } from '@/app/lib/utils';
+import { getCurrentUser } from '@/app/lib/session';
 import { cache } from 'react';
 
 export const ENTRIES_PER_PAGE = 6;
@@ -73,6 +73,11 @@ const meaningJson = () => sql`jsonb_build_object(
   'pronunciationText', wm.pronunciation_text,
   'pronunciationUrl', wm.pronunciation_url
 )`;
+
+// Prefix PostgreSQL LIKE/ILIKE metacharacters with the default backslash
+// escape character so user-entered `\`, `%`, and `_` are matched literally.
+const escapeLikePattern = (value: string): string =>
+  value.replace(/[\\%_]/g, character => `\\${character}`);
 
 // EXISTS keeps a word with multiple matching sources from appearing twice.
 const savedWordPredicate = (query: string) => {

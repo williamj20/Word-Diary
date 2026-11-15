@@ -1,7 +1,7 @@
 import AppHeader from '@/app/components/app-header';
 import ProfileForm from '@/app/components/profile-form';
 import { getCurrentProfile } from '@/app/lib/data';
-import { redirectToSignupIfNotLoggedIn } from '@/app/lib/utils';
+import { redirectToSignupIfNotLoggedIn } from '@/app/lib/auth';
 import { redirect } from 'next/navigation';
 
 const ProfileSetupPage = async () => {

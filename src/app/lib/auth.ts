@@ -1,6 +1,15 @@
 import { getCurrentProfile } from '@/app/lib/data';
-import { getCurrentUser } from '@/app/lib/utils';
+import { getCurrentUser } from '@/app/lib/session';
 import { redirect } from 'next/navigation';
+
+export const redirectToSignupIfNotLoggedIn = async () => {
+  const user = await getCurrentUser();
+  if (!user) {
+    console.log('User is not logged in, redirecting to signup page');
+    redirect('/signup');
+  }
+  return user;
+};
 
 // For public pages: allow signed-out visitors, but send signed-in users without
 // a profile to onboarding. Returns the current profile, or null if signed out.

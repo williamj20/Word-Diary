@@ -1,7 +1,7 @@
 'use client';
 
 import PronunciationButton from '@/app/components/pronunciation-button';
-import WordMeaning from '@/app/diary/components/word-meaning';
+import WordMeaning from '@/app/components/word-meaning';
 import type { WordDefinition } from '@/app/lib/definitions';
 import clsx from 'clsx';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';

@@ -1,7 +1,7 @@
 'use client';
 
 import DeleteButton from '@/app/diary/components/delete-button';
-import { deleteWordFromUserList } from '@/app/lib/actions/db';
+import { deleteWordFromUserList } from '@/app/lib/actions/diary';
 import clsx from 'clsx';
 import { ChevronDown, ExternalLink } from 'lucide-react';
 import { ReactNode, useState } from 'react';

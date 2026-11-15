@@ -1,12 +1,16 @@
 ## Getting Started
 
+Install dependencies with `npm install`, start local Supabase, and configure the environment variables described below.
+
 The development server runs with webpack to resolve hot reload issues with the global CSS file:
 
 ```
-npx next dev --webpack
+npm run dev
 ```
 
 ## Environment Variables
+
+Set these variables in `.env.local`:
 
 ```
 DICTIONARY_API_KEY
@@ -17,48 +21,20 @@ DATABASE_URL
 
 ## Supabase CLI
 
-This project uses Supabase for authentication and for a PostgreSQL database.
+This project uses Supabase for authentication and for a PostgreSQL database. Its configuration and migrations are already tracked in `supabase/`.
 
-First, initialize the Supabase project:
-
-```
-supabase init
-```
-
-Then, connect to a local Docker Supabase project:
+With Docker running, start the local Supabase stack:
 
 ```
-supabase start
+npm run db:start
 ```
 
-Then, use `supabase status` to retrieve the env variables:
+Then, inspect the local connection details:
 
 ```
-URL --> DATABASE_URL
-Project URL --> NEXT_PUBLIC_SUPABASE_URL
-Publishable --> NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+npx supabase status
 ```
 
-To connect to the remote project, retrieve and use these variables from the actual Supabase project instead.
+Use the PostgreSQL connection URL for `DATABASE_URL`, the project/API URL for `NEXT_PUBLIC_SUPABASE_URL`, and the publishable key for `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. Set `DICTIONARY_API_KEY` separately using your dictionary API key.
 
-## Running PostgreSQL Locally Using Docker (Outdated)
-
-The following instructions describe initializing a local Docker PostgreSQL DB, as it was used during initial development of the project. This is now **outdated**, but is kept as reference.
-
-Run the following command to initialize a PostgreSQL docker container:
-
-```
-docker-compose up -d
-```
-
-Then to open an interactive PostgreSQL session in your terminal, run:
-
-```
-docker-compose exec db psql -U postgres word_diary
-```
-
-To reset your local database, run:
-
-```
-docker-compose down -v && docker-compose up -d
-```
+To connect to the hosted project, use its connection details instead. Keep local and production credentials separate.

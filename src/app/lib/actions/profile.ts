@@ -8,7 +8,7 @@ import {
 } from '@/app/lib/definitions';
 import sql from '@/app/lib/dbClient';
 import { getCurrentProfile } from '@/app/lib/data';
-import { getCurrentUser } from '@/app/lib/utils';
+import { getCurrentUser } from '@/app/lib/session';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import z from 'zod';

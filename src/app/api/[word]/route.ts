@@ -4,7 +4,7 @@ import {
   saveWordDefinition,
 } from '@/app/lib/data';
 import { resolveDictionaryLookup } from '@/app/lib/dictionary-resolver';
-import { getCurrentUser } from '@/app/lib/utils';
+import { getCurrentUser } from '@/app/lib/session';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (

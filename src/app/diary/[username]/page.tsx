@@ -13,7 +13,7 @@ import {
   getDiarySearchParams,
   getDiaryUrl,
 } from '@/app/lib/diary-search-params';
-import { getCurrentUser } from '@/app/lib/utils';
+import { getCurrentUser } from '@/app/lib/session';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';

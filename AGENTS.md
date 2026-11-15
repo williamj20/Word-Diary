@@ -76,7 +76,7 @@ Do not modify files unless explicitly requested.
 
 Local development uses the Supabase CLI stack. Production uses the hosted Supabase project. Keep local and production credentials separate.
 
-Use migrations in `supabase/migrations/` for schema changes. `scripts/init.sql` and `docker-compose.yml` are legacy/reference material from the earlier local PostgreSQL setup; prefer Supabase CLI commands for current development.
+Use migrations in `supabase/migrations/` for schema changes and Supabase CLI commands for local development.
 
 ## Security And Configuration
 
