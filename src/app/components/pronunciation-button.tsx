@@ -27,7 +27,7 @@ const PronunciationButton = ({
   const Icon = pronunciationUrl ? Volume2 : VolumeX;
   return (
     <span
-      className="inline-flex max-w-full shrink-0 overflow-x-auto align-middle [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="inline-flex w-max max-w-full align-middle"
       onClick={event => event.stopPropagation()}
     >
       <button
@@ -39,15 +39,18 @@ const PronunciationButton = ({
             stopPlayback.current = playPronunciation(pronunciationUrl);
           }
         }}
-        className="action-button action-button-secondary min-h-9 shrink-0 gap-1 px-1.5 py-1 text-xs font-medium whitespace-nowrap disabled:opacity-100 sm:min-h-10 sm:px-3 sm:py-1.5 sm:text-sm"
+        className="action-button action-button-secondary min-h-9 max-w-full gap-1 rounded-[1.25rem] px-1.5 py-1 text-xs font-medium whitespace-normal wrap-anywhere disabled:opacity-100 sm:min-h-10 sm:px-3 sm:py-1.5 sm:text-sm"
       >
-        <span className="font-semibold">{pronunciationWord}</span>
-        {pronunciationText ? (
-          <>
-            <span className="text-[var(--brass)]">·</span>
-            <span>{pronunciationText}</span>
-          </>
-        ) : null}
+        <span className="min-w-0">
+          <span className="font-semibold">{pronunciationWord}</span>
+          {pronunciationText ? (
+            <>
+              {' '}
+              <span className="text-[var(--brass)]">·</span>{' '}
+              <span>{pronunciationText}</span>
+            </>
+          ) : null}
+        </span>
         <Icon className="ml-0.5 h-4 w-4 shrink-0" />
       </button>
     </span>

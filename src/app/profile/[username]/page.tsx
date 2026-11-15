@@ -24,7 +24,7 @@ const ProfilePage = async ({
   }
 
   return (
-    <main className="mx-auto w-full max-w-3xl">
+    <main className="mx-auto w-full min-w-min max-w-3xl">
       {viewer?.id === profile.id ? (
         <ProfileCard
           isOwnProfile

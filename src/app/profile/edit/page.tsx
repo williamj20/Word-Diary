@@ -5,7 +5,7 @@ const EditProfilePage = async () => {
   const profile = await requireSignedInProfile();
 
   return (
-    <main className="mx-auto w-full max-w-3xl">
+    <main className="mx-auto w-full min-w-min max-w-3xl">
       <ProfileForm profile={profile} />
     </main>
   );

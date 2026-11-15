@@ -18,13 +18,23 @@ Preserve Word Diary's warm paper-and-ink journal aesthetic. Use inline Tailwind,
 ## Responsive Rules
 
 - Prioritize horizontal overflow scrolling across the entire app and all components when space becomes too narrow. Preserve the intended layout and arrangement of content and controls; treat wrapping or stacking as deliberate design choices rather than the default response to insufficient width.
-- Adapt typography, spacing, and control sizes while keeping text readable and controls comfortably usable. Once a layout reaches its practical minimum width, allow horizontal scrolling. Let content needs determine that threshold rather than prescribing a fixed breakpoint or component-specific CSS recipe.
+- Adapt typography, spacing, and control sizes above the app's shared minimum width. At and below that minimum, preserve the same layout, typography, spacing, and control sizes and use horizontal scrolling. Content can require a wider minimum, but do not keep shrinking individual components after their containing layout stops shrinking.
 - Keep horizontal scrollbars visually hidden while preserving native scrolling and access to all content and actions. Content extending beyond the visible area must remain reachable through scrolling.
 - Base layouts must remain usable at 320px, including through intentional scrolling. Use a small number of meaningful responsive breakpoints and verify behavior below a layout's minimum width.
 - Keep controls comfortably separated on touch screens and make all functionality available without hover.
 - Constrain overlays to the available viewport height and allow vertical scrolling when needed, keeping dismissal controls and actions reachable in short or landscape viewports.
 - Keep overflow deliberate and contained to the appropriate scroll container. Avoid accidental page overflow and unnecessary nested scroll areas. Check populated, empty, expanded, pending, and error states as applicable, including long content.
 - Keep border radius stable across widths. Do not add responsive `rounded-*` changes for small screens; adjust spacing or layout instead.
+
+### Scroll Ownership And Deliberate Wrapping
+
+- The root scroller in `src/app/layout.tsx` owns page-level horizontal scrolling. Its inner wrapper uses `w-fit min-w-[max(100%,var(--app-min-width))]` to fill the viewport and grow with the content's intrinsic minimum width. The shared `--app-min-width` token is `25.5rem` (408px at the default root font size), including the page gutters. Keep component-specific minimum widths inline; do not add universal overflow rules or JavaScript sizing.
+- Use parent-relative widths and fixed small-screen type/spacing sizes. Avoid `vw` sizing: it continues shrinking when the containing page already overflows. Keep size-changing breakpoints above the shared minimum, with no smaller-screen overrides beneath it.
+- Use `scrollbar-none` on the root scroller and dialog content. Do not add independent horizontal scrollers to cards, pronunciation controls, action rows, or suggestions.
+- Dialog panels stay within the viewport, including below 320px. Use `word-modal-content scrollbar-none` for their horizontal and vertical scroll area, and keep close controls outside that area. Their inner content keeps a minimum width of `calc(var(--app-min-width) - 3.625rem)`, subtracting the mobile overlay gutters, panel padding, and borders. Only the visible dialog window narrows below this point; its contents retain their size. Reserve space for close controls so scrolling content cannot cover them.
+- Keep action groups, word titles, usernames, email addresses, pronunciation controls, suggestions, and shortcut groups on single rows. Let their containing page or dialog scroll once their minimum width is reached. Give clipped card surfaces a content-aware minimum width so their rounded edges cannot hide controls or identifiers.
+- Study flashcards are an exception: keep every card the same parent-relative width, capped at `max-w-2xl`, and let long words, definition headings, and pronunciation content wrap. Shared definition headings and pronunciation controls use `w-max max-w-full` so the container width determines when they wrap, without layout props. Use fixed heights of `h-80 sm:h-96 lg:h-[26rem]`, with both faces in the same grid cell and vertical scrolling within each face for long content. Below the shared app minimum, retain card sizing and use root horizontal scrolling.
+- Preserve deliberate wrapping: prose and multiword display names wrap naturally; form fields remain vertically arranged; landing feature cards stack on mobile; header navigation switches to its compact mobile menu at the existing breakpoint. These exceptions do not apply to action rows within those layouts.
 
 ## CSS Class Placement
 
@@ -85,9 +95,10 @@ Headings use ink; supporting copy, labels, and metadata use ink-muted. Keep inte
 
 ## Review Checklist
 
-- Check affected screens at 320, 375, 768, and 1280px, plus a short/landscape viewport for dialogs. Verify relevant empty, populated, expanded, pending, and error states and long content.
+- Check affected screens at 320, 375, 768, and 1280px, plus 280px to exercise page overflow and a short/landscape viewport for dialogs. Verify relevant empty, populated, expanded, pending, and error states and long content.
 - Confirm no unintended horizontal scrolling, controls clipped without a scroll path, overlapping text, unreachable dialog actions, or hover-only functionality. Check field focus and disabled hover presentation.
 - Verify the horizontal overflow convention across affected pages and components: preserve the intended layout at narrow widths, scroll only when needed, hide horizontal scrollbars, and keep all content and actions reachable. Treat deliberate horizontal scrolling as expected behavior in reviews.
+- Compare element dimensions, font sizes, spacing, and prose wrapping at the shared minimum width and narrower viewports. They should match; only the visible scroll area should become narrower. Check both flashcard faces and dialog content, not just whether scrolling works.
 - Confirm no new responsive rounded-radius changes were added.
 - Confirm every new global class is used by at least two distinct, visually similar components and adds value beyond renaming a small utility bundle. Verify the shared consumers after changes.
 - Confirm consumers do not repeat sizing or other defaults already owned by their shared class. Keep overrides only when the component needs a real difference.

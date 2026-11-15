@@ -14,7 +14,7 @@ const ProfileSetupPage = async () => {
   return (
     <>
       <AppHeader showAuthenticatedControls={false} />
-      <main className="mx-auto w-full max-w-3xl pb-8">
+      <main className="mx-auto w-full min-w-min max-w-3xl pb-8">
         <ProfileForm />
       </main>
     </>

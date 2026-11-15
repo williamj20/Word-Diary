@@ -63,7 +63,7 @@ const FlashcardDeck = ({ words }: { words: WordDefinition[] }) => {
   }, [wordIndex, words.length, changeWord]);
 
   return (
-    <section className="mx-auto flex w-full min-w-min max-w-6xl flex-col gap-4 sm:gap-5">
+    <section className="mx-auto flex w-full min-w-0 max-w-6xl flex-col gap-4 sm:gap-5">
       <div className="flex min-w-max items-center justify-center gap-3">
         <button
           type="button"
@@ -87,7 +87,7 @@ const FlashcardDeck = ({ words }: { words: WordDefinition[] }) => {
           <ChevronRight />
         </button>
       </div>
-      <div className="mx-auto flex w-full min-w-min justify-center [perspective:1400px]">
+      <div className="mx-auto flex w-full min-w-0 justify-center px-5 [perspective:1400px] sm:px-8">
         <div
           tabIndex={0}
           onClick={event => {
@@ -97,35 +97,41 @@ const FlashcardDeck = ({ words }: { words: WordDefinition[] }) => {
             setIsFlipped(current => !current);
           }}
           className={clsx(
-            'relative grid min-h-[clamp(20rem,52vw,26rem)] w-[min(90vw,42rem)] min-w-min shrink-0 cursor-pointer rounded-[2rem] [transform-style:preserve-3d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--sage)]',
+            'relative grid h-80 w-full min-w-0 max-w-2xl shrink-0 grid-cols-1 grid-rows-1 cursor-pointer rounded-[2rem] outline-none [transform-style:preserve-3d] sm:h-96 lg:h-[26rem]',
             skipTransition
               ? 'transition-none'
               : 'transition-[transform] duration-[520ms] [transition-timing-function:cubic-bezier(0.2,0.85,0.2,1)]',
             isFlipped && '[transform:rotateY(180deg)]'
           )}
         >
-          <div className="col-start-1 row-start-1 flex min-w-min flex-col items-center justify-center gap-5 rounded-[2rem] border border-[var(--paper-muted)] p-5 text-center text-[var(--ink)] shadow-lg [backface-visibility:hidden] [background-image:linear-gradient(135deg,var(--paper-card),var(--paper))] sm:p-6">
-            <div className="min-w-max text-[clamp(2rem,8vw,3.75rem)] font-semibold">
-              {currentWord.word}
-            </div>
-            {!isFlipped ? (
-              <div className="min-w-max">
+          <div
+            inert={isFlipped}
+            className="col-start-1 row-start-1 flex min-h-0 min-w-0 flex-col overflow-y-auto rounded-[2rem] border border-[var(--paper-muted)] p-5 text-center text-[var(--ink)] shadow-lg [backface-visibility:hidden] [background-image:linear-gradient(135deg,var(--paper-card),var(--paper))] sm:p-6"
+          >
+            <div className="my-auto flex shrink-0 flex-col items-center gap-5">
+              <div className="max-w-full text-4xl font-semibold wrap-anywhere sm:text-5xl md:text-6xl">
+                {currentWord.word}
+              </div>
+              <div className="max-w-full">
                 <PronunciationButton
                   pronunciationWord={meaning.pronunciationWord}
                   pronunciationText={meaning.pronunciationText}
                   pronunciationUrl={meaning.pronunciationUrl}
                 />
               </div>
-            ) : null}
-            <span className="text-xs text-[var(--ink-muted)]">
-              Tap to reveal definitions
-            </span>
+              <span className="text-xs text-[var(--ink-muted)]">
+                Tap to reveal definitions
+              </span>
+            </div>
           </div>
-          <div className="col-start-1 row-start-1 min-w-min rounded-[2rem] border border-[var(--paper-muted)] p-4 text-left text-[var(--ink)] shadow-lg [backface-visibility:hidden] [background-image:linear-gradient(180deg,var(--paper-card),var(--paper))] [transform:rotateY(180deg)] sm:p-6">
-            <div className="mb-3 break-words text-sm font-semibold text-[var(--ink-muted)] sm:text-base">
+          <div
+            inert={!isFlipped}
+            className="col-start-1 row-start-1 min-h-0 min-w-0 overflow-y-auto rounded-[2rem] border border-[var(--paper-muted)] p-4 text-left text-[var(--ink)] shadow-lg [backface-visibility:hidden] [background-image:linear-gradient(180deg,var(--paper-card),var(--paper))] [transform:rotateY(180deg)] sm:p-6"
+          >
+            <div className="mb-3 text-sm font-semibold wrap-anywhere text-[var(--ink-muted)] sm:text-base">
               {currentWord.word}
             </div>
-            {isFlipped ? <WordMeaning meaning={meaning} /> : null}
+            <WordMeaning meaning={meaning} />
           </div>
         </div>
       </div>

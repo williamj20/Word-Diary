@@ -19,20 +19,20 @@ const AppHeader = async ({
       <div
         className={
           profileHref
-            ? 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 md:grid-cols-[1fr_auto_1fr] md:gap-4'
+            ? 'grid grid-cols-[minmax(max-content,1fr)_auto] items-center gap-3 md:grid-cols-[minmax(max-content,1fr)_max-content_minmax(max-content,1fr)] md:gap-4'
             : 'flex justify-center'
         }
       >
         <Link
           href="/"
-          className="flex min-w-0 items-center justify-start gap-2 md:justify-self-start md:gap-3.5"
+          className="flex min-w-max items-center justify-start gap-2 md:justify-self-start md:gap-3.5"
         >
-          <BookOpenText className="h-5 w-5 sm:h-8 sm:w-8 lg:h-10 lg:w-10" />
+          <BookOpenText className="h-5 w-5 shrink-0 sm:h-8 sm:w-8 lg:h-10 lg:w-10" />
           <h1
             className={
               profileHref
-                ? 'text-[clamp(1.75rem,9vw,2.75rem)] font-semibold whitespace-nowrap text-[var(--ink)] md:text-[clamp(1.95rem,4vw,2.75rem)]'
-                : 'text-[clamp(1.95rem,8vw,2.75rem)] font-semibold text-[var(--ink)]'
+                ? 'text-4xl font-semibold whitespace-nowrap text-[var(--ink)] md:text-[2rem] lg:text-[2.75rem]'
+                : 'text-4xl font-semibold whitespace-nowrap text-[var(--ink)] sm:text-[2.75rem]'
             }
           >
             Word Diary
@@ -44,7 +44,7 @@ const AppHeader = async ({
         )}
 
         {diaryHref && (
-          <nav className="hidden justify-center gap-2 md:flex md:justify-self-center">
+          <nav className="hidden min-w-max justify-center gap-2 md:flex md:justify-self-center">
             <HeaderNavLink href="/diary" section={diaryHref}>
               <BookMarked className="h-3.5 w-3.5" />
               Diary

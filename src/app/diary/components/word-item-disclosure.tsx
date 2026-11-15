@@ -27,7 +27,7 @@ const WordItemDisclosure = ({
   return (
     <>
       <div className="flex min-w-max items-center gap-1.5 sm:gap-3">
-        <h3 className="word-card-title flex-1 whitespace-nowrap">{title}</h3>
+        <h3 className="word-card-title flex-1">{title}</h3>
         <span className="shrink-0 rounded-full border border-[var(--paper-muted)] bg-[var(--paper)] px-1.5 py-1 text-[0.625rem] font-bold whitespace-nowrap text-[var(--ink-muted)] sm:px-3 sm:text-xs">
           {addedAtLabel}
         </span>

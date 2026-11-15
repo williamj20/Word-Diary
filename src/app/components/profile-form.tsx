@@ -132,7 +132,7 @@ const ProfileForm = ({ profile }: { profile?: Profile }) => {
             </p>
           )}
 
-          <div className="mt-3 flex flex-col items-end gap-3 sm:flex-row-reverse">
+          <div className="mt-3 flex flex-row-reverse items-center gap-3">
             <button
               type="submit"
               disabled={isPending}

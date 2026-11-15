@@ -46,7 +46,7 @@ const DeleteButton = ({
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         onConfirm={handleDelete}
-        isDeleting={isPending}
+        isRemoving={isPending}
         error={deleteError}
       />
     </>

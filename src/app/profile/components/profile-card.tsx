@@ -25,10 +25,10 @@ const ProfileCard = ({ email, profile, isOwnProfile }: ProfileCardProps) => {
       </div>
       <div className="p-5 sm:p-8">
         <div>
-          <h3 className="text-3xl font-semibold break-words text-[var(--ink)] sm:text-4xl">
+          <h3 className="text-3xl font-semibold text-[var(--ink)] sm:text-4xl">
             {profile.displayName}
           </h3>
-          <p className="mt-1 break-all text-sm font-semibold text-[var(--sage-dark)] sm:text-base">
+          <p className="mt-1 whitespace-nowrap text-sm font-semibold text-[var(--sage-dark)] sm:text-base">
             @{profile.username}
           </p>
         </div>
@@ -42,21 +42,21 @@ const ProfileCard = ({ email, profile, isOwnProfile }: ProfileCardProps) => {
         </Link>
 
         {isOwnProfile && (
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-[var(--paper-muted)] bg-[var(--paper)] px-4 py-3">
+          <div className="mt-8 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 rounded-2xl border border-[var(--paper-muted)] bg-[var(--paper)] px-4 py-3">
               <Mail className="h-4 w-4 shrink-0 text-[var(--ink-muted)]" />
-              <div className="min-w-0">
+              <div>
                 <p className="text-[0.625rem] font-bold uppercase text-[var(--ink-muted)] sm:text-xs">
                   Email
                 </p>
-                <p className="mt-0.5 break-all text-sm font-semibold text-[var(--ink)]">
+                <p className="mt-0.5 whitespace-nowrap text-sm font-semibold text-[var(--ink)]">
                   {email}
                 </p>
               </div>
             </div>
             <Link
               href="/profile/edit"
-              className="action-button action-button-secondary shrink-0 self-end sm:self-auto"
+              className="action-button action-button-secondary"
             >
               <Pencil />
               Edit

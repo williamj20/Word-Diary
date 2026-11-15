@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
 interface DeleteWordModalProps {
   word: string;
   isOpen: boolean;
-  isDeleting: boolean;
+  isRemoving: boolean;
   error: string;
   onClose: () => void;
   onConfirm: () => void;
@@ -16,7 +16,7 @@ interface DeleteWordModalProps {
 const DeleteWordModal = ({
   word,
   isOpen,
-  isDeleting,
+  isRemoving,
   error,
   onClose,
   onConfirm,
@@ -27,7 +27,7 @@ const DeleteWordModal = ({
     }
 
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && !isDeleting) {
+      if (event.key === 'Escape' && !isRemoving) {
         onClose();
       }
     };
@@ -36,14 +36,14 @@ const DeleteWordModal = ({
     return () => {
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [isOpen, isDeleting, onClose]);
+  }, [isOpen, isRemoving, onClose]);
 
   if (!isOpen) {
     return null;
   }
 
   const handleClose = () => {
-    if (!isDeleting) {
+    if (!isRemoving) {
       onClose();
     }
   };
@@ -51,43 +51,47 @@ const DeleteWordModal = ({
   return createPortal(
     <div className="word-modal-backdrop" onClick={handleClose}>
       <div
-        className="word-modal-panel block max-w-md overflow-y-auto overscroll-contain"
+        className="word-modal-panel max-w-md pt-14 sm:pt-16"
         onClick={event => event.stopPropagation()}
       >
         <button
           onClick={handleClose}
-          disabled={isDeleting}
+          disabled={isRemoving}
           className="word-modal-close"
         >
           <X />
         </button>
 
-        <h3 className="mb-2 pr-12 break-words text-xl font-semibold text-[var(--ink)] sm:text-2xl">
-          {`Remove "${word}"?`}
-        </h3>
+        <div className="word-modal-content scrollbar-none">
+          <div className="min-w-[calc(var(--app-min-width)-3.625rem)]">
+            <h3 className="mb-2 whitespace-nowrap text-xl font-semibold text-[var(--ink)] sm:text-2xl">
+              {`Remove "${word}"?`}
+            </h3>
 
-        <p className="text-sm text-[var(--ink-muted)] sm:text-base">
-          This will permanently remove this word from your list. This action
-          cannot be undone.
-        </p>
+            <p className="text-sm text-[var(--ink-muted)] sm:text-base">
+              This will permanently remove this word from your list. This action
+              cannot be undone.
+            </p>
 
-        {error ? <p className="error-message mt-4">{error}</p> : null}
+            {error ? <p className="error-message mt-4">{error}</p> : null}
 
-        <div className="mt-4 flex shrink-0 flex-wrap gap-3 sm:mt-6">
-          <button
-            onClick={handleClose}
-            disabled={isDeleting}
-            className="action-button action-button-secondary"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            disabled={isDeleting}
-            className="action-button border-[var(--danger)] bg-[var(--danger)] text-[var(--paper-card)] enabled:hover:bg-[var(--danger-dark)] enabled:active:bg-[var(--danger-dark)]"
-          >
-            {isDeleting ? 'Deleting...' : 'Delete'}
-          </button>
+            <div className="mt-4 flex min-w-max gap-3 sm:mt-6">
+              <button
+                onClick={handleClose}
+                disabled={isRemoving}
+                className="action-button action-button-secondary"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={onConfirm}
+                disabled={isRemoving}
+                className="action-button border-[var(--danger)] bg-[var(--danger)] text-[var(--paper-card)] enabled:hover:bg-[var(--danger-dark)] enabled:active:bg-[var(--danger-dark)]"
+              >
+                {isRemoving ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>,

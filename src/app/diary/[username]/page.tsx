@@ -61,12 +61,12 @@ const DiaryPage = async ({
   return (
     <main className="min-w-min">
       <div className="mx-auto mb-9 w-full max-w-7xl px-1 sm:mb-10">
-        <h2 className="text-2xl font-semibold break-words text-[var(--ink)] sm:text-3xl">
+        <h2 className="text-2xl font-semibold text-[var(--ink)] sm:text-3xl">
           {profile.displayName}’s diary
         </h2>
         <Link
           href={`/profile/${profile.username}`}
-          className="mt-2 inline-block max-w-full text-sm font-semibold break-all text-[var(--sage-dark)] underline decoration-[var(--brass)] underline-offset-4 transition-colors duration-100 hover:text-[var(--brass-dark)] active:text-[var(--brass-dark)] active:duration-0 sm:text-base"
+          className="mt-2 inline-block whitespace-nowrap text-sm font-semibold text-[var(--sage-dark)] underline decoration-[var(--brass)] underline-offset-4 transition-colors duration-100 hover:text-[var(--brass-dark)] active:text-[var(--brass-dark)] active:duration-0 sm:text-base"
         >
           @{profile.username}
         </Link>

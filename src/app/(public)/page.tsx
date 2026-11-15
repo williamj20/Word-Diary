@@ -31,7 +31,7 @@ const LandingPage = async () => {
           <p className="text-[0.625rem] font-bold uppercase text-[var(--ink-muted)] sm:text-xs">
             A Vocabulary Journal For Curious Readers
           </p>
-          <h2 className="text-[clamp(2rem,8.5vw,2.6rem)] text-[var(--ink)] sm:text-[clamp(2.6rem,3.75vw,2.85rem)]">
+          <h2 className="text-4xl text-[var(--ink)] sm:text-[2.6rem] lg:text-[2.85rem]">
             Keep the words you want to remember.
           </h2>
           <p className="max-w-[60ch] text-base text-[var(--ink-muted)] sm:text-lg">
@@ -47,7 +47,7 @@ const LandingPage = async () => {
             </a>
             .
           </p>
-          <div className="flex flex-col items-center gap-3 sm:flex-row">
+          <div className="flex items-center gap-3">
             <Link
               href={primaryHref}
               className="action-button action-button-primary text-base sm:px-7 sm:py-3 sm:text-lg"

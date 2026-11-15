@@ -5,8 +5,8 @@ import type {
   WordLookupResponse,
   WordLookupSuggestionsResponse,
 } from '@/app/lib/definitions';
-import Link from 'next/link';
 import { ExternalLink, Plus, Search, X } from 'lucide-react';
+import Link from 'next/link';
 import { type ReactNode, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -168,7 +168,7 @@ const AddWordModal = () => {
               >
                 <div className="flex min-h-0 flex-col">
                   <div className="shrink-0 pr-12">
-                    <h3 className="mb-2 text-xl font-semibold text-[var(--ink)] sm:text-2xl">
+                    <h3 className="mb-2 whitespace-nowrap text-xl font-semibold text-[var(--ink)] sm:text-2xl">
                       Look up a word
                     </h3>
                     <button
@@ -180,9 +180,9 @@ const AddWordModal = () => {
                     </button>
                   </div>
 
-                  <div className="mt-2 min-h-0 overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                    <div className="px-0.5 pt-1">
-                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+                  <div className="word-modal-content scrollbar-none mt-2">
+                    <div className="min-w-[calc(var(--app-min-width)-3.625rem)] px-0.5 pt-1">
+                      <div className="flex min-w-min items-center gap-2 sm:gap-4">
                         <input
                           type="text"
                           id="searchWord"
@@ -193,9 +193,9 @@ const AddWordModal = () => {
                           value={word}
                           onChange={event => setWord(event.target.value)}
                           onKeyDown={handleInputKeyDown}
-                          className="form-input min-w-0 flex-1"
+                          className="form-input min-w-[12ch] flex-1"
                         />
-                        <div className="flex shrink-0 flex-wrap gap-2 sm:pr-1">
+                        <div className="flex shrink-0 gap-2 sm:pr-1">
                           <button
                             type="button"
                             disabled={isSearching}
@@ -225,13 +225,13 @@ const AddWordModal = () => {
                           <p className="mb-1.5 text-xs font-bold text-[var(--ink-muted)] sm:text-sm">
                             Did you mean?
                           </p>
-                          <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                          <div className="flex min-w-max gap-1.5 sm:gap-2">
                             {suggestions.map(suggestion => (
                               <button
                                 key={suggestion}
                                 type="button"
                                 onClick={() => selectSuggestion(suggestion)}
-                                className="action-button action-button-secondary block max-w-full px-2 py-1 text-xs break-words sm:px-3 sm:py-1.5 sm:text-sm"
+                                className="action-button action-button-secondary px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm"
                               >
                                 {suggestion}
                               </button>
@@ -244,12 +244,12 @@ const AddWordModal = () => {
                           Searching dictionary...
                         </div>
                       ) : null}
-                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-2.5 pb-1 pt-2.5 text-xs text-[var(--ink-muted)] sm:px-3 sm:text-sm">
-                        <span className="flex items-center gap-1">
+                      <div className="flex min-w-max items-center gap-2 px-2.5 pb-1 pt-2.5 text-xs text-[var(--ink-muted)] sm:px-3 sm:text-sm">
+                        <span className="flex shrink-0 items-center gap-1">
                           <span className={keycapClass}>Enter</span>
                           <span>Search</span>
                         </span>
-                        <span className="flex items-center gap-1">
+                        <span className="flex shrink-0 items-center gap-1">
                           <span className={keycapClass}>Shift</span>
                           <span>+</span>
                           <span className={keycapClass}>Enter</span>

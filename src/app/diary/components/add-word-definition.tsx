@@ -1,7 +1,7 @@
 'use client';
 
-import WordMeaning from '@/app/diary/components/word-meaning';
 import SaveButton from '@/app/diary/components/save-button';
+import WordMeaning from '@/app/diary/components/word-meaning';
 import { saveWordToDiary } from '@/app/lib/actions/db';
 import { WordLookupResponse } from '@/app/lib/definitions';
 import { useState, useTransition } from 'react';
@@ -41,9 +41,7 @@ const AddWordDefinition = ({
   return (
     <article className="min-w-min rounded-[1.75rem] border border-[var(--paper-muted)] bg-[var(--paper-card)] p-3 [background-image:linear-gradient(135deg,var(--paper-card),var(--paper))] sm:p-5">
       <div className="flex min-w-max items-center justify-between gap-4">
-        <h3 className="word-card-title whitespace-nowrap">
-          {wordDefinition.word.word}
-        </h3>
+        <h3 className="word-card-title">{wordDefinition.word.word}</h3>
         <SaveButton
           isAbleToSave={isAbleToSave}
           isSaving={isSaving}

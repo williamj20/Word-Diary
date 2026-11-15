@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 
 :root {
+  /* Shared compact layout width, including the page gutters. */
+  --app-min-width: 25.5rem;
   --paper: #f2dfb8;
   --paper-soft: #fff4dc;
   --paper-card: #fff8e8;
@@ -34,7 +36,7 @@ body {
   /* Labeled buttons/links: pair with primary for emphasis or secondary for neutral
      actions. Keep sizing differences inline with Tailwind. */
   .action-button {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-bold transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full border px-5 py-2.5 text-sm font-bold transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .action-button > svg {
@@ -75,7 +77,7 @@ body {
 
   /* Shared profile card and setup/edit form surfaces. Keep page spacing inline. */
   .profile-panel {
-    @apply overflow-hidden rounded-[2rem] border;
+    @apply min-w-min overflow-hidden rounded-[2rem] border;
     background: var(--paper-card);
     border-color: var(--paper-muted);
   }
@@ -114,16 +116,20 @@ body {
     @apply h-4 w-4 shrink-0;
   }
 
-  /* Word dialogs: overlay, viewport-limited panel, and close button.
-     Set panel width and provide a scrollable content area in the component. */
+  /* Word dialogs: the panel stays within the viewport; only the content scrolls.
+     Keep close controls outside the content and set panel width inline. */
   .word-modal-backdrop {
-    @apply fixed inset-0 z-50 flex min-w-xs items-center justify-center bg-[var(--ink)]/60 p-3 sm:p-4;
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-[var(--ink)]/60 p-3 sm:p-4;
   }
 
   .word-modal-panel {
-    @apply relative flex max-h-[calc(100dvh-1.5rem)] w-full flex-col overflow-hidden rounded-[2rem] border p-4 sm:max-h-[calc(100dvh-2rem)] sm:p-6;
+    @apply relative flex max-h-[calc(100dvh-1.5rem)] min-w-0 w-full flex-col overflow-hidden rounded-[2rem] border p-4 sm:max-h-[calc(100dvh-2rem)] sm:p-6;
     border-color: var(--brass);
     background: var(--paper-card);
+  }
+
+  .word-modal-content {
+    @apply min-h-0 overflow-auto overscroll-contain;
   }
 
   .word-modal-close {
@@ -188,7 +194,7 @@ body {
   }
   /* Titles shared by saved words and lookup results. */
   .word-card-title {
-    @apply min-w-0 text-base font-semibold break-words md:text-2xl;
+    @apply whitespace-nowrap text-base font-semibold md:text-2xl;
     color: var(--ink);
   }
   /* Labels and standalone form fields. */
@@ -245,5 +251,16 @@ body {
       .show-password-button
     ):not(:disabled):active {
     transition-duration: 0s;
+  }
+}
+
+@layer utilities {
+  /* Root page scroller and dialog bodies retain native scrolling. */
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 }
