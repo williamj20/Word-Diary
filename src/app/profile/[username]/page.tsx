@@ -9,7 +9,7 @@ const ProfilePage = async ({
   params: Promise<{ username: string }>;
 }) => {
   const { username } = await params;
-  const [profile, viewer] = await Promise.all([
+  const [profile, { user: viewer }] = await Promise.all([
     getProfileByUsername(username),
     getCurrentUser(),
   ]);

@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  logging: {
+    // Recovery links contain bearer tokens. Keep them out of dev access logs.
+    incomingRequests: { ignore: [/^\/auth\/confirm(?:\?|$)/] },
+  },
 };
 
 export default nextConfig;

@@ -27,7 +27,7 @@ const saveProfile = async (
   try {
     profile = await getCurrentProfile();
     // Before a profile exists, its ID comes from the authenticated account.
-    profileId = profile?.id ?? (await getCurrentUser())?.id;
+    profileId = profile?.id ?? (await getCurrentUser()).user?.id;
   } catch (error) {
     console.error(`Failed to ${mode} profile`, error);
     return {

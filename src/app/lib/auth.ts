@@ -3,7 +3,7 @@ import { getCurrentUser } from '@/app/lib/session';
 import { redirect } from 'next/navigation';
 
 export const redirectToSignupIfNotLoggedIn = async () => {
-  const user = await getCurrentUser();
+  const { user } = await getCurrentUser();
   if (!user) {
     console.log('User is not logged in, redirecting to signup page');
     redirect('/signup');
@@ -15,7 +15,7 @@ export const redirectToSignupIfNotLoggedIn = async () => {
 // a profile to onboarding. Returns the current profile, or null if signed out.
 export const requireProfileIsCreatedIfLoggedIn = async () => {
   const profile = await getCurrentProfile();
-  if (!profile && (await getCurrentUser())) {
+  if (!profile && (await getCurrentUser()).user) {
     redirect('/onboarding/profile');
   }
   return profile;

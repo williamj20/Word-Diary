@@ -28,7 +28,7 @@ const getRequiredProfile = async () => {
 // A returned profile belongs to the verified, signed-in user. Null means the
 // user is signed out or has not completed onboarding yet.
 export const getCurrentProfile = cache(async (): Promise<Profile | null> => {
-  const user = await getCurrentUser();
+  const { user } = await getCurrentUser();
   if (!user) {
     return null;
   }

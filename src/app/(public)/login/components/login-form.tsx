@@ -54,6 +54,11 @@ const LoginForm = () => {
               )}
             </button>
           </div>
+          <p className="mt-3 text-sm">
+            <Link href="/forgot-password" className="auth-switch-link">
+              Forgot password?
+            </Link>
+          </p>
         </div>
         {state?.errors && (
           <p className="error-message mt-2">Invalid login credentials.</p>

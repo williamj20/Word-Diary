@@ -41,7 +41,7 @@ const DiaryPage = async ({
   searchParams?: Promise<DiarySearchParams>;
 }) => {
   const { username } = await params;
-  const [profile, viewer, search] = await Promise.all([
+  const [profile, { user: viewer }, search] = await Promise.all([
     getProfileByUsername(username),
     getCurrentUser(),
     searchParams,

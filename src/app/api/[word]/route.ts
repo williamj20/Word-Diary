@@ -22,7 +22,7 @@ export const GET = async (
   try {
     const profile = await getCurrentProfile();
     if (!profile) {
-      const user = await getCurrentUser();
+      const { user } = await getCurrentUser();
       return NextResponse.json(
         { error: user ? 'Forbidden' : 'Unauthorized' },
         { status: user ? 403 : 401 }

@@ -10,7 +10,7 @@ import { getCurrentProfile } from '@/app/lib/data';
 import { redirect } from 'next/navigation';
 
 export const signup = async (_state: SignupFormState, formData: FormData) => {
-  const email = String(formData.get('email'));
+  const email = String(formData.get('email') ?? '').trim();
   const password = String(formData.get('password'));
   const confirmPassword = String(formData.get('confirmPassword'));
   const fields = { email };

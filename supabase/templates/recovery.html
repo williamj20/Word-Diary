@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reset your Word Diary password</title>
+  </head>
+  <body>
+    <h1>Word Diary</h1>
+    <h2>Reset your password</h2>
+    <p>
+      Follow this link to choose a new password for your Word Diary account.
+    </p>
+    <p>
+      <a
+        href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&amp;type=recovery"
+      >
+        Reset password
+      </a>
+    </p>
+    <p>If you didn’t request a password reset, you can ignore this email.</p>
+  </body>
+</html>

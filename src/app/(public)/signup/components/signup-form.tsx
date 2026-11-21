@@ -39,7 +39,7 @@ const SignupForm = () => {
   const validate = (form: HTMLFormElement) => {
     const formData = new FormData(form);
     const fields = {
-      email: String(formData.get('email')),
+      email: String(formData.get('email') ?? '').trim(),
       password: String(formData.get('password')),
       confirmPassword: String(formData.get('confirmPassword')),
     };
