@@ -1,10 +1,10 @@
 'use client';
 
-import type { Pronunciation } from '@/app/lib/word';
+import type { Pronunciation } from '@/types/word';
 import {
   playPronunciation,
   type StopPlayback,
-} from '@/app/lib/pronunciation-player';
+} from '@/lib/pronunciation-player';
 import { Volume2, VolumeX } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 

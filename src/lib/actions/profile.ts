@@ -1,14 +1,14 @@
 'use server';
 
-import { getCurrentProfile } from '@/app/lib/data';
-import sql from '@/app/lib/dbClient';
+import { getCurrentProfile } from '@/lib/data';
+import sql from '@/lib/dbClient';
 import {
-  type Profile,
   ProfileFormSchema,
   type ProfileFormState,
   USERNAME_TAKEN_MESSAGE,
-} from '@/app/lib/profile';
-import { getCurrentUser } from '@/app/lib/session';
+} from '@/lib/profile';
+import type { Profile } from '@/types/profile';
+import { getCurrentUser } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import z from 'zod';

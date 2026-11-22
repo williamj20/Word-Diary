@@ -1,5 +1,5 @@
 import ForgotPasswordForm from '@/app/(recovery)/forgot-password/components/forgot-password-form';
-import { recoveryLinkMessages } from '@/app/lib/password-recovery';
+import { recoveryLinkMessages } from '@/lib/password-recovery';
 
 const ForgotPasswordPage = async ({
   searchParams,

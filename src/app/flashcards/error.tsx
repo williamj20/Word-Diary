@@ -1,6 +1,6 @@
 'use client';
 
-import RouteError from '@/app/components/route-error';
+import RouteError from '@/components/route-error';
 import type { ErrorInfo } from 'next/error';
 
 const FlashcardsError = ({ error, unstable_retry }: ErrorInfo) => {

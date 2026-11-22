@@ -1,6 +1,6 @@
 import ResetPasswordForm from '@/app/(recovery)/reset-password/components/reset-password-form';
-import { getCurrentUser } from '@/app/lib/session';
-import { logRecoveryError } from '@/app/lib/password-recovery-errors';
+import { getCurrentUser } from '@/lib/session';
+import { logRecoveryError } from '@/lib/password-recovery-errors';
 
 export const dynamic = 'force-dynamic';
 

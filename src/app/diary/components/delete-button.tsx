@@ -1,7 +1,7 @@
 'use client';
 
 import DeleteWordModal from '@/app/diary/components/delete-word-modal';
-import type { MutationResult } from '@/app/lib/actions/diary';
+import type { MutationResult } from '@/lib/actions/diary';
 import { Trash2 } from 'lucide-react';
 import { useState, useTransition } from 'react';
 

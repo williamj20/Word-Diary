@@ -2,9 +2,9 @@ import {
   getCurrentProfile,
   getWordLookup,
   saveWordDefinition,
-} from '@/app/lib/data';
-import { resolveDictionaryLookup } from '@/app/lib/dictionary-resolver';
-import { getCurrentUser } from '@/app/lib/session';
+} from '@/lib/data';
+import { resolveDictionaryLookup } from '@/lib/dictionary-resolver';
+import { getCurrentUser } from '@/lib/session';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (

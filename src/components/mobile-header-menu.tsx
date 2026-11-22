@@ -1,9 +1,9 @@
 'use client';
 
-import { logout } from '@/app/lib/actions/auth';
+import { logout } from '@/lib/actions/auth';
 import { BookMarked, LogOut, Menu, Sparkles, UserRound } from 'lucide-react';
-import HeaderNavLink from '@/app/components/header-nav-link';
-import { useHeaderMenu } from '@/app/lib/use-header-menu';
+import HeaderNavLink from '@/components/header-nav-link';
+import { useHeaderMenu } from '@/hooks/use-header-menu';
 
 const MobileHeaderMenu = ({
   profileHref,

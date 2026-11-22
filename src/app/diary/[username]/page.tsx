@@ -7,13 +7,13 @@ import {
   ENTRIES_PER_PAGE,
   getProfileByUsername,
   getUserWordsPages,
-} from '@/app/lib/data';
+} from '@/lib/data';
 import {
   DiarySearchParams,
   getDiarySearchParams,
   getDiaryUrl,
-} from '@/app/lib/diary-search-params';
-import { getCurrentUser } from '@/app/lib/session';
+} from '@/lib/diary-search-params';
+import { getCurrentUser } from '@/lib/session';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';

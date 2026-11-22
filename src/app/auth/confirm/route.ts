@@ -1,6 +1,6 @@
-import type { RecoveryLinkReason } from '@/app/lib/password-recovery';
-import { logRecoveryError } from '@/app/lib/password-recovery-errors';
-import createSupabaseServerClient from '@/app/lib/supabase/server';
+import type { RecoveryLinkReason } from '@/lib/password-recovery';
+import { logRecoveryError } from '@/lib/password-recovery-errors';
+import createSupabaseServerClient from '@/lib/supabase/server';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export const dynamic = 'force-dynamic';

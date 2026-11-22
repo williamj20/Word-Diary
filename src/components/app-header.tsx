@@ -1,7 +1,7 @@
-import HeaderNavLink from '@/app/components/header-nav-link';
-import AccountMenu from '@/app/components/account-menu';
-import MobileHeaderMenu from '@/app/components/mobile-header-menu';
-import { getCurrentProfile } from '@/app/lib/data';
+import HeaderNavLink from '@/components/header-nav-link';
+import AccountMenu from '@/components/account-menu';
+import MobileHeaderMenu from '@/components/mobile-header-menu';
+import { getCurrentProfile } from '@/lib/data';
 import { BookMarked, BookOpenText, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 

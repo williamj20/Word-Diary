@@ -1,4 +1,4 @@
-import AppHeader from '@/app/components/app-header';
+import AppHeader from '@/components/app-header';
 import Link from 'next/link';
 
 const NotFound = () => {

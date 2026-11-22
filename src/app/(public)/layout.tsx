@@ -1,5 +1,5 @@
-import AppHeader from '@/app/components/app-header';
-import { requireProfileIsCreatedIfLoggedIn } from '@/app/lib/auth';
+import AppHeader from '@/components/app-header';
+import { requireProfileIsCreatedIfLoggedIn } from '@/lib/auth';
 
 const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
   const profile = await requireProfileIsCreatedIfLoggedIn();

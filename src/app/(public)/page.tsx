@@ -1,4 +1,4 @@
-import { requireProfileIsCreatedIfLoggedIn } from '@/app/lib/auth';
+import { requireProfileIsCreatedIfLoggedIn } from '@/lib/auth';
 import { BookMarked, Search } from 'lucide-react';
 import Link from 'next/link';
 

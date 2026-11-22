@@ -4,16 +4,13 @@ import { LogOut, Pencil, Save, UserRound, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useActionState, useState } from 'react';
 
-import { logout } from '@/app/lib/actions/auth';
+import { logout } from '@/lib/actions/auth';
 import {
   createCurrentProfile,
   updateCurrentProfile,
-} from '@/app/lib/actions/profile';
-import type {
-  Profile,
-  ProfileFormFields,
-  ProfileFormState,
-} from '@/app/lib/profile';
+} from '@/lib/actions/profile';
+import type { ProfileFormFields, ProfileFormState } from '@/lib/profile';
+import type { Profile } from '@/types/profile';
 
 const FieldErrors = ({ errors }: { errors?: string[] }) => {
   if (!errors) {

@@ -1,9 +1,6 @@
-import { DictionaryServiceResponseSchema } from '@/app/lib/dictionary-response';
-import {
-  MatchKind,
-  WordDefinitionSchema,
-  type WordDefinition,
-} from '@/app/lib/word';
+import { DictionaryServiceResponseSchema } from '@/lib/dictionary-response';
+import { MatchKind, WordDefinitionSchema } from '@/lib/word';
+import type { WordDefinition } from '@/types/word';
 import {
   collectMatches,
   getMatchContent,
@@ -13,8 +10,8 @@ import {
   trimTextOrNull,
   toMeaning,
   type DictionaryMatch,
-} from '@/app/lib/dictionary';
-import { fetchDictionary } from '@/app/lib/dictionary-service';
+} from '@/lib/dictionary';
+import { fetchDictionary } from '@/lib/dictionary-service';
 
 // Limit how many references we follow and how many extra API requests we make.
 const MAX_REFERENCE_HOPS = 2;

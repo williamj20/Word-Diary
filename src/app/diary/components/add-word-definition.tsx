@@ -1,9 +1,9 @@
 'use client';
 
 import SaveButton from '@/app/diary/components/save-button';
-import WordMeaning from '@/app/components/word-meaning';
-import { saveWordToDiary } from '@/app/lib/actions/diary';
-import type { WordLookupResponse } from '@/app/lib/word';
+import WordMeaning from '@/components/word-meaning';
+import { saveWordToDiary } from '@/lib/actions/diary';
+import type { WordLookupResponse } from '@/types/word';
 import { useState, useTransition } from 'react';
 
 const AddWordDefinition = ({

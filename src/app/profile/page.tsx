@@ -1,4 +1,4 @@
-import { requireSignedInProfile } from '@/app/lib/auth';
+import { requireSignedInProfile } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
 const ProfilePage = async () => {

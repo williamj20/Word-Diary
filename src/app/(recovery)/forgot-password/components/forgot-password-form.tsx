@@ -1,10 +1,10 @@
 'use client';
 
-import { requestPasswordReset } from '@/app/lib/actions/password-recovery';
+import { requestPasswordReset } from '@/lib/actions/password-recovery';
 import {
   type ForgotPasswordState,
   RECOVERY_ERROR,
-} from '@/app/lib/password-recovery';
+} from '@/lib/password-recovery';
 import Link from 'next/link';
 import { useActionState, useEffect, useState } from 'react';
 

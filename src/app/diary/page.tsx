@@ -1,5 +1,5 @@
-import { requireSignedInProfile } from '@/app/lib/auth';
-import { DiarySearchParams, getDiaryUrl } from '@/app/lib/diary-search-params';
+import { requireSignedInProfile } from '@/lib/auth';
+import { DiarySearchParams, getDiaryUrl } from '@/lib/diary-search-params';
 import { redirect } from 'next/navigation';
 
 const DiaryPage = async ({

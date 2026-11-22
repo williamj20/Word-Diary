@@ -4,7 +4,7 @@ import AddWordDefinition from '@/app/diary/components/add-word-definition';
 import type {
   WordLookupResponse,
   WordLookupSuggestionsResponse,
-} from '@/app/lib/word';
+} from '@/types/word';
 import { ExternalLink, Plus, Search, X } from 'lucide-react';
 import Link from 'next/link';
 import { type ReactNode, useEffect, useState } from 'react';

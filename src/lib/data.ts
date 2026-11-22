@@ -1,12 +1,12 @@
-import type { Profile } from '@/app/lib/profile';
-import {
-  type UserWordListEntry,
-  type WordDefinition,
-  type WordLookupResponse,
-  WordDefinitionSchema,
-} from '@/app/lib/word';
-import sql from '@/app/lib/dbClient';
-import { getCurrentUser } from '@/app/lib/session';
+import type { Profile } from '@/types/profile';
+import { WordDefinitionSchema } from '@/lib/word';
+import type {
+  UserWordListEntry,
+  WordDefinition,
+  WordLookupResponse,
+} from '@/types/word';
+import sql from '@/lib/dbClient';
+import { getCurrentUser } from '@/lib/session';
 import { cache } from 'react';
 
 export const ENTRIES_PER_PAGE = 6;

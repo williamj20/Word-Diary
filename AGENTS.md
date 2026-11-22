@@ -4,11 +4,13 @@
 
 This is a Next.js App Router project using React 19, TypeScript, Tailwind CSS 4, and Supabase.
 
-- `src/app/`: routes, layouts, pages, API routes, and UI components.
+- `src/app/`: routes, layouts, pages, API routes, and route-specific UI components.
 - `src/app/(public)/`: public landing, login, and signup routes.
 - `src/app/diary/`: authenticated diary shortcut, public username routes, and diary-specific components.
-- `src/app/components/`: shared app-level UI.
-- `src/app/lib/`: data access, server actions, Supabase helpers, utilities, shared types, and validation schemas.
+- `src/components/`: shared app-level UI.
+- `src/hooks/`: shared React hooks.
+- `src/types/`: shared word and profile types.
+- `src/lib/`: data access, server actions, Supabase helpers, utilities, and validation schemas.
 - `src/proxy.ts`: Supabase/session proxy middleware.
 - `src/app/globals.css`: Tailwind import, design tokens, shared component classes, and true utilities.
 - `supabase/`: local Supabase config and database migrations.
@@ -33,7 +35,7 @@ Use TypeScript strict mode and prefer the `@/` alias for imports from `src/`. Ke
 
 ESLint enforces Next core web vitals, TypeScript rules, Prettier compatibility, `eqeqeq`, `curly`, no explicit `any`, and no unused variables unless prefixed with `_`.
 
-Prefer server components unless client-side state, effects, browser APIs, or event handlers are required. Keep server actions in `src/app/lib/actions/`, data reads in `src/app/lib/data.ts`, and Supabase client helpers in `src/app/lib/supabase/`.
+Prefer server components unless client-side state, effects, browser APIs, or event handlers are required. Keep server actions in `src/lib/actions/`, data reads in `src/lib/data.ts`, and Supabase client helpers in `src/lib/supabase/`.
 
 ## CSS And UI
 

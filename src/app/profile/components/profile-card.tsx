@@ -1,7 +1,7 @@
 import { BookMarked, Mail, Pencil, UserRound } from 'lucide-react';
 import Link from 'next/link';
 
-import type { Profile } from '@/app/lib/profile';
+import type { Profile } from '@/types/profile';
 
 type ProfileCardProps = {
   profile: Profile;

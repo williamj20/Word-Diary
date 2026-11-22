@@ -1,5 +1,5 @@
 import WordItem from '@/app/diary/components/word-item';
-import { getUserWordsByQuery } from '@/app/lib/data';
+import { getUserWordsByQuery } from '@/lib/data';
 
 const WordList = async ({
   ownerId,

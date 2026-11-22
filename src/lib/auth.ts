@@ -1,5 +1,5 @@
-import { getCurrentProfile } from '@/app/lib/data';
-import { getCurrentUser } from '@/app/lib/session';
+import { getCurrentProfile } from '@/lib/data';
+import { getCurrentUser } from '@/lib/session';
 import { redirect } from 'next/navigation';
 
 export const redirectToSignupIfNotLoggedIn = async () => {

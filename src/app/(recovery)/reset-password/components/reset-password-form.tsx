@@ -1,11 +1,11 @@
 'use client';
 
-import { resetPassword } from '@/app/lib/actions/password-recovery';
-import { getPasswordErrors } from '@/app/lib/auth-forms';
+import { resetPassword } from '@/lib/actions/password-recovery';
+import { getPasswordErrors } from '@/lib/auth-forms';
 import {
   type ResetPasswordState,
   RECOVERY_ERROR,
-} from '@/app/lib/password-recovery';
+} from '@/lib/password-recovery';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useActionState, useRef, useState } from 'react';

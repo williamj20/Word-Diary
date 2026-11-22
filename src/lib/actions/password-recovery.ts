@@ -1,14 +1,14 @@
 'use server';
 
 import { createClient } from '@supabase/supabase-js';
-import { getEmailErrors, getPasswordErrors } from '@/app/lib/auth-forms';
-import createSupabaseServerClient from '@/app/lib/supabase/server';
+import { getEmailErrors, getPasswordErrors } from '@/lib/auth-forms';
+import createSupabaseServerClient from '@/lib/supabase/server';
 import {
   type ForgotPasswordState,
   type ResetPasswordState,
   RECOVERY_ERROR,
-} from '@/app/lib/password-recovery';
-import { logRecoveryError } from '@/app/lib/password-recovery-errors';
+} from '@/lib/password-recovery';
+import { logRecoveryError } from '@/lib/password-recovery-errors';
 
 // These outcomes get the same response as an accepted request to keep account existence private.
 const recipientErrorCodes = [

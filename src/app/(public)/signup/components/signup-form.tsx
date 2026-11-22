@@ -1,11 +1,11 @@
 'use client';
 
-import { signup } from '@/app/lib/actions/auth';
+import { signup } from '@/lib/actions/auth';
 import {
   getSignupErrors,
   type SignupErrors,
   type SignupFormState,
-} from '@/app/lib/auth-forms';
+} from '@/lib/auth-forms';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useActionState, useRef, useState } from 'react';

@@ -1,5 +1,5 @@
-import { getProfileByUsername } from '@/app/lib/data';
-import { getCurrentUser } from '@/app/lib/session';
+import { getProfileByUsername } from '@/lib/data';
+import { getCurrentUser } from '@/lib/session';
 import ProfileCard from '@/app/profile/components/profile-card';
 import { notFound, redirect } from 'next/navigation';
 

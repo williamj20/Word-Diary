@@ -1,6 +1,6 @@
 'use client';
 
-import { login } from '@/app/lib/actions/auth';
+import { login } from '@/lib/actions/auth';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useActionState, useState } from 'react';

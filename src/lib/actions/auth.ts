@@ -4,9 +4,9 @@ import {
   getSignupErrors,
   type LoginFormState,
   type SignupFormState,
-} from '@/app/lib/auth-forms';
-import createSupabaseServerClient from '@/app/lib/supabase/server';
-import { getCurrentProfile } from '@/app/lib/data';
+} from '@/lib/auth-forms';
+import createSupabaseServerClient from '@/lib/supabase/server';
+import { getCurrentProfile } from '@/lib/data';
 import { redirect } from 'next/navigation';
 
 export const signup = async (_state: SignupFormState, formData: FormData) => {

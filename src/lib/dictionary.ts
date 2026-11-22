@@ -2,12 +2,9 @@ import {
   DictionaryPronunciationsSchema,
   type DictionaryPronunciations as Pronunciations,
   type DictionaryServiceObject as Entry,
-} from '@/app/lib/dictionary-response';
-import {
-  MatchKind,
-  type MeaningContent,
-  type Pronunciation,
-} from '@/app/lib/word';
+} from '@/lib/dictionary-response';
+import { MatchKind } from '@/lib/word';
+import type { MeaningContent, Pronunciation } from '@/types/word';
 
 // Definitions can come from a whole entry or a phrase nested in its `dros` array.
 type Phrase = NonNullable<Entry['dros']>[number];

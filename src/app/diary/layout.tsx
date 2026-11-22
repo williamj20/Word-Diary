@@ -1,4 +1,4 @@
-import AppHeader from '@/app/components/app-header';
+import AppHeader from '@/components/app-header';
 
 const DiaryLayout = ({ children }: { children: React.ReactNode }) => {
   return (

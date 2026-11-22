@@ -1,11 +1,5 @@
 import z from 'zod';
 
-export interface Profile {
-  id: string;
-  displayName: string;
-  username: string;
-}
-
 export interface ProfileFormFields {
   displayName: string;
   username: string;

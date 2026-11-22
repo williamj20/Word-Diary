@@ -1,5 +1,5 @@
-import { requireSignedInProfile } from '@/app/lib/auth';
-import ProfileForm from '@/app/components/profile-form';
+import { requireSignedInProfile } from '@/lib/auth';
+import ProfileForm from '@/components/profile-form';
 
 const EditProfilePage = async () => {
   const profile = await requireSignedInProfile();

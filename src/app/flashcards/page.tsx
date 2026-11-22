@@ -1,7 +1,7 @@
 import FlashcardDeck from '@/app/flashcards/components/flashcard-deck';
-import { getFlashcardDeck } from '@/app/lib/data';
-import type { WordDefinition } from '@/app/lib/word';
-import { requireSignedInProfile } from '@/app/lib/auth';
+import { getFlashcardDeck } from '@/lib/data';
+import type { WordDefinition } from '@/types/word';
+import { requireSignedInProfile } from '@/lib/auth';
 import Link from 'next/link';
 
 const shuffleWords = (words: WordDefinition[]) => {

@@ -1,7 +1,7 @@
 'use client';
 
 import type { ErrorInfo } from 'next/error';
-import { RECOVERY_ERROR } from '@/app/lib/password-recovery';
+import { RECOVERY_ERROR } from '@/lib/password-recovery';
 import Link from 'next/link';
 
 const RecoveryError = ({ unstable_retry }: ErrorInfo) => (

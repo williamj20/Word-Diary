@@ -1,5 +1,5 @@
 import SignupForm from '@/app/(public)/signup/components/signup-form';
-import { redirectToDiaryIfLoggedIn } from '@/app/lib/auth';
+import { redirectToDiaryIfLoggedIn } from '@/lib/auth';
 
 const SignupPage = async () => {
   await redirectToDiaryIfLoggedIn();
