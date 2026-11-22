@@ -1,5 +1,5 @@
 import PronunciationButton from '@/app/components/pronunciation-button';
-import { MatchKind, type MeaningContent } from '@/app/lib/definitions';
+import { MatchKind, type MeaningContent } from '@/app/lib/word';
 
 const relationshipClassName = 'mb-2 text-xs text-[var(--ink-muted)] sm:text-sm';
 

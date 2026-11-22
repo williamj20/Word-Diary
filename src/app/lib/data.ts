@@ -1,10 +1,10 @@
+import type { Profile } from '@/app/lib/profile';
 import {
-  Profile,
-  UserWordListEntry,
-  WordDefinition,
-  WordLookupResponse,
+  type UserWordListEntry,
+  type WordDefinition,
+  type WordLookupResponse,
   WordDefinitionSchema,
-} from '@/app/lib/definitions';
+} from '@/app/lib/word';
 import sql from '@/app/lib/dbClient';
 import { getCurrentUser } from '@/app/lib/session';
 import { cache } from 'react';

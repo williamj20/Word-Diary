@@ -1,6 +1,6 @@
 import FlashcardDeck from '@/app/flashcards/components/flashcard-deck';
 import { getFlashcardDeck } from '@/app/lib/data';
-import { WordDefinition } from '@/app/lib/definitions';
+import type { WordDefinition } from '@/app/lib/word';
 import { requireSignedInProfile } from '@/app/lib/auth';
 import Link from 'next/link';
 

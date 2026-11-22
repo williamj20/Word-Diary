@@ -1,6 +1,6 @@
 'use client';
 
-import type { Pronunciation } from '@/app/lib/definitions';
+import type { Pronunciation } from '@/app/lib/word';
 import {
   playPronunciation,
   type StopPlayback,

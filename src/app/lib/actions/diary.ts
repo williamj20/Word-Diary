@@ -1,9 +1,12 @@
 'use server';
 
-import { MutationResult } from '@/app/lib/definitions';
 import sql from '@/app/lib/dbClient';
 import { getCurrentProfile } from '@/app/lib/data';
 import { revalidatePath } from 'next/cache';
+
+export interface MutationResult {
+  success: boolean;
+}
 
 const revalidateWordRoutes = (username: string) => {
   revalidatePath(`/diary/${username}`);

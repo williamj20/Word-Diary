@@ -1,6 +1,6 @@
 import WordItemDisclosure from '@/app/diary/components/word-item-disclosure';
 import WordMeaning from '@/app/components/word-meaning';
-import { UserWordListEntry } from '@/app/lib/definitions';
+import type { UserWordListEntry } from '@/app/lib/word';
 
 const WordItem = ({
   word,

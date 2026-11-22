@@ -1,7 +1,7 @@
 'use server';
 
 import { createClient } from '@supabase/supabase-js';
-import { getEmailErrors, getPasswordErrors } from '@/app/lib/definitions';
+import { getEmailErrors, getPasswordErrors } from '@/app/lib/auth-forms';
 import createSupabaseServerClient from '@/app/lib/supabase/server';
 import {
   type ForgotPasswordState,

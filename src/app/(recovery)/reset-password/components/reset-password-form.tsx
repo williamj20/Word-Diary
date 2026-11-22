@@ -1,7 +1,7 @@
 'use client';
 
 import { resetPassword } from '@/app/lib/actions/password-recovery';
-import { getPasswordErrors } from '@/app/lib/definitions';
+import { getPasswordErrors } from '@/app/lib/auth-forms';
 import {
   type ResetPasswordState,
   RECOVERY_ERROR,

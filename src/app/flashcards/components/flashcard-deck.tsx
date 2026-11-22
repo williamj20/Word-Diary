@@ -2,7 +2,7 @@
 
 import PronunciationButton from '@/app/components/pronunciation-button';
 import WordMeaning from '@/app/components/word-meaning';
-import type { WordDefinition } from '@/app/lib/definitions';
+import type { WordDefinition } from '@/app/lib/word';
 import clsx from 'clsx';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';

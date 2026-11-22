@@ -9,11 +9,11 @@ import {
   createCurrentProfile,
   updateCurrentProfile,
 } from '@/app/lib/actions/profile';
-import {
+import type {
   Profile,
   ProfileFormFields,
   ProfileFormState,
-} from '@/app/lib/definitions';
+} from '@/app/lib/profile';
 
 const FieldErrors = ({ errors }: { errors?: string[] }) => {
   if (!errors) {

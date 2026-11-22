@@ -1,13 +1,13 @@
 'use server';
 
-import {
-  Profile,
-  ProfileFormSchema,
-  ProfileFormState,
-  USERNAME_TAKEN_MESSAGE,
-} from '@/app/lib/definitions';
-import sql from '@/app/lib/dbClient';
 import { getCurrentProfile } from '@/app/lib/data';
+import sql from '@/app/lib/dbClient';
+import {
+  type Profile,
+  ProfileFormSchema,
+  type ProfileFormState,
+  USERNAME_TAKEN_MESSAGE,
+} from '@/app/lib/profile';
 import { getCurrentUser } from '@/app/lib/session';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';

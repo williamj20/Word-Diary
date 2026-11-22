@@ -1,4 +1,4 @@
-import type { SignupErrors } from '@/app/lib/definitions';
+import type { SignupErrors } from '@/app/lib/auth-forms';
 
 export const RECOVERY_ERROR = 'Something went wrong. Please try again.';
 

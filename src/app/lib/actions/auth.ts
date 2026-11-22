@@ -2,9 +2,9 @@
 
 import {
   getSignupErrors,
-  LoginFormState,
-  SignupFormState,
-} from '@/app/lib/definitions';
+  type LoginFormState,
+  type SignupFormState,
+} from '@/app/lib/auth-forms';
 import createSupabaseServerClient from '@/app/lib/supabase/server';
 import { getCurrentProfile } from '@/app/lib/data';
 import { redirect } from 'next/navigation';

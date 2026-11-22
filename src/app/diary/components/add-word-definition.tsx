@@ -3,7 +3,7 @@
 import SaveButton from '@/app/diary/components/save-button';
 import WordMeaning from '@/app/components/word-meaning';
 import { saveWordToDiary } from '@/app/lib/actions/diary';
-import { WordLookupResponse } from '@/app/lib/definitions';
+import type { WordLookupResponse } from '@/app/lib/word';
 import { useState, useTransition } from 'react';
 
 const AddWordDefinition = ({

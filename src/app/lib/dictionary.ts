@@ -1,19 +1,18 @@
 import {
   DictionaryPronunciationsSchema,
+  type DictionaryPronunciations as Pronunciations,
+  type DictionaryServiceObject as Entry,
+} from '@/app/lib/dictionary-response';
+import {
   MatchKind,
-} from '@/app/lib/definitions';
-import type {
-  DictionaryServiceObject as Entry,
-  MeaningContent,
-  Pronunciation,
-} from '@/app/lib/definitions';
+  type MeaningContent,
+  type Pronunciation,
+} from '@/app/lib/word';
 
 // Definitions can come from a whole entry or a phrase nested in its `dros` array.
 type Phrase = NonNullable<Entry['dros']>[number];
 
 type Source = Entry | Phrase;
-
-type Pronunciations = Entry['hwi']['prs'];
 
 // Keep each set of pronunciations attached to the word it actually describes.
 export type PronunciationCandidate = { word: string; prs: Pronunciations };

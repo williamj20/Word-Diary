@@ -1,9 +1,9 @@
+import { DictionaryServiceResponseSchema } from '@/app/lib/dictionary-response';
 import {
-  DictionaryServiceResponseSchema,
   MatchKind,
   WordDefinitionSchema,
   type WordDefinition,
-} from '@/app/lib/definitions';
+} from '@/app/lib/word';
 import {
   collectMatches,
   getMatchContent,
