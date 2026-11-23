@@ -1,4 +1,4 @@
-import { getProfileByUsername } from '@/lib/data';
+import { getCurrentProfile, getProfilePageByUsername } from '@/lib/data';
 import { getCurrentUser } from '@/lib/session';
 import ProfileCard from '@/app/profile/components/profile-card';
 import { notFound, redirect } from 'next/navigation';
@@ -8,10 +8,14 @@ const ProfilePage = async ({
 }: {
   params: Promise<{ username: string }>;
 }) => {
-  const { username } = await params;
-  const [profile, { user: viewer }] = await Promise.all([
-    getProfileByUsername(username),
+  const [{ username }, { user: viewer }] = await Promise.all([
+    params,
     getCurrentUser(),
+  ]);
+
+  const [profile, viewerProfile] = await Promise.all([
+    getProfilePageByUsername(username, viewer?.id ?? null),
+    getCurrentProfile(),
   ]);
 
   if (!profile) {
@@ -25,15 +29,7 @@ const ProfilePage = async ({
 
   return (
     <main className="mx-auto w-full min-w-min max-w-3xl">
-      {viewer?.id === profile.id ? (
-        <ProfileCard
-          isOwnProfile
-          email={viewer.email ?? 'Email unavailable'}
-          profile={profile}
-        />
-      ) : (
-        <ProfileCard isOwnProfile={false} profile={profile} />
-      )}
+      <ProfileCard profile={profile} viewer={viewerProfile ? viewer : null} />
     </main>
   );
 };

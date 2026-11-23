@@ -1,16 +1,18 @@
 import { BookMarked, Mail, Pencil, UserRound } from 'lucide-react';
 import Link from 'next/link';
 
-import type { Profile } from '@/types/profile';
+import FollowButton from '@/app/profile/components/follow-button';
+import type { ProfilePageData } from '@/types/profile';
 
-type ProfileCardProps = {
-  profile: Profile;
-} & (
-  | { isOwnProfile: true; email: string }
-  | { isOwnProfile: false; email?: never }
-);
+interface ProfileCardProps {
+  profile: ProfilePageData;
+  viewer: { id: string; email?: string } | null;
+}
 
-const ProfileCard = ({ email, profile, isOwnProfile }: ProfileCardProps) => {
+const ProfileCard = ({ profile, viewer }: ProfileCardProps) => {
+  const isOwnProfile = viewer?.id === profile.id;
+  const isFollowing = profile.viewerFollowStatus === 'accepted';
+
   return (
     <section className="profile-panel">
       <div className="profile-panel-header px-5 py-5 sm:px-8 sm:py-6">
@@ -31,15 +33,31 @@ const ProfileCard = ({ email, profile, isOwnProfile }: ProfileCardProps) => {
           <p className="mt-1 whitespace-nowrap text-sm font-semibold text-[var(--sage-dark)] sm:text-base">
             @{profile.username}
           </p>
+          <p className="mt-2 flex gap-4 whitespace-nowrap text-sm text-[var(--ink-muted)] sm:text-base">
+            <span>
+              {profile.followerCount}{' '}
+              {profile.followerCount === 1 ? 'follower' : 'followers'}
+            </span>
+            <span>{profile.followingCount} following</span>
+          </p>
         </div>
 
-        <Link
-          href={`/diary/${profile.username}`}
-          className="action-button action-button-primary mt-5 sm:mt-6"
-        >
-          <BookMarked />
-          View diary
-        </Link>
+        <div className="mt-5 grid grid-cols-[auto_1fr] items-start justify-items-start gap-x-3 sm:mt-6">
+          <Link
+            href={`/diary/${profile.username}`}
+            className="action-button action-button-primary"
+          >
+            <BookMarked />
+            View diary
+          </Link>
+          {viewer && !isOwnProfile && (
+            <FollowButton
+              key={profile.id}
+              targetId={profile.id}
+              isFollowing={isFollowing}
+            />
+          )}
+        </div>
 
         {isOwnProfile && (
           <div className="mt-8 flex items-center justify-between gap-4">
@@ -50,7 +68,7 @@ const ProfileCard = ({ email, profile, isOwnProfile }: ProfileCardProps) => {
                   Email
                 </p>
                 <p className="mt-0.5 whitespace-nowrap text-sm font-semibold text-[var(--ink)]">
-                  {email}
+                  {viewer.email ?? 'Email unavailable'}
                 </p>
               </div>
             </div>

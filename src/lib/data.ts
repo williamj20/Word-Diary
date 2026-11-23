@@ -1,4 +1,4 @@
-import type { Profile } from '@/types/profile';
+import type { Profile, ProfilePageData } from '@/types/profile';
 import { WordDefinitionSchema } from '@/lib/word';
 import type {
   UserWordListEntry,
@@ -36,7 +36,8 @@ export const getCurrentProfile = cache(async (): Promise<Profile | null> => {
     select
       id,
       display_name as "displayName",
-      username
+      username,
+      profile_is_public as "isPublic"
     from public.profiles
     where id = ${user.id}
     limit 1
@@ -52,10 +53,34 @@ export const getProfileByUsername = async (
     select
       id,
       display_name as "displayName",
-      username
+      username,
+      profile_is_public as "isPublic"
     from public.profiles
     where username = ${username.toLowerCase()}
     limit 1
+  `;
+
+  return profile ?? null;
+};
+
+export const getProfilePageByUsername = async (
+  username: string,
+  viewerId: string | null
+): Promise<ProfilePageData | null> => {
+  const [profile] = await sql<ProfilePageData[]>`
+    select
+      p.id,
+      p.display_name as "displayName",
+      p.username,
+      p.profile_is_public as "isPublic",
+      (select count(*)::int from public.profile_follows
+       where followed_id = p.id and status = 'accepted') as "followerCount",
+      (select count(*)::int from public.profile_follows
+       where follower_id = p.id and status = 'accepted') as "followingCount",
+      (select status from public.profile_follows
+       where follower_id = ${viewerId} and followed_id = p.id) as "viewerFollowStatus"
+    from public.profiles p
+    where p.username = ${username.toLowerCase()}
   `;
 
   return profile ?? null;
