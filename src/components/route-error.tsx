@@ -7,7 +7,7 @@ const RouteError = ({
   retry,
   title,
 }: {
-  error: Error & { digest?: string };
+  error: unknown;
   retry: () => void;
   title: string;
 }) => {

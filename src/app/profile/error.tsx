@@ -3,13 +3,9 @@
 import RouteError from '@/components/route-error';
 import type { ErrorInfo } from 'next/error';
 
-const ProfileError = ({ error, unstable_retry }: ErrorInfo) => {
+const ProfileError = ({ error, retry }: ErrorInfo) => {
   return (
-    <RouteError
-      error={error}
-      retry={unstable_retry}
-      title="Profile is unavailable"
-    />
+    <RouteError error={error} retry={retry} title="Profile is unavailable" />
   );
 };
 

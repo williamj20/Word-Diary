@@ -4,7 +4,7 @@ import type { ErrorInfo } from 'next/error';
 import { RECOVERY_ERROR } from '@/lib/password-recovery';
 import Link from 'next/link';
 
-const RecoveryError = ({ unstable_retry }: ErrorInfo) => (
+const RecoveryError = ({ retry }: ErrorInfo) => (
   <section className="auth-form text-center">
     <h2 className="text-2xl font-semibold sm:text-3xl">
       Password recovery is unavailable
@@ -14,7 +14,7 @@ const RecoveryError = ({ unstable_retry }: ErrorInfo) => (
     </p>
     <button
       type="button"
-      onClick={unstable_retry}
+      onClick={retry}
       className="action-button action-button-primary mt-5"
     >
       Try Again
