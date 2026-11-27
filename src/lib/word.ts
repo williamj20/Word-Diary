@@ -11,12 +11,23 @@ export enum MatchKind {
 
 const NonblankText = z.string().trim().min(1);
 
+const SenseSchema = z.object({
+  text: NonblankText,
+  example: z
+    .object({ text: NonblankText, attribution: NonblankText.optional() })
+    .nullable(),
+});
+
+const DefinitionSchema = SenseSchema.extend({
+  dividedSense: SenseSchema.extend({ label: NonblankText }).optional(),
+});
+
 export const MeaningContentSchema = z.object({
   definitionHeadword: NonblankText,
   matchKind: z.enum(MatchKind),
   searchedWordPartOfSpeech: NonblankText.max(64).nullable(),
   definitionPartOfSpeech: NonblankText.max(64).nullable(),
-  definitions: z.array(NonblankText).min(1),
+  definitions: z.array(DefinitionSchema).min(1),
   pronunciationWord: NonblankText,
   pronunciationText: NonblankText.nullable(),
   pronunciationUrl: z.url().nullable(),

@@ -2,6 +2,7 @@ import type { MeaningContentSchema, WordDefinitionSchema } from '@/lib/word';
 import type z from 'zod';
 
 export type MeaningContent = z.infer<typeof MeaningContentSchema>;
+export type Definition = MeaningContent['definitions'][number];
 export type Pronunciation = Pick<
   MeaningContent,
   'pronunciationWord' | 'pronunciationText' | 'pronunciationUrl'

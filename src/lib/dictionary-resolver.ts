@@ -1,5 +1,5 @@
 import { DictionaryServiceResponseSchema } from '@/lib/dictionary-response';
-import { MatchKind, WordDefinitionSchema } from '@/lib/word';
+import { MatchKind } from '@/lib/word';
 import type { WordDefinition } from '@/types/word';
 import {
   collectMatches,
@@ -36,7 +36,7 @@ interface PendingMatch {
 // A match with definitions ready to use. Other matches may reach the same entry.
 interface ResolvedMatch {
   match: DictionaryMatch;
-  definitions: string[];
+  definitions: ReturnType<typeof getMatchContent>['definitions'];
   // True when only specific senses apply, rather than the whole entry or phrase.
   isRestricted: boolean;
   orderPath: number[];
@@ -82,14 +82,17 @@ const mergeResolvedMatches = (resolved: ResolvedMatch[]): ResolvedMatch[] => {
     );
 
     // Prefer definitions for the whole entry or phrase over selected senses.
-    // If both matches select specific senses, combine them without repeating text.
+    // Overlapping restrictions can reach the same sense more than once.
     if (existingGroup.isRestricted && !group.isRestricted) {
       existingGroup.definitions = group.definitions;
       existingGroup.isRestricted = false;
     } else if (existingGroup.isRestricted) {
-      existingGroup.definitions = [
-        ...new Set([...existingGroup.definitions, ...group.definitions]),
-      ];
+      for (const [order, definition] of group.definitions) {
+        // A full sense includes the divided sense that another form may select alone.
+        if (!existingGroup.definitions.has(order) || definition.dividedSense) {
+          existingGroup.definitions.set(order, definition);
+        }
+      }
     }
   }
   return [...groups.values()];
@@ -212,7 +215,7 @@ export const resolveDictionaryLookup = async (
       const { references, definitions, isRestricted } = item.content;
 
       // Keep this match's own definitions while also following its references.
-      if (definitions.length) {
+      if (definitions.size) {
         resolved.push({
           match: item.match,
           definitions,
@@ -297,15 +300,13 @@ export const resolveDictionaryLookup = async (
   if (!resolved.length) {
     throw new Error('No usable dictionary definitions found');
   }
-  // Combine matches for each entry or phrase, choose their pronunciation,
-  // and check that the result has the fields the database and UI need.
   return {
     status: 'success',
-    word: WordDefinitionSchema.parse({
+    word: {
       word: normalizedWord,
       meanings: mergeResolvedMatches(resolved).map(group =>
         toMeaning(group.match, group.definitions)
       ),
-    }),
+    },
   };
 };

@@ -1,8 +1,20 @@
 import PronunciationButton from '@/components/pronunciation-button';
 import { MatchKind } from '@/lib/word';
-import type { MeaningContent } from '@/types/word';
+import type { Definition, MeaningContent } from '@/types/word';
 
 const relationshipClassName = 'mb-2 text-xs text-[var(--ink-muted)] sm:text-sm';
+
+const UsageExample = ({ example }: { example: Definition['example'] }) =>
+  example ? (
+    <figure className="mt-1 ml-3 border-l-2 border-[var(--paper-muted)] pl-3">
+      <blockquote className="italic">{example.text}</blockquote>
+      {example.attribution ? (
+        <figcaption className="mt-1 text-xs sm:text-sm">
+          — {example.attribution}
+        </figcaption>
+      ) : null}
+    </figure>
+  ) : null;
 
 const WordMeaning = ({ meaning }: { meaning: MeaningContent }) => {
   const sourceUrl = `https://www.merriam-webster.com/dictionary/${encodeURIComponent(meaning.definitionHeadword)}`;
@@ -52,9 +64,19 @@ const WordMeaning = ({ meaning }: { meaning: MeaningContent }) => {
           pronunciationUrl={meaning.pronunciationUrl}
         />
       </div>
-      <ul className="mt-3 list-inside list-disc space-y-2 break-words text-sm font-normal text-[var(--ink-muted)] sm:text-base">
+      <ul className="mt-3 list-disc space-y-2 pl-5 text-sm font-normal text-[var(--ink-muted)] sm:text-base">
         {meaning.definitions.map((definition, index) => (
-          <li key={index}>{definition}</li>
+          <li key={index}>
+            {definition.text}
+            <UsageExample example={definition.example} />
+            {definition.dividedSense ? (
+              <div className="mt-2">
+                <span className="italic">{definition.dividedSense.label}</span>{' '}
+                {definition.dividedSense.text}
+                <UsageExample example={definition.dividedSense.example} />
+              </div>
+            ) : null}
+          </li>
         ))}
       </ul>
     </section>

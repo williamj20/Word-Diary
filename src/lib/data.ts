@@ -141,7 +141,7 @@ export const getWordLookup = async (
 
 export const saveWordDefinition = async (
   input: WordDefinition
-): Promise<void> => {
+): Promise<WordDefinition> => {
   // Reject all invalid content before opening a transaction or creating a word.
   const wordDefinition = WordDefinitionSchema.parse(input);
   await sql.begin(async transaction => {
@@ -178,6 +178,7 @@ export const saveWordDefinition = async (
       )
     `;
   });
+  return wordDefinition;
 };
 
 // Public diary ownership is independent of the authenticated viewer.

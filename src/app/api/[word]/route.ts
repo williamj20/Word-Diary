@@ -41,15 +41,16 @@ export const GET = async (
         return NextResponse.json({ suggestions: result.suggestions });
       case 'not-found':
         return NextResponse.json({ error: 'Word not found' }, { status: 404 });
-      case 'success':
-        await saveWordDefinition(result.word);
+      case 'success': {
+        const savedWord = await saveWordDefinition(result.word);
         console.log('Word definition found externally and saved to database', {
           word: normalizedWord,
         });
         return NextResponse.json({
-          word: result.word,
+          word: savedWord,
           isInUserList: false,
         });
+      }
     }
   } catch (error) {
     console.error('Word lookup failed', { error, word: normalizedWord });
