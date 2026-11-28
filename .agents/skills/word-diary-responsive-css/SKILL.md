@@ -1,108 +1,37 @@
 ---
 name: word-diary-responsive-css
-description: Project-specific responsive UI and CSS conventions for the Word Diary Next.js app. Use when Codex edits `src/app` screens, React components, Tailwind class names, `src/app/globals.css`, modals, forms, cards, pagination, or any visual layout that must remain polished on small-width screens.
+description: Use for Word Diary UI changes and reviews involving React layouts, Tailwind, shared CSS, or responsive behavior.
 ---
 
-# Word Diary Responsive CSS
+# Word Diary responsive CSS
 
-## Overview
+Inspect the affected route, a comparable component, and `src/app/globals.css` for shared defaults and usage comments. When changing a shared rule, identify its consumers and verify each one.
 
-Preserve Word Diary's warm paper-and-ink journal aesthetic. Use inline Tailwind, the inherited Literata font, and existing color tokens. Standardize by component role; the hero, brand, profile identity, and study word intentionally have larger display typography. Responsive and mobile-friendly behavior is a completion requirement for UI changes.
+## Layout and scrolling
 
-## Before Editing
+- The root scroller in `src/app/layout.tsx` owns page overflow. Its `w-fit min-w-[max(100%,var(--app-min-width))]` wrapper can grow with content. At `--app-min-width` (25.5rem, normally 408px including gutters) and below, keep layout, type, spacing, and control sizes fixed. Narrower viewports scroll horizontally. Use parent-relative widths, inline component minimums, and a few size breakpoints above the minimum. Avoid `vw` sizing, universal overflow rules, and JavaScript sizing.
+- Keep actions, word titles, usernames, emails, pronunciation controls, suggestions, and shortcuts on single rows. Size clipped cards to fit their contents. Use `scrollbar-none` on the root and dialog scrollers. Keep cards and control groups free of nested horizontal scrollers.
+- Prose and multiword display names wrap. Form fields stack vertically. Preserve mobile landing-card stacking and the header menu breakpoint. Keep touch controls spaced and usable without hover.
+- **Dialogs.** Fit overlays within the viewport and scroll vertically as needed. In lookup and delete panels, put the single-line title and all form or confirmation content in one two-axis `word-modal-content scrollbar-none` scroller. Use `word-modal-inner` to retain the content minimum of `calc(var(--app-min-width) - 4.875rem)` (normally 330px). Keep the 32×32px `word-modal-close` beside the scroller, aligned with the title and always reachable.
+- **Study flashcards.** Use equal parent-relative widths capped at `max-w-2xl` and heights `h-80 sm:h-96 lg:h-[26rem]`. Both faces share one grid cell and scroll vertically. Allow long words, definition headings, and pronunciation to wrap. Shared headings and pronunciation controls use `w-max max-w-full` so their container determines wrapping without layout props.
 
-- Inspect the component being changed, nearby route/page files, and `src/app/globals.css` before editing styles.
-- Inspect the shared class consumers before modifying a rule; verify each affected component afterwards.
-- For new components, inspect a comparable existing component and the usage comments in `src/app/globals.css`. Reuse suitable shared classes; use the code as the reference for their current defaults and keep sizing differences inline.
+## Shared CSS
 
-## Responsive Rules
+Prefer inline Tailwind. Extract a global class only when at least two distinct components share a visual pattern worth naming. Keep small utility bundles inline. Put component classes in `@layer components` and shared single-purpose utilities in `@layer utilities`. Keep theme tokens and base styles global.
 
-- Prioritize horizontal overflow scrolling across the entire app and all components when space becomes too narrow. Preserve the intended layout and arrangement of content and controls; treat wrapping or stacking as deliberate design choices rather than the default response to insufficient width.
-- Adapt typography, spacing, and control sizes above the app's shared minimum width. At and below that minimum, preserve the same layout, typography, spacing, and control sizes and use horizontal scrolling. Content can require a wider minimum, but do not keep shrinking individual components after their containing layout stops shrinking.
-- Keep horizontal scrollbars visually hidden while preserving native scrolling and access to all content and actions. Content extending beyond the visible area must remain reachable through scrolling.
-- Base layouts must remain usable at 320px, including through intentional scrolling. Use a small number of meaningful responsive breakpoints and verify behavior below a layout's minimum width.
-- Keep controls comfortably separated on touch screens and make all functionality available without hover.
-- Constrain overlays to the available viewport height and allow vertical scrolling when needed, keeping dismissal controls and actions reachable in short or landscape viewports.
-- Keep overflow deliberate and contained to the appropriate scroll container. Avoid accidental page overflow and unnecessary nested scroll areas. Check populated, empty, expanded, pending, and error states as applicable, including long content.
-- Keep border radius stable across widths. Do not add responsive `rounded-*` changes for small screens; adjust spacing or layout instead.
+Follow existing class families such as `action-button-*` and `word-modal-*`. Use `@apply` for Tailwind bundles and plain CSS for tokens, gradients, and custom transitions. Keep shared defaults in the class and only genuine overrides inline. Retain single-consumer classes until superseded and remove obsolete classes after migration. Update this skill when conventions change.
 
-### Scroll Ownership And Deliberate Wrapping
+## Visual conventions
 
-- The root scroller in `src/app/layout.tsx` owns page-level horizontal scrolling. Its inner wrapper uses `w-fit min-w-[max(100%,var(--app-min-width))]` to fill the viewport and grow with the content's intrinsic minimum width. The shared `--app-min-width` token is `25.5rem` (408px at the default root font size), including the page gutters. Keep component-specific minimum widths inline; do not add universal overflow rules or JavaScript sizing.
-- Use parent-relative widths and fixed small-screen type/spacing sizes. Avoid `vw` sizing: it continues shrinking when the containing page already overflows. Keep size-changing breakpoints above the shared minimum, with no smaller-screen overrides beneath it.
-- Use `scrollbar-none` on the root scroller and dialog content. Do not add independent horizontal scrollers to cards, pronunciation controls, action rows, or suggestions.
-- Keep the lookup and delete panels within the viewport. Put the single-line title and all form or confirmation content inside one two-axis `word-modal-content scrollbar-none` scroller. Keep the 32×32px `word-modal-close` beside the scroller, aligned with the title at the top. This leaves the full inner height available for scrolling on short screens.
-- Use `word-modal-inner` for the content inside that scroller. Its minimum width is `calc(var(--app-min-width) - 4.875rem)`, or 330px at the 408px app minimum. The 78px deduction covers 24px of overlay gutters, 2px of borders, 16px of left padding, 4px of right padding, and the 32px close button. Below the minimum, narrow the visible scroll area and retain the content sizing.
-- Keep action groups, word titles, usernames, email addresses, pronunciation controls, suggestions, and shortcut groups on single rows. Let their containing page or dialog scroll once their minimum width is reached. Give clipped card surfaces a content-aware minimum width so their rounded edges cannot hide controls or identifiers.
-- Study flashcards are an exception: keep every card the same parent-relative width, capped at `max-w-2xl`, and let long words, definition headings, and pronunciation content wrap. Shared definition headings and pronunciation controls use `w-max max-w-full` so the container width determines when they wrap, without layout props. Use fixed heights of `h-80 sm:h-96 lg:h-[26rem]`, with both faces in the same grid cell and vertical scrolling within each face for long content. Below the shared app minimum, retain card sizing and use root horizontal scrolling.
-- Preserve deliberate wrapping: prose and multiword display names wrap naturally; form fields remain vertically arranged; landing feature cards stack on mobile; header navigation switches to its compact mobile menu at the existing breakpoint. These exceptions do not apply to action rows within those layouts.
+- Preserve the paper gradients, inherited Literata font, and default tracking. Use margin, padding, and gap for spacing. Reserve `leading-*` for actual overlap or readability issues. Use arbitrary values only for a specific design or sizing need.
+- Use ink for headings and ink-muted for supporting copy, labels, and metadata. Page/status headings use `text-2xl sm:text-3xl`, card/dialog headings `text-xl sm:text-2xl`, both `font-semibold`. Body uses `text-sm sm:text-base`, helpers `text-xs sm:text-sm`, eyebrows `text-[0.625rem] font-bold uppercase sm:text-xs`, and labels `form-input-label`. Preserve larger brand, hero, profile identity, and study-word type.
+- Keep radii stable across widths. Use `rounded-[2rem]` for standard cards, diary frames, hero, flashcards, and word dialogs. Use `rounded-[1.75rem]` for diary word cards and lookup results, `rounded-2xl` for definition panels and header menus. Match existing control shapes. Reserve shadows for dropdowns (`shadow-sm`) and flashcards (`shadow-lg`). Preserve field focus rings.
+- Use existing border tokens, `paper-soft` for backgrounds, `paper-card` for cards/forms, and `paper` or `paper-muted` for secondary surfaces. Use sage for primary/positive actions, brass for neutral structure, and danger tokens for destructive actions. Match saved words and lookup results, share part-of-speech badge styling, and match skeletons to loaded content. Indicate saved state with neutral surfaces and the saved control while preserving content colors.
+- Buttons and action links use `transition-colors duration-100` on all devices. Swap token colors on hover, gate custom hover CSS with `@media (hover: hover)`, and apply `:active` colors immediately with a 100ms release. Keep timing shared and custom colors inline. Disabled controls retain resting colors on hover and press. Preserve disclosure and flashcard transform animations.
+- Preserve accessibility-specific HTML attributes, including `aria-*`. Only add, refactor, or flag them when accessibility work is explicitly requested.
 
-## CSS Class Placement
+## Browser verification
 
-- Prefer inline Tailwind. Give shared component classes useful defaults, and keep layout, spacing, and sizing differences inline. Small repeated utility bundles are fine; do not extract a class just to eliminate repetition.
-- Create a class in `src/app/globals.css` only when at least **two distinct components** actually share a cohesive visual recipe, such as a button, menu item, or dialog surface. Two consumers are a minimum, not an automatic reason to extract a class. Repeated elements within one component do not qualify.
-- Put shared component classes inside `@layer components`. Any new custom single-purpose utility belongs in `@layer utilities` and must also have at least two distinct component consumers. Existing theme tokens and base styles remain global.
-- Use descriptive family names such as `action-button-*`, `header-menu-*`, `word-modal-*`, and `form-*`. Do not create a single-consumer global class merely to shorten JSX.
-- Use `@apply` for Tailwind utility bundles in shared classes, then use plain CSS declarations for design tokens, gradients, custom transitions, and CSS variables.
-- Preserve existing single-consumer rules unless the current work supersedes them; remove obsolete classes after migrating their consumers. Keep this skill synchronized when changing these conventions.
-
-## Component Conventions
-
-Use these shapes for comparable UI roles:
-
-| Role                                                        | Shape                            |
-| ----------------------------------------------------------- | -------------------------------- |
-| Standard cards (auth, profile, feature, empty/error/status) | `rounded-[2rem]`                 |
-| Diary word cards and lookup results                         | `rounded-[1.75rem]`              |
-| Landing hero and study flashcard                            | `rounded-[2rem]`                 |
-| Nested definition panels / diary outer frame                | `rounded-2xl` / `rounded-[2rem]` |
-| Action/icon/pagination controls                             | Match the existing control shape |
-| Header menus                                                | `rounded-2xl`                    |
-| Word dialogs                                                | `rounded-[2rem]`                 |
-
-- Use shadows only for dropdown menus (`shadow-sm`) and study flashcards (`shadow-lg`). Preserve field focus rings.
-- Keep saved words and lookup results visually consistent, and reuse part-of-speech badge styling across word views. Preserve the existing paper gradients.
-- Match loading skeletons to the loaded component.
-
-## HTML Attributes
-
-- Ignore accessibility-specific HTML attributes for this project, including `aria-*`, unless the user explicitly asks for accessibility work.
-- Do not add, refactor, or flag missing `aria-*` attributes during responsive UI/CSS changes. Preserve existing attributes when editing nearby markup.
-
-## Typography And Spacing
-
-- Avoid `leading-*` unless a concrete overlap or readability problem requires it. The project generally relies on font defaults plus margin, padding, and gap.
-- Use the inherited Literata font with its default character spacing throughout the app. Do not add alternate font families or font-family utilities; create hierarchy with size, weight, color, and capitalization.
-- Prefer spacing utilities (`mt-*`, `mb-*`, `gap-*`, `px-*`, `py-*`) over line-height adjustments to create vertical rhythm.
-
-| Text role           | Tailwind recipe                                          |
-| ------------------- | -------------------------------------------------------- |
-| Page/status heading | `text-2xl font-semibold sm:text-3xl`                     |
-| Card/dialog heading | `text-xl font-semibold sm:text-2xl`                      |
-| Standard body       | `text-sm sm:text-base`                                   |
-| Eyebrow             | `text-[0.625rem] font-bold uppercase sm:text-xs`         |
-| Form label          | `text-xs font-bold uppercase` through `form-input-label` |
-| Helper text         | `text-xs sm:text-sm`                                     |
-
-Headings use ink; supporting copy, labels, and metadata use ink-muted. Keep intentional display typography on the brand, hero, profile identity, and study word. Use real Tailwind sizes (`text-base`, `text-xl`); `text-md` and `text-1xl` are undefined.
-
-## Color, Borders, And Interaction
-
-- Use `border border-[var(--...)]` with existing tokens instead of new border colors.
-- Keep fills aligned with the current surface hierarchy: `paper-soft` for page/background-like areas, `paper-card` for cards and forms, `paper` or `paper-muted` for secondary surfaces.
-- Use sage for positive/primary actions, brass for neutral structure, and danger tokens for destructive actions.
-- Keep hover states simple token color swaps. Do not desaturate a whole content subtree to indicate a saved state; use neutral surface tokens and the saved control state.
-- Use `transition-colors duration-100` for buttons and action links on all devices. Gate custom hover rules with `@media (hover: hover)`; Tailwind `hover:` utilities already do this. Give controls an immediate `:active` color change with a zero-duration transition, then use the normal 100ms transition on release. Keep shared timing in `globals.css` and custom control colors inline. Preserve disclosure and flashcard transform animations. Disabled controls retain their resting colors on hover and press.
-
-## Review Checklist
-
-- Check affected screens at 320, 375, 768, and 1280px, plus 280px to exercise page overflow and a short/landscape viewport for dialogs. At an effective 200×125 CSS pixels, scroll to the lookup field and actions, then back to the title. Check that the close button stays reachable throughout. Verify relevant empty, populated, expanded, pending, and error states and long content.
-- Confirm no unintended horizontal scrolling, controls clipped without a scroll path, overlapping text, unreachable dialog actions, or hover-only functionality. Check field focus and disabled hover presentation.
-- Verify the horizontal overflow convention across affected pages and components: preserve the intended layout at narrow widths, scroll only when needed, hide horizontal scrollbars, and keep all content and actions reachable. Treat deliberate horizontal scrolling as expected behavior in reviews.
-- Compare element dimensions, font sizes, spacing, and prose wrapping at the shared minimum width and narrower viewports. They should match; only the visible scroll area should become narrower. Check both flashcard faces and dialog content, not just whether scrolling works.
-- Confirm no new responsive rounded-radius changes were added.
-- Confirm every new global class is used by at least two distinct, visually similar components and adds value beyond renaming a small utility bundle. Verify the shared consumers after changes.
-- Confirm consumers do not repeat sizing or other defaults already owned by their shared class. Keep overrides only when the component needs a real difference.
-- Confirm no avoidable `leading-*` utility was introduced.
-- Confirm arbitrary values have a local reason, such as matching the existing rounded card language or solving a specific width constraint.
-- Run `npm run lint` and `npm run build` for meaningful code changes. Report actual browser coverage and any limitations; do not claim mobile verification from source inspection alone.
+- Check affected screens at 280, 320, 375, 768, and 1280px. Compare dimensions, type, spacing, and prose wrapping at the 408px minimum and below, including both flashcard faces and dialog content when affected. Only the visible scroll area should narrow.
+- Exercise relevant empty, populated, expanded, pending, error, and long-content states. Check for overlap, clipped controls, unintended overflow, focus rings, and disabled interaction. For dialogs, include a short landscape viewport. At an effective 200×125 CSS pixels, scroll to the lookup field and actions, then back to the title with the close button reachable throughout.
+- Report the browser checks actually performed and any coverage gaps.

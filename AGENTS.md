@@ -1,92 +1,19 @@
-# Repository Guidelines
+# Word Diary
 
-## Project Structure
+Next.js App Router, React 19, strict TypeScript, Tailwind CSS 4, and Supabase. Edit files only when explicitly requested.
 
-This is a Next.js App Router project using React 19, TypeScript, Tailwind CSS 4, and Supabase.
+## Development
 
-- `src/app/`: routes, layouts, pages, API routes, and route-specific UI components.
-- `src/app/(public)/`: public landing, login, and signup routes.
-- `src/app/diary/`: authenticated diary shortcut, public username routes, and diary-specific components.
-- `src/components/`: shared app-level UI.
-- `src/hooks/`: shared React hooks.
-- `src/types/`: shared word and profile types.
-- `src/lib/`: data access, server actions, Supabase helpers, utilities, and validation schemas.
-- `src/proxy.ts`: Supabase/session proxy middleware.
-- `src/app/globals.css`: Tailwind import, design tokens, shared component classes, and true utilities.
-- `supabase/`: local Supabase config and database migrations.
-- `.agents/skills/`: project-local Codex skills. Use `.agents/skills/word-diary-responsive-css/SKILL.md` when changing UI/CSS.
+- Use `npm run dev` for Webpack. Run `npm run lint` and `npm run build` for meaningful code changes. The build handles type checking. There is no `npm test`. Docs-only edits need checks only for affected generated content or examples.
+- Prefer Server Components. Keep route UI in `src/app/`, shared UI in `src/components/`, server actions in `src/lib/actions/`, reads in `src/lib/data.ts`, and Supabase clients in `src/lib/supabase/`. Prefer `@/` imports, two-space indentation, PascalCase components, and camelCase helpers and actions.
+- For UI changes and reviews, follow `.agents/skills/word-diary-responsive-css/SKILL.md`.
+- Use the local Supabase CLI and put schema changes in `supabase/migrations/`. Keep local and hosted production credentials separate. Never commit secrets. Give new environment variables safe local defaults where possible and document them in `README.md` or the PR description.
 
-There is still no dedicated automated test directory.
+## Code review
 
-## Commands
+Review changed code and affected callers. Use `vercel-react-best-practices` when available. Include all four sections, even when there are no findings.
 
-- `npm run dev`: start the Next.js dev server with Webpack.
-- `npm run build`: create a production build.
-- `npm run start`: run the production build locally.
-- `npm run lint`: run ESLint over the repo.
-- `npm run db:start`: start the local Supabase CLI stack.
-- `npm run db:reset`: reset the local Supabase database and reapply migrations.
-
-Use `npm run dev` rather than bare `next dev`; the project intentionally uses `next dev --webpack`.
-
-## Coding Style
-
-Use TypeScript strict mode and prefer the `@/` alias for imports from `src/`. Keep React components in PascalCase and helpers, actions, and utilities in camelCase. Follow the existing 2-space indentation and concise component style.
-
-ESLint enforces Next core web vitals, TypeScript rules, Prettier compatibility, `eqeqeq`, `curly`, no explicit `any`, and no unused variables unless prefixed with `_`.
-
-Prefer server components unless client-side state, effects, browser APIs, or event handlers are required. Keep server actions in `src/lib/actions/`, data reads in `src/lib/data.ts`, and Supabase client helpers in `src/lib/supabase/`.
-
-## CSS And UI
-
-Use Tailwind-first styling and the existing design tokens in `src/app/globals.css`. For detailed responsive and CSS conventions, use `.agents/skills/word-diary-responsive-css/SKILL.md` instead of duplicating that guidance here.
-
-## Testing And Verification
-
-There is no `npm test` script. Treat `npm run lint` and `npm run build` as the minimum verification for meaningful code changes. Do not use `npx tsc --noEmit` as part of the standard test plan; the project is configured for Next’s build/type flow.
-
-For docs-only changes, lint/build are optional unless the change affects generated docs, examples, or code snippets that should be checked.
-
-## Code Review
-
-When reviewing changes, including through `/review`:
-
-- Check correctness, security, regressions, and edge cases.
-- Evaluate readability, naming, unnecessary complexity, and adherence to this repository's conventions.
-- Check React/Next.js best practices, including server/client component boundaries, state and effects, data fetching, and component props.
-- Use the `vercel-react-best-practices` skill when available.
-- For UI changes, apply `.agents/skills/word-diary-responsive-css/SKILL.md`.
-- Keep suggestions focused on the changed code and its affected callers. Explain the practical benefit of each proposed improvement.
-
-Distinguish bugs and required fixes from optional improvements. Do not present personal style preferences as correctness bugs. For each item, identify the relevant code and suggest a concrete change.
-
-Report which checks were actually performed and what remains unverified. Do not modify files during a review unless explicitly asked.
-
-### Review Output
-
-Provide a detailed report even when no bugs are found:
-
-1. **Bugs and required fixes:** Describe actionable problems with file references, their impact, and suggested fixes. Explicitly state if none.
-2. **Optional improvements:** Separately report worthwhile readability, naming, complexity, convention, and React/Next.js improvements. Explain the practical benefit. Do not invent suggestions to fill space.
-3. **Review coverage:** Briefly explain the assessment of correctness, security, readability, unnecessary complexity, project conventions, and React/Next.js best practices. Include responsive UI when relevant. Identify anything not evaluated.
-4. **Verification:** Distinguish checks performed during this review from earlier results, and identify what remains unverified.
-
-Do not reduce the entire report to “no actionable regressions found.”
-Do not modify files unless explicitly requested.
-
-## Supabase And Data
-
-Local development uses the Supabase CLI stack. Production uses the hosted Supabase project. Keep local and production credentials separate.
-
-Use migrations in `supabase/migrations/` for schema changes and Supabase CLI commands for local development.
-
-## Security And Configuration
-
-Do not commit Supabase keys, dictionary API keys, database URLs, or local secrets. Relevant environment variables include:
-
-- `DICTIONARY_API_KEY`
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-- `DATABASE_URL`
-
-Document new environment variables in `README.md` or the PR description, and use safe local defaults where possible.
+1. **Bugs and required fixes** — Cite the code, impact, and concrete fix for each finding. State when none were found.
+2. **Optional improvements** — Give the location, suggested change, and practical benefit for each worthwhile improvement.
+3. **Review coverage** — Address correctness, security, regressions, edge cases, readability, naming, complexity, conventions, React/Next.js boundaries, state, effects, props, and data fetching. Include responsive behavior for UI changes and identify gaps.
+4. **Verification** — Distinguish checks run during this review from earlier results. Identify what remains unverified.
