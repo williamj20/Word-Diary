@@ -51,7 +51,7 @@ const DeleteWordModal = ({
   return createPortal(
     <div className="word-modal-backdrop" onClick={handleClose}>
       <div
-        className="word-modal-panel max-w-md pt-14 sm:pt-16"
+        className="word-modal-panel max-w-md"
         onClick={event => event.stopPropagation()}
       >
         <button
@@ -61,10 +61,9 @@ const DeleteWordModal = ({
         >
           <X />
         </button>
-
         <div className="word-modal-content scrollbar-none">
-          <div className="min-w-[calc(var(--app-min-width)-3.625rem)]">
-            <h3 className="mb-2 whitespace-nowrap text-xl font-semibold text-[var(--ink)] sm:text-2xl">
+          <div className="word-modal-inner">
+            <h3 className="mb-2 flex min-h-8 items-center whitespace-nowrap text-xl font-semibold text-[var(--ink)] sm:text-2xl">
               {`Remove "${word}"?`}
             </h3>
 

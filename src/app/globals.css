@@ -123,17 +123,22 @@ body {
   }
 
   .word-modal-panel {
-    @apply relative flex max-h-[calc(100dvh-1.5rem)] min-w-0 w-full flex-col overflow-hidden rounded-[2rem] border p-4 sm:max-h-[calc(100dvh-2rem)] sm:p-6;
+    @apply relative flex max-h-[calc(100dvh-1.5rem)] min-w-0 w-full overflow-hidden rounded-[2rem] border p-4 pr-1 sm:max-h-[calc(100dvh-2rem)] sm:p-6 sm:pr-2;
     border-color: var(--brass);
     background: var(--paper-card);
   }
 
   .word-modal-content {
-    @apply min-h-0 overflow-auto overscroll-contain;
+    @apply min-h-0 min-w-0 flex-1 overflow-auto overscroll-contain;
+  }
+
+  .word-modal-inner {
+    /* Subtract mobile gutters, panel borders and padding, and the close button. */
+    min-width: calc(var(--app-min-width) - 4.875rem);
   }
 
   .word-modal-close {
-    @apply absolute right-2.5 top-2.5 inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-60 sm:right-3 sm:top-3;
+    @apply order-last inline-flex size-8 shrink-0 items-center justify-center rounded-full transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-60;
     color: var(--ink-muted);
   }
 

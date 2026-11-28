@@ -166,22 +166,19 @@ const AddWordModal = () => {
                 className="word-modal-panel max-w-4xl"
                 onClick={event => event.stopPropagation()}
               >
-                <div className="flex min-h-0 flex-col">
-                  <div className="shrink-0 pr-12">
-                    <h3 className="mb-2 whitespace-nowrap text-xl font-semibold text-[var(--ink)] sm:text-2xl">
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="word-modal-close"
+                >
+                  <X />
+                </button>
+                <div className="word-modal-content scrollbar-none">
+                  <div className="word-modal-inner">
+                    <h3 className="mb-4 flex min-h-8 items-center whitespace-nowrap text-xl font-semibold text-[var(--ink)] sm:text-2xl">
                       Look up a word
                     </h3>
-                    <button
-                      type="button"
-                      onClick={closeModal}
-                      className="word-modal-close"
-                    >
-                      <X />
-                    </button>
-                  </div>
-
-                  <div className="word-modal-content scrollbar-none mt-2">
-                    <div className="min-w-[calc(var(--app-min-width)-3.625rem)] px-0.5 pt-1">
+                    <div className="px-0.5 pt-1">
                       <div className="flex min-w-min items-center gap-2 sm:gap-4">
                         <input
                           type="text"
@@ -193,7 +190,7 @@ const AddWordModal = () => {
                           value={word}
                           onChange={event => setWord(event.target.value)}
                           onKeyDown={handleInputKeyDown}
-                          className="form-input min-w-[12ch] flex-1"
+                          className="form-input min-w-[12ch] flex-1 px-2 sm:px-4"
                         />
                         <div className="flex shrink-0 gap-2 sm:pr-1">
                           <button
@@ -210,7 +207,7 @@ const AddWordModal = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={handleGoogleDefinitionClick}
-                            className="action-button action-button-secondary px-3 py-2 text-xs sm:text-sm"
+                            className="action-button action-button-secondary px-2 py-2 text-xs sm:px-3 sm:text-sm"
                           >
                             <ExternalLink />
                             Google It
